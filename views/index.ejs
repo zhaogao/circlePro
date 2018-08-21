@@ -1,0 +1,13 @@
+<div>
+    <input type="text" value="0101210010" id="code">
+    <input type="button" value="查询" id="btn">
+</div>
+<script>
+    var oCode = document.getElementById('code');
+    var oBtn = document.getElementById('btn');
+    oBtn.onclick = function () {
+        $.post('/getlist', {code:oCode.value.trim()}, function (data) {
+            console.log('data', data)
+        })
+    }
+</script>
