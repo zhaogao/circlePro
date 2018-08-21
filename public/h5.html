@@ -29,37 +29,176 @@ html, body {
     -webkit-text-size-adjust: 100%;
     -webkit-font-smoothing: antialiased;
 }
+.clearfix {
+    *zoom: 1;
+}
+
+.clearfix:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.pull-left {
+    float: left;
+}
+
+.pull-right {
+    float: right;
+}
 .section{
-    padding:28px;
+    padding:4%;
     background:#ffffff;
-    margin-bottom:18px;
+    margin-bottom:2%;
+}
+.form-item{
+    border:1px solid #adadad;
+    color:#353535;
+}
+.section .title{
+    color:#6e6e6e;
+}
+.ft-14{
+    font-size:14px;
+}
+.form-item>div{
+    padding:3%;
+}
+.form-item{
+    margin-bottom:-1px;
+}
+
+.form-item>div:first-child{
+    border-right:1px solid #adadad;
 }
 </style>
 <body>
-    <div id="app" >
-        <div class="section">
-            {{}}
+<template id="sourceitem">
+    <div class="section">
+        <p class="ft-14" style="padding-bottom:2%">
+            <span class="title">{{title}}:&nbsp;</span>
+            <span v-if="oneLine" >{{desc}}</span>
+        </p>
+
+        <div v-for="(item,index) in desc" :key="index" v-if="!oneLine" class="form-item clearfix">
+            <div :style="{width:width}"  class="title pull-left">[{{item.label}}]</div>
+            <div class="pull-left">{{item.value}}</div>
         </div>
     </div>
+</template>
+
+<div id="app">
+    <cl-section  :title="product_desc.title" :desc="product_desc.detail"></cl-section>
+    <cl-section :title="relevant.title" :desc="relevant.detail"></cl-section>
+    <cl-section :title="ciqData.title" :desc="ciqData.detail"></cl-section>
+    <cl-section :title="ele_for_customs.title" :desc="ele_for_customs.detail"></cl-section>
+    <cl-section :title="unit.title" width="40%" :desc="unit.detail"></cl-section>
+</div>
 <script>
+
+    Vue.component('cl-section',{
+        props:['title','desc'],
+        props:{
+            title:String,
+            desc:[String,Array],
+            width:{
+                default:'25%',
+                type:String
+            }
+        },
+        computed:{
+            oneLine(){
+                if(typeof this.desc == 'string'){
+                    return true
+                }
+                return false
+            }   
+        },
+        template: '#sourceitem'
+    })
+
     var app = new Vue({
        el:'#app',
        data:function(){
            return{
                productData:{
+                   name:'骡马濒危',
                    desc:{ //商品海关描述
-
+                      zh:'骡马濒危',
+                      en:'asdf asdfas sadfas adsf'
                    },
-                   assoc_pro:'', //相关产品
-                   xxxx:'', //CIQ 代码
-                   ele_for_customs:'', //申报要素
+                   assoc_pro:'骡马相关的马总', //相关产品
+                   hscode:'2100000', //CIQ 代码
+                   ele_for_customs:'1.品名；2.制作或保存方法（鲜、冷、冻）；3.加工方法（整头及半头、带骨或去骨等）；4.包装规格；（以下仅上海海关要求）5.厂号；6.品牌', //申报要素
                    tax_info:{
-                    unit:'', // 法定单位  判断是否 有 /  来显示几个
+                    unit:'千克/头', // 法定单位  判断是否 有 /  来显示几个
                     tax_num:'', // CIQ编码
                    }
                }
            }
-       }  
+       },
+       computed:{
+           product_desc(){
+               const { desc } = this.productData
+               return{
+                   title:'商品海关描述',
+                   detail:[
+                       {
+                           label:'中文描述',
+                           value:desc.zh,
+                       },
+                       {
+                           label:'英文描述',
+                           value:desc.en,
+                       }
+                   ]
+               }
+           },
+           relevant(){
+               return{
+                   title:'相关产品',
+                   detail:this.productData.assoc_pro
+               }
+           },
+           ciqData(){
+               return{
+                   title:'CIQ代码及商品描述',
+                   detail:[
+                       {
+                           label:'CIQ代码',
+                           value:this.productData.hscode,
+                       },
+                       {
+                           label:'商品描述',
+                           value:this.productData.name,
+                       }
+                   ]
+               }
+           },
+           ele_for_customs(){
+               return {
+                   title:'申报要素',
+                   detail:this.productData.ele_for_customs
+               }
+           },
+           unit(){
+               let str = ['一','二','三','四']
+               let _tmp =  this.productData.tax_info.unit.split('/')
+               let _array = _tmp.map(function(item,index){
+                   return {
+                       label:'法定第'+ str[index] +'单位',
+                       value:item
+                   }
+               })
+               return{
+                   title:'法定单位',
+                   detail:_array
+               }
+           },
+           xxxxxx(){},
+           xxxxxx(){},
+           xxxxxx(){},
+       }
     })
 </script>
 </body>
