@@ -213,13 +213,9 @@
             <cl-section :title="quarantine_conditions.title" :desc="quarantine_conditions.detail"></cl-section>
         </template>
     </div>
-    <script src="https://cdn.bootcss.com/babel-polyfill/6.23.0/polyfill.min.js" ></script>
     <script src="https://cdn.bootcss.com/vConsole/3.2.0/vconsole.min.js" ></script>
     <script src="http://cdn.bootcss.com/vue/2.5.2/vue.js"></script>
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-    <script>
-        var vConsole = new VConsole()
-    </script>
     <script>
         
         Vue.component('cl-section', {
@@ -331,12 +327,12 @@
                 unit: function () {
                     var str = ['一', '二', '三', '四']
                     var _tmp = this.productData.tax_info.unit.split('/')
-                    var _array = _tmp.map(function (item, index) {
-                        return {
-                            label: '法定第' + str[index] + '单位',
-                            value: item
-                        }
-                    })
+                    // var _array = _tmp.map(function (item, index) {
+                    //     return {
+                    //         label: '法定第' + str[index] + '单位',
+                    //         value: item
+                    //     }
+                    // })
                     return {
                         title: '法定单位',
                         detail: _array
