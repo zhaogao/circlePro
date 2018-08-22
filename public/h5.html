@@ -103,10 +103,19 @@
         animation-timing-function: linear;
         background: #eeeeee;
         background: linear-gradient(to right, #eeeeee 8%, #ddd 18%, #eeeeee 33%);
+        /* background:-webkit-gradient(linear,center top,center bottom,from(#eeeeee), to(#ddd)); */
         background-size: 1200px 104px;
         position: relative;
     }
 
+    @-webkit-keyframes placeHolderShimmer {
+        0% {
+            background-position: -468px 0
+        }
+        100% {
+            background-position: 468px 0
+        }
+    }
     @keyframes placeHolderShimmer {
         0% {
             background-position: -468px 0
@@ -213,15 +222,10 @@
             <cl-section :title="quarantine_conditions.title" :desc="quarantine_conditions.detail"></cl-section>
         </template>
     </div>
-    <script src="https://cdn.bootcss.com/babel-polyfill/6.23.0/polyfill.min.js" ></script>
-    <script src="https://cdn.bootcss.com/vConsole/3.2.0/vconsole.min.js" ></script>
-    <script src="http://cdn.bootcss.com/vue/2.5.2/vue.js"></script>
+    <script src="http://cdn.bootcss.com/vue/2.5.2/vue.min.js"></script>
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
     <script>
-        var vConsole = new VConsole()
-    </script>
-    <script>
-        
         Vue.component('cl-section', {
             props: {
                 title: String,
@@ -232,7 +236,7 @@
                 }
             },
             computed: {
-                oneLine() {
+                oneLine:function() {
                     if (typeof this.desc == 'string') {
                         return true
                     }
@@ -418,10 +422,10 @@
                         $.extend(true, _array, key_str);
 
                         for (var name in item) {
-                            var _tmp = _array.find(function (cus) {
+                            var _tmp = _array.filter(function (cus) {
                                 return cus.key == name
                             })
-                            _tmp && (_tmp.value = item[name])
+                            _tmp[0] && (_tmp[0].value = item[name])
                         }
                         return _array
                     })
