@@ -14,7 +14,7 @@ router.post('/getlist', function (req, res, next) {
     // var page_num = req.body.page_num;
 
     request({
-        url: 'http://220.248.87.150:8013/getproductinfo',
+        url: 'http://220.248.87.150:8013/getwebproductinfo',
         method: "POST",
         headers: {
             'API-VERSION': '1.1',

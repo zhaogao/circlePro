@@ -8,9 +8,9 @@
     <title>商品详情</title>
 </head>
 <style>
-    html, body, div, span, p, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small,
-    strike, strong, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, button, table, caption,
-    tbody, tfoot, thead, tr, th, td, h1, h2, h3 {
+ html, body, div, span, p, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small,
+strike, strong, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, button, table, caption,
+tbody, tfoot, thead, tr, th, td, h1, h2, h3 {
         margin: 0;
         padding: 0;
         border: none;
@@ -103,7 +103,6 @@
         animation-timing-function: linear;
         background: #eeeeee;
         background: linear-gradient(to right, #eeeeee 8%, #ddd 18%, #eeeeee 33%);
-        /* background:-webkit-gradient(linear,center top,center bottom,from(#eeeeee), to(#ddd)); */
         background-size: 1200px 104px;
         position: relative;
     }
@@ -116,6 +115,7 @@
             background-position: 468px 0
         }
     }
+
     @keyframes placeHolderShimmer {
         0% {
             background-position: -468px 0
@@ -172,9 +172,10 @@
         <div class="section">
             <p class="ft-14" style="padding-bottom:2%">
                 <span class="title">{{title}}:&nbsp;</span>
+                <span v-if="list.length == 0" >-</span>
             </p>
 
-            <div v-for="(section,index) in list" :key="'list' + index" style="margin-bottom:3%">
+            <div  v-if="list.length > 0" v-for="(section,index) in list" :key="'list' + index" style="margin-bottom:3%">
                 <div v-for="(item,index) in section" :key="index" class="form-item clearfix">
                     <div :style="{width:width}" class="title pull-left">[{{item.label}}]</div>
                     <div class="pull-left">{{item.value ? item.value : '-'}}</div>
@@ -219,10 +220,10 @@
             <cl-section-list :title="tax_list.title" :list="tax_list.list"></cl-section-list>
             <cl-section-list width="30%" :title="cus_sup_conditions.title" :list="cus_sup_conditions.list"></cl-section-list>
 
-            <cl-section :title="quarantine_conditions.title" :desc="quarantine_conditions.detail"></cl-section>
+            <cl-section :title="ciqConditionsData.title" :desc="ciqConditionsData.detail"></cl-section>
         </template>
     </div>
-    <script src="http://cdn.bootcss.com/vue/2.5.2/vue.min.js"></script>
+    <script src="http://cdn.bootcss.com/vue/2.5.2/vue.js"></script>
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 
     <script>
@@ -236,7 +237,7 @@
                 }
             },
             computed: {
-                oneLine:function() {
+                oneLine: function () {
                     if (typeof this.desc == 'string') {
                         return true
                     }
@@ -265,28 +266,30 @@
                     loading: false,
                     random: ['38%', '45%', '40%', '32%', '55%'],
                     productData: {
-                        name: '骡马濒危',
-                        desc: { //商品海关描述
-                            zh: '骡马濒危',
-                            en: 'The mule and horse are in danger'
-                        },
-                        assoc_pro: '骡马相关的马总', //相关产品
-                        hscode: '2100000', //CIQ 代码
-                        ele_for_customs: '1.品名；2.制作或保存方法（鲜、冷、冻）；3.加工方法（整头及半头、带骨或去骨等）；4.包装规格；（以下仅上海海关要求）5.厂号；6.品牌', //申报要素
+                        code_desc: '',
+                        code_desc_en: '',
+                        assoc_pro: '', //相关产品
+                        ciq: [],
+                        hscode: '', //CIQ 代码
+                        ele_for_customs: '', //申报要素
                         tax_info: {
-                            unit: '千克/头', // 法定单位  判断是否 有 /  来显示几个
-                            tax_num: '', // CIQ编码
+                            mfn: '',
+                            mfn_temp: '',
+                            gen: '',
+                            gen_tmp: '',
+                            exp_tax: '',
+                            exp_tax_temp: '',
+                            ed: '',
+                            con_tax: '',
+                            vat: '',
                         },
                         cus_sup_conditions: [{
                             authority: '',
                             id: '',
                             name: '',
                             remarks: '',
-                        }, ],
-                        quarantine_conditions: { // 待添加字段
-                            code: 'P/Q',
-                            name: '进口商品检验'
-                        }
+                        }],
+                        ciq_conditions: []
                     }
                 }
             },
@@ -297,11 +300,11 @@
                         title: '商品海关描述',
                         detail: [{
                                 label: '中文描述',
-                                value: desc.zh,
+                                value: this.productData.code_desc,
                             },
                             {
                                 label: '英文描述',
-                                value: desc.en,
+                                value: this.productData.code_desc_en,
                             }
                         ]
                     }
@@ -313,17 +316,27 @@
                     }
                 },
                 ciqData: function () {
+                    var _tmp = []
+                    var tmpArray = this.productData.ciq.map(function (item) {
+                        return [{
+                            label: 'CIQ代码',
+                            value: item.code
+                        }, {
+                            label: '商品描述',
+                            value: item.des
+                        }]
+
+                    })
+
+                    tmpArray.map(function (item) {
+                        item.map(function(inner){
+                            _tmp.push(inner)
+                        })
+                    })
+
                     return {
                         title: 'CIQ代码及商品描述',
-                        detail: [{
-                                label: 'CIQ代码',
-                                value: this.productData.hscode,
-                            },
-                            {
-                                label: '商品描述',
-                                value: this.productData.name,
-                            }
-                        ]
+                        detail: _tmp
                     }
                 },
                 ele_for_customs: function () {
@@ -333,69 +346,61 @@
                     }
                 },
                 unit: function () {
-                    var str = ['一', '二', '三', '四']
-                    var _tmp = this.productData.tax_info.unit.split('/')
-                    var _array = _tmp.map(function (item, index) {
-                        return {
-                            label: '法定第' + str[index] + '单位',
-                            value: item
-                        }
-                    })
                     return {
                         title: '法定单位',
-                        detail: _array
+                        detail: [{
+                                label: '法定第一单位',
+                                value: this.productData.u1cn
+                            },
+                            {
+                                label: '法定第二单位',
+                                value: this.productData.u2cn
+                            },
+                        ]
                     }
                 },
                 tax_list: function () {
+                    var tax_info = this.productData.tax_info
                     return {
                         title: '关税',
                         list: [
                             [{
                                     label: '最惠国进口税率',
-                                    value: '10%'
+                                    value: tax_info.mfn
                                 },
                                 {
                                     label: '最惠国进口暂定税率',
-                                    value: '30%'
+                                    value: tax_info.mfn_temp
                                 },
                                 {
                                     label: '普通进口税率',
-                                    value: '0.0%'
+                                    value: tax_info.gen
                                 },
                                 {
                                     label: '暂定进口税率',
-                                    value: '12.1%'
+                                    value: tax_info.gen_tmp
                                 },
                             ],
                             [{
                                     label: '出口关税率',
-                                    value: '11.1%'
+                                    value: tax_info.exp_tax
                                 },
                                 {
                                     label: '暂定出口关税率',
-                                    value: '0.3%'
+                                    value: tax_info.exp_tax_temp
                                 },
                                 {
                                     label: '出口退税率',
-                                    value: '0.2%'
-                                },
-                            ],
-                            [{
-                                    label: '美国',
-                                    value: '15%'
-                                },
-                                {
-                                    label: '法国',
-                                    value: '14.3%'
+                                    value: tax_info.ed
                                 },
                             ],
                             [{
                                     label: '消费税率',
-                                    value: '9.2%'
+                                    value: tax_info.con_tax
                                 },
                                 {
                                     label: '增值税率',
-                                    value: '14.3%'
+                                    value: tax_info.vat
                                 },
                             ],
                         ]
@@ -435,21 +440,31 @@
                         list: _conditions
                     }
                 },
-                quarantine_conditions: function () {
-                    var _data = this.productData.quarantine_conditions;
+                ciqConditionsData: function () {
+                    var _tmp = []
+                    var tmpArray = this.productData.ciq_conditions.map(function (item) {
+                        return [{
+                            label: '代码',
+                            value: item.id
+                        }, {
+                            label: '名称',
+                            value: item.name
+                        }]
+                    })
+
+                    tmpArray.map(function (item) {
+                        item.map(function(inner){
+                            _tmp.push(inner)
+                        })
+                    })
                     return {
                         title: '检验检疫类别',
-                        detail: [{
-                                label: '代码',
-                                value: _data.code,
-                            },
-                            {
-                                label: '名称',
-                                value: _data.name,
-                            }
-                        ]
+                        detail: _tmp
                     }
                 },
+            },
+            methods: {
+
             },
             mounted: function () {
                 var _this = this;
@@ -458,13 +473,16 @@
                     url: '/getlist',
                     type: 'post',
                     data: {
-                        code: '0101210010',
+                        code: '9602009000',
+                        // code: '8544110000',
                     },
                     success: function (data) {
                         _this.loading = false
                         if (data.code == 0) {
-                            $.extend(true, _this.productData, data.ret_msg.datas)
-                            _this.$set(_this.$data, 'productData', _this.productData)
+                            var tmp = {}
+                            $.extend(true, tmp, data.ret_msg.datas)
+                            _this.$set(_this.$data, 'productData', tmp)
+
                         }
                     },
                     error: function () {
