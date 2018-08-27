@@ -9,16 +9,15 @@ router.get('/', function (req, res, next) {
     });
 });
 
-router.post('/getlist', function (req, res, next) {
+router.post('/getProductDetail', function (req, res, next) {
     var code = req.body.code;
-    // var page_num = req.body.page_num;
 
     request({
         url: 'http://220.248.87.150:8013/getwebproductinfo',
         method: "POST",
         headers: {
             'API-VERSION': '1.1',
-            'USER-TOKEN': 'TEST',
+            'USER-TOKEN': 'gaozhao',
             'PLATFORM': 'IOS',
             'DEVICE-ID': '1234234',
             'APP-LEVEL-VERSION': '1.0.3',
@@ -31,19 +30,22 @@ router.post('/getlist', function (req, res, next) {
             'PHONE': '18116352909'
         },
         body: JSON.stringify({
-            // hscode: '7404000090'
             hscode: code
         }),
-    }, function (e, r, body) {
-        // var data = qs.parse(body)
-        var data = JSON.parse(body)
-        console.log('da', data)
-        res.json({
-            code: 0,
-            ret_msg: data
-        });
+    }, function (error, response, body) {
+
+        if (!error && response.statusCode == 200) {
+            res.json({
+                code: 0,
+                ret_msg: JSON.parse(body)
+            });
+        }else{
+            res.json({
+                code:1,
+                ret_msg:error
+            })
+        }
     })
-    
 });
 
 module.exports = router;

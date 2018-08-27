@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -106,7 +105,9 @@ tbody, tfoot, thead, tr, th, td, h1, h2, h3 {
         background-size: 1200px 104px;
         position: relative;
     }
-
+    .error-notice{
+        padding:2%;
+    }
     @-webkit-keyframes placeHolderShimmer {
         0% {
             background-position: -468px 0
@@ -264,6 +265,7 @@ tbody, tfoot, thead, tr, th, td, h1, h2, h3 {
             data: function () {
                 return {
                     loading: false,
+                    dataError:false,
                     random: ['38%', '45%', '40%', '32%', '55%'],
                     productData: {
                         code_desc: '',
@@ -464,25 +466,28 @@ tbody, tfoot, thead, tr, th, td, h1, h2, h3 {
                 },
             },
             methods: {
-
+               getUrlParam:function(name) {
+                    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                    var r = window.location.search.substr(1).match(reg);  
+                    if (r != null) return unescape(r[2]); return null; 
+		        }
             },
             mounted: function () {
                 var _this = this;
+                var params = this.getUrlParam('id')
                 _this.loading = true
                 $.ajax({
-                    url: '/getlist',
+                    url: '/getProductDetail',
                     type: 'post',
                     data: {
-                        code: '9602009000',
-                        // code: '8544110000',
+                        code: params ? params : '9602009000',
                     },
                     success: function (data) {
                         _this.loading = false
-                        if (data.code == 0) {
+                        if (data.code == 0 && data.ret_msg.rescode == '0' && data.ret_msg.datas) {
                             var tmp = {}
                             $.extend(true, tmp, data.ret_msg.datas)
                             _this.$set(_this.$data, 'productData', tmp)
-
                         }
                     },
                     error: function () {
