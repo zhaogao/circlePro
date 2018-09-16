@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>分享标题</title>
+</head>
+<link rel="stylesheet" href="./index.css?version=v1">
+
+<body>
+    <template id="sourceitem">
+        <div class="section">
+            <p class="ft-14" style="padding-bottom:2%">
+                <span class="title">{{title}}:&nbsp;</span>
+                <span v-if="oneLine">{{desc ? desc :'-'}}</span>
+            </p>
+
+            <div v-for="(item,index) in desc" :key="index" v-if="!oneLine" class="form-item clearfix">
+                <div :style="{width:width}" class="title pull-left">[{{item.label}}]</div>
+                <div class="pull-left">{{item.value ? item.value :'-'}}</div>
+            </div>
+        </div>
+    </template>
+
+    <div id="app" :style="{backgroundColor:loading ? '#fff' : '#f1f1f1'}">
+        <template v-if="loading">
+            <div v-for="index in 5" :key="index" class="ladingbox">
+                <div class="preload">
+                    <div class="title-block"></div>
+                    <div class="line-block"></div>
+                    <div class="cloumn-line" :style="{left:random[index]}"></div>
+                    <div class="line-block-2"></div>
+                    <div class="line-block-3"></div>
+                </div>
+            </div>
+        </template>
+        <template v-else>
+
+
+
+            <img src="/images/share-1/banner.jpg" width="100%" alt="">
+            <div class="header-box">
+                <div class="badge">
+                    <template v-if="page.authentication == 0">
+                        <img src="/images/share-1/auth-0.png" class="badge-icon" alt=""> 
+                        <span style="color:#adadad;" >未认证</span>
+                    </template>
+                    <template v-else>
+                        <img src="/images/share-1/auth-1.png" class="badge-icon" alt="">
+                        <span style="color:#ffa800;" >已认证</span>
+                    </template>
+                </div>
+                <div class="portrait">
+                    <img src="/images/share-1/head.jpg" width="100%" alt="">
+                </div>
+                <p class="ft-14">
+                    <strong>{{page.name}}</strong> |
+                    <span class="gray-text">{{page.job}}</span>
+                </p>
+                <p class="" style="color:#2c2c2c;">{{page.company}}</p>
+                <div style="padding:20px 0;text-align: center;">
+                    <button class="add-btn">+ 好友</button>
+                </div>
+            </div>
+            <div class="block" style="border-bottom:1px solid #e0e0e0;">
+                <div style="padding-bottom:10px;">
+                    <strong>个人介绍</strong>
+                </div>
+                <p class="gray-text">{{page.desc}}</p>
+            </div>
+            <div class="block">
+                <div style="padding-bottom:10px;">
+                    <strong>联系方式</strong>
+                </div>
+                <ul class="gray-text">
+                    <li class="concat-item" :key="index" v-for="(item,index) in page.contact">
+                        <img src="" class="item-icon" alt="">
+                        <span>{{item.text}}</span>
+                    </li>
+                </ul>
+                <div style="overflow-x: auto;">
+                    <img :key="index" v-for="(item,index) in page.businesscard" :src="item" style="width:40%;margin-right:10px;" alt="">
+                </div>
+            </div>
+            <div class="block" style="border-bottom:1px solid #e0e0e0;">
+                <div style="padding-bottom:10px;">
+                    <strong>Ta关注的业务</strong>
+                </div>
+                <div class="card-box borderd" v-for="(item,index) in page.business" :key="index">
+                    <div style="margin:0 20px;">
+                        <span class="business-type">{{item.type}}</span>
+                    </div>
+
+                    <p style="margin:0 20px;">{{item.text}}</p>
+                    <div class="gray-text block-card">
+                        {{item.subdesc}}
+                    </div>
+                </div>
+            </div>
+            <div class="fixed-down">
+                <img src="/images/share-1/logo.png" style="height:40px;margin:5px 0 0 10px;" alt="">
+                <button class="pull-right down-btn">下载</button>
+            </div>
+        </template>
+    </div>
+    <script src="http://cdn.bootcss.com/vue/2.5.2/vue.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: function () {
+                return {
+                    loading: false,
+                    random: ['38%', '45%', '40%', '32%', '55%'],
+                    page: {
+                        headurl: '',
+                        name: '李琳琳',
+                        job: '总经理',
+                        company: '新兴铸管上海金属资源有限公司',
+                        addurl: '', //添加好友的app路径
+                        authentication: 0, // 0 认证 1 未认证
+                        desc: '从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工',
+                        contact: [{
+                                type: 'phone',
+                                text: '18701766820',
+                            },
+                            {
+                                type: 'phone',
+                                text: '18701766820',
+                            },
+                            {
+                                type: 'phone',
+                                text: '18701766820',
+                            },
+                        ],
+                        businesscard: ['/images/share-1/card-1.png', '/images/share-1/card-2.png'],
+                        business: [{
+                                type: '物流服务',
+                                text: '我们是做物流代理的的我们是做物流代理的的我们是做物流代理的的我们是做物流代理的的我们是做物流代理的的',
+                                subdesc: '8711 发多少 我们是做物流代理的的我们是做物流代我们是做物流代理的的我们是做物流代我们是做物流代理的的我们是做物流代',
+                            },
+                            {
+                                type: '物流服务',
+                                text: '我们是做物流代理的的我们是做物流代理的的我们是做物流代理的的我们是做物流代理的的我们是做物流代理的的',
+                                subdesc: '8711 发多少 我们是做物流代理的的我们是做物流代我们是做物流代理的的我们是做物流代我们是做物流代理的的我们是做物流代',
+                            },
+                        ]
+                    }
+                }
+            },
+            computed: {},
+            methods: {
+                getUrlParam: function (name) {
+                    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                    var r = window.location.search.substr(1).match(reg);
+                    if (r != null) return unescape(r[2]);
+                    return null;
+                }
+            },
+            mounted: function () {
+                var _this = this;
+                var params = this.getUrlParam('id')
+                _this.loading = true
+                $.ajax({
+                    url: '/getProductDetail',
+                    type: 'post',
+                    data: {
+                        code: params ? params : '9602009000',
+                    },
+                    success: function (data) {
+                        _this.loading = false
+                        // if (data.code == 0 && data.ret_msg.rescode == '0' && data.ret_msg.datas) {
+                        //     var tmp = {}
+                        //     $.extend(true, tmp, data.ret_msg.datas)
+                        //     _this.$set(_this.$data, 'productData', tmp)
+                        // }
+                    },
+                    error: function () {
+                        _this.loading = false
+                    }
+                })
+            }
+        })
+    </script>
+</body>
+
+</html>
