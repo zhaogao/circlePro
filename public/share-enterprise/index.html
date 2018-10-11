@@ -10,20 +10,6 @@
 <link rel="stylesheet" href="./index.css?version=v1">
 
 <body>
-    <template id="sourceitem">
-        <div class="section">
-            <p class="ft-14" style="padding-bottom:2%">
-                <span class="title">{{title}}:&nbsp;</span>
-                <span v-if="oneLine">{{desc ? desc :'-'}}</span>
-            </p>
-
-            <div v-for="(item,index) in desc" :key="index" v-if="!oneLine" class="form-item clearfix">
-                <div :style="{width:width}" class="title pull-left">[{{item.label}}]</div>
-                <div class="pull-left">{{item.value ? item.value :'-'}}</div>
-            </div>
-        </div>
-    </template>
-
     <div id="app" :style="{backgroundColor:loading ? '#fff' : '#f1f1f1'}">
         <template v-if="loading">
             <div v-for="index in 5" :key="index" class="ladingbox">
@@ -38,32 +24,59 @@
         </template>
         <template v-else>
             <div style="font-size:0;">
-                <img src="/images/share-1/banner-default.png" width="100%" alt="">
+                <img :src="page.backurl ? page.backurl : '/images/share-1/banner-default.png'" width="100%" alt="">
             </div>
             <div class="header-box">
                 <div class="badge">
-                    <img src="/images/share-1/auth-0.png" class="badge-icon" alt="">
-                    <span style="color:#adadad;vertical-align: middle;">中国</span>
+                    <img :src="img_root+page.countryico" class="badge-icon" alt="">
+                    <span style="color:#adadad;vertical-align: middle;">{{page.country}}</span>
                 </div>
                 <div class="portrait" :style="{width:headWidth+'px',height:headWidth+'px'}">
-                    <img src="/images/share-1/head-default.png" width="100%" height="100%" alt="">
+                    <img :src="page.pic ? page.pic : '/images/share-1/head-default.png'" width="100%" height="100%" alt="">
                 </div>
-                <div style="padding:0 20%;">
+                <div style="padding: 0px 20% 15px 20%;">
                     <strong class="vertical-middle ft-14" style="margin-bottom:0.5em;">{{page.company}}</strong>
-                    <p style="color:#2c2c2c;margin-bottom:20px;">{{page.company_en}}</p>
+                    <p v-if="page.company_en" style="color:#2c2c2c;">{{page.company_en}}</p>
                 </div>
-                <div style="border-top:1px solid #e0e0e0;text-align: left;">
+                <div style="border-top:1px solid #e0e0e0;text-align: left;;padding-bottom:14px;">
                     <div style="padding:15px 0 10px;">
                         <strong>关于我们</strong>
                     </div>
-                    <p class="gray-text">{{page.desc}}</p>
+                    <p class="gray-text">{{page.remark}}</p>
+                </div>
+                <div class="" style="text-align:left;padding-top:10px;border-top:1px solid #dfdfdf;">
+                    <div style="padding-bottom:10px;">
+                        <strong>联系方式</strong>
+                    </div>
+                    <ul class="gray-text">
+                        <li class="concat-item">
+                            <img src="/images/share-1/phone.png" class="item-icon" alt="">
+                            <span>{{page.mobile}}</span>
+                        </li>
+                        <li class="concat-item">
+                            <img src="/images/share-1/email.png" class="item-icon" alt="">
+                            <span>{{page.email}}</span>
+                        </li>
+                        <li class="concat-item">
+                            <img src="/images/share-1/address.png" class="item-icon" alt="">
+                            <span>{{page.address}}</span>
+                        </li>
+                        <li class="concat-item">
+                            <img src="/images/share-1/site.png" class="item-icon" alt="">
+                            <span>{{page.netaddress}}</span>
+                        </li>
+                        <li class="concat-item">
+                            <img src="/images/share-1/fax.png" class="item-icon" alt="">
+                            <span>{{page.fax}}</span>
+                        </li>
+                    </ul>
                 </div>
             </div>
-            <div class="block" style="margin-bottom:10px;">
+            <div class="block">
                 <strong>进出口国家分析</strong>
                 <div class="section-line"></div>
                 <div class="chart-box" style="margin-bottom:20px;">
-                    <div class="chart-body"></div>
+                    <div class="chart-body" id="main"></div>
                     <div class="chart-footer gray-text" style="padding:10px;">
                         新兴铸管（上海）资源有限公司进口国家和地区共71个，出口国家和地区共6个
                     </div>
@@ -77,31 +90,19 @@
                     </div>
                 </div>
             </div>
-
-            <div class="block">
-                <div style="padding-bottom:10px;">
-                    <strong>联系方式</strong>
-                </div>
-                <ul class="gray-text">
-                    <li class="concat-item" :key="index" v-for="(item,index) in page.contact">
-                        <img :src="'/images/share-1/' + item.type +'.png' " class="item-icon" alt="">
-                        <span>{{item.text}}</span>
-                    </li>
-                </ul>
-
-            </div>
-            <div class="block" style="border-bottom:1px solid #e0e0e0;margin-bottom:10px;padding-top:0;">
-                <div style="padding:15px 0;border-top:1px solid #dfdfdf;">
+            <div class="block" style="border-bottom:1px solid #e0e0e0;margin-bottom:10px;padding-top:0;padding-bottom:6px;">
+                <div style="padding:15px 0;">
                     <strong>企业员工</strong>
                 </div>
-                <div class="img-item business-item" v-show="index < shownum " v-for="(staff,index) in page.staffList" :key="index">
-                    <img src="" alt="">
+                <div class="img-item business-item" v-show="index < shownum " v-for="(staff,index) in page.employee"
+                    :key="index">
+                    <img :src="staff.pic ? staff.pic: '/images/share-1/head-default.png'" alt="">
                     <div style="flex:1;padding-top:2%;border-bottom:1px solid #dfdfdf;">
                         <strong>{{staff.name}}</strong>
                         <p class="ft-10" style="margin-top:0.5em;">{{staff.job}}</p>
                     </div>
                 </div>
-                <div class="center" v-if="page.staffList.length > shownum">
+                <div class="center" v-if="page.employee.length > shownum">
                     <button class="more" style="padding:8px 10px;" @click="handleShow">查看更多</button>
                 </div>
             </div>
@@ -133,8 +134,12 @@
         <img src="/images/share-1/logo.png" style="height:35px;margin:7px 0 0 12px;" alt="">
         <a id="down-btn" href="javascript:;" class="pull-right down-btn">下载</a>
     </div>
+    <script src="/config.js"></script>
     <script src="http://cdn.bootcss.com/vue/2.5.2/vue.js"></script>
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/3.8.5/echarts.min.js"></script>
+    <script src="http://echarts.baidu.com/asset/map/js/world.js"></script>
 
     <script>
         var ios_app = 'https://itunes.apple.com/cn/app/id1415575117?l=zh&ls=1&mt=8';
@@ -169,55 +174,22 @@
                     showMore: true,
                     shownum: 3,
                     random: ['38%', '45%', '40%', '32%', '55%'],
+                    img_root: config.img_root,
                     page: {
-                        headurl: '',
+                        backurl: '',
+                        pic: '',
                         company: '新兴铸管上海金属资源有限公司',
                         company_en: 'XINXING PIPES(SHANGHAI)METAL RESOURCES CO.LTD',
+                        country: '',
                         addurl: '', //添加好友的app路径
-                        authentication: 0, // 0 认证 1 未认证
-                        desc: '从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工',
-                        contact: [{
-                                type: 'phone',
-                                text: '18701766820',
-                            },
-                            {
-                                type: 'weibo',
-                                text: 'xxxxxxxxxx',
-                            },
-                            {
-                                type: 'email',
-                                text: 'xxxxxx@xxx.com',
-                            }, {
-                                type: 'qq',
-                                text: 'xxxxxx@xxx.com',
-                            }, {
-                                type: 'wechat',
-                                text: 'xxxxxx@xxx.com',
-                            }, {
-                                type: 'card',
-                                text: '名片',
-                            },
-                        ],
-                        businesscard: ['/images/share-1/card-1.png', '/images/share-1/card-2.png',
-                            '/images/share-1/card-2.png'
-                        ],
-                        staffList: [{
-                                name: '李萌萌',
-                                job: '总经理'
-                            },
-                            {
-                                name: '李萌萌',
-                                job: '总经理'
-                            },
-                            {
-                                name: '李萌萌',
-                                job: '总经理'
-                            },
-                            {
-                                name: '李萌萌',
-                                job: '总经理'
-                            },
-                        ]
+                        countryico: '',
+                        remark: '从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工',
+                        employee: [{
+                            name: '李萌萌',
+                            job: '总经理',
+                            pic: '',
+                            company: ''
+                        }, ]
                     }
                 }
             },
@@ -238,27 +210,76 @@
                     $('.more').parent().hide()
                 },
                 init: function () {
-
+                    var oMain = document.getElementById('main');
+                    oMain.style.width = document.body.clientWidth - 30 + 'px';
+                    var myChart = echarts.init(document.getElementById('main'));
+                    option = {
+                        visualMap: {
+                            min: 0,
+                            show: false,
+                            max: 1000000,
+                            text: ['High', 'Low'],
+                            realtime: false,
+                            calculable: true,
+                            color: ['#b4dbf1', '#7fadef']
+                        },
+                        series: [{
+                            name: 'World Population (2010)',
+                            type: 'map',
+                            mapType: 'world',
+                            roam: true,
+                            left: '2%',
+                            top: '2%',
+                            right: '2%',
+                            bottom: '2%',
+                            itemStyle: {
+                                normal: {
+                                    areaColor: '#b4dbf1',
+                                },
+                                emphasis: {
+                                    label: {
+                                        show: true
+                                    }
+                                }
+                            },
+                            data: [{
+                                    name: 'Afghanistan',
+                                    value: 28397.812
+                                },
+                                {
+                                    name: 'China',
+                                    value: 2000
+                                }
+                            ]
+                        }]
+                    };
+                    myChart.setOption(option);
 
                 }
             },
             mounted: function () {
 
-                this.init()
-
                 var _this = this;
                 var params = this.getUrlParam('id')
-                return
-                // _this.loading = true
+                // return
+                _this.loading = true
                 $.ajax({
-                    url: '/getuserdata',
+                    url: '/getcompanyinfo',
                     type: 'post',
                     data: {
-                        userid: params ? params : '8618701766820',
+                        companycode: params ? params : 'qql93128407',
                     },
                     success: function (data) {
                         _this.loading = false
+                        var tmp = {}
+                        _this.loading = false
+                        $.extend(true, tmp, data.ret_msg.company_data)
+                        _this.$set(_this.$data, 'page', tmp)
+
                         console.log('data', data)
+                       setTimeout(function(){
+                        _this.init()
+                       },200)
                     },
                     error: function () {
                         _this.loading = false

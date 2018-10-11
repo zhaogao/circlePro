@@ -160,7 +160,7 @@ baseline; background: transparent; }
         /* border-bottom-width: 3px;
         border-bottom-style: dashed;
         border-bottom-color: #666; */
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px dotted #555;
     }
     .more{
         color:#0084ff;
@@ -180,7 +180,7 @@ baseline; background: transparent; }
         background:#0084ff;
         margin-right: 6px;
         border-radius:4px;
-        vertical-align: middle;
+        margin-bottom:2px;
     }
     .flex-center{
         justify-content: center;
@@ -207,10 +207,14 @@ baseline; background: transparent; }
         padding:4px 0;
     }
 
+    .concat-item span{
+        vertical-align: middle;
+    }
+
     .item-icon{
         display: inline-block;
-        width:16px;
-        /* height:16px; */
+        /* width:16px; */
+        height:16px;
         /* background:#ccc; */
         vertical-align: middle;
         margin-right:8px;
