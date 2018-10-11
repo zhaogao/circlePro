@@ -167,10 +167,9 @@
                     random: ['38%', '45%', '40%', '32%', '55%'],
                     page: {
                         headurl: '',
-                        name: '李琳琳',
-                        first_name: '',
-                        last_name: '',
-                        job: '总经理',
+                        first_name: '-',
+                        last_name: '-',
+                        job: '-',
                         company: '新兴铸管上海金属资源有限公司',
                         company_en: 'xinxing dsfad  adfsfsadf',
                         addurl: '', //添加好友的app路径
@@ -188,7 +187,6 @@
                             }]
                         },
                         businesscard: ['/images/share-1/card-1.png', '/images/share-1/card-2.png',
-                            '/images/share-1/card-2.png'
                         ],
                         quotes: []
                     }
@@ -227,11 +225,12 @@
                     url: '/getuserdata',
                     type: 'post',
                     data: {
-                        userid: params ? params : '8618516123565',
+                        userid: params ? params : '8618701766820',
                     },
                     success: function (data) {
-                        var tmp = {}
                         _this.loading = false
+                        if(data.ret_msg.result == 'fail') return;
+                        var tmp = {}
                         $.extend(true, tmp, data.ret_msg.user_data)
                         _this.$set(_this.$data, 'page', tmp)
 

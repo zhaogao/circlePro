@@ -77,7 +77,7 @@ router.post('/getuserdata', function (req, res, next) {
         }),
     }, function (error, response, body) {
 
-        if (!error && response.statusCode == 200) {
+        if (!error && response.statusCode) {
             res.json({
                 code: 0,
                 ret_msg: JSON.parse(body)

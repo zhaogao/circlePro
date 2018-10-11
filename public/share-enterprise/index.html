@@ -24,7 +24,8 @@
         </template>
         <template v-else>
             <div style="font-size:0;">
-                <img :src="page.backurl ? page.backurl : '/images/share-1/banner-default.png'" width="100%" alt="">
+                <img :src="page.backurl ? img_root + page.backurl : '/images/share-1/banner-default.png'" width="100%"
+                    alt="">
             </div>
             <div class="header-box">
                 <div class="badge">
@@ -32,7 +33,8 @@
                     <span style="color:#adadad;vertical-align: middle;">{{page.country}}</span>
                 </div>
                 <div class="portrait" :style="{width:headWidth+'px',height:headWidth+'px'}">
-                    <img :src="page.pic ? page.pic : '/images/share-1/head-default.png'" width="100%" height="100%" alt="">
+                    <img :src="page.pic ?  img_root + page.pic : '/images/share-1/head-default.png'" width="100%"
+                        height="100%" alt="">
                 </div>
                 <div style="padding: 0px 20% 15px 20%;">
                     <strong class="vertical-middle ft-14" style="margin-bottom:0.5em;">{{page.company}}</strong>
@@ -44,7 +46,7 @@
                     </div>
                     <p class="gray-text">{{page.remark}}</p>
                 </div>
-                <div class="" style="text-align:left;padding-top:10px;border-top:1px solid #dfdfdf;">
+                <div class="" style="text-align:left;padding-top:10px;border-top:1px solid #e7e7e7;">
                     <div style="padding-bottom:10px;">
                         <strong>联系方式</strong>
                     </div>
@@ -78,7 +80,17 @@
                 <div class="chart-box" style="margin-bottom:20px;">
                     <div class="chart-body" id="main"></div>
                     <div class="chart-footer gray-text" style="padding:10px;">
-                        新兴铸管（上海）资源有限公司进口国家和地区共71个，出口国家和地区共6个
+                        <p style="padding-left:3%;" >公司进口国家和地区共{{countryTotal}}个</p>
+                        <div class="clearfix" >
+                            <div v-if="index < 9" class="country-item" v-for="(country,index) in countryList">
+                                <img  :src="img_root+country.ico" alt="">
+                                <p>{{country.name_chn}}</p>
+                            </div>
+                            <div class="country-item" >
+                                <a class="country-more-btn" href="javascript:;">更多</a>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <strong>进出口商品分析</strong>
@@ -86,20 +98,23 @@
                 <div class="chart-box">
                     <div class="chart-body"></div>
                     <div class="chart-footer gray-text" style="padding:10px;">
-                        新兴铸管（上海）资源有限公司进口商品148种，出口商品125种
+                        公司进口商品148种，出口商品125种
                     </div>
                 </div>
             </div>
             <div class="block" style="border-bottom:1px solid #e0e0e0;margin-bottom:10px;padding-top:0;padding-bottom:6px;">
-                <div style="padding:15px 0;">
+                <div style="padding-bottom:18px;">
                     <strong>企业员工</strong>
                 </div>
                 <div class="img-item business-item" v-show="index < shownum " v-for="(staff,index) in page.employee"
                     :key="index">
-                    <img :src="staff.pic ? staff.pic: '/images/share-1/head-default.png'" alt="">
-                    <div style="flex:1;padding-top:2%;border-bottom:1px solid #dfdfdf;">
-                        <strong>{{staff.name}}</strong>
-                        <p class="ft-10" style="margin-top:0.5em;">{{staff.job}}</p>
+                    <img :src="staff.pic ?  img_root + staff.pic: '/images/share-1/head-default.png'" alt="">
+                    <div style="flex:1;padding-top:2%;">
+                        <p style="color:#292929;" >{{staff.name}}</p>
+                        <p class="ft-10" style="margin-top:0.5em;color:#888888;">{{staff.job}}</p>
+                    </div>
+                    <div class="add-btn-box" style="" >
+                        <a class="add-btn" href="javascript:;">+ 好友</a>
                     </div>
                 </div>
                 <div class="center" v-if="page.employee.length > shownum">
@@ -184,6 +199,16 @@
                         addurl: '', //添加好友的app路径
                         countryico: '',
                         remark: '从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工',
+                        countrydata: {
+                            exportcountrycnt: 0,
+                            exportcountrys: [],
+                            importcountrycnt: 0,
+                            importcountrys: [{
+                                ico: '',
+                                name_en: '',
+                                name_chn: '',
+                            }]
+                        },
                         employee: [{
                             name: '李萌萌',
                             job: '总经理',
@@ -196,6 +221,16 @@
             computed: {
                 headWidth: function () {
                     return Math.round((window.screen.width) * 0.25)
+                },
+                countryTotal: function () {
+                    var countrydata = this.page.countrydata;
+                    return countrydata.exportcountrycnt + countrydata.importcountrycnt;
+                },
+                countryList: function () {
+                    var countrydata = this.page.countrydata;
+                    var tmpList = [];
+                    $.extend(true, tmpList, countrydata.exportcountrys, countrydata.importcountrys)
+                    return tmpList;
                 }
             },
             methods: {
@@ -210,6 +245,7 @@
                     $('.more').parent().hide()
                 },
                 init: function () {
+                    var _this = this;
                     var oMain = document.getElementById('main');
                     oMain.style.width = document.body.clientWidth - 30 + 'px';
                     var myChart = echarts.init(document.getElementById('main'));
@@ -221,7 +257,7 @@
                             text: ['High', 'Low'],
                             realtime: false,
                             calculable: true,
-                            color: ['#b4dbf1', '#7fadef']
+                            color: ['#568cca', '#568cca']
                         },
                         series: [{
                             name: 'World Population (2010)',
@@ -232,9 +268,11 @@
                             top: '2%',
                             right: '2%',
                             bottom: '2%',
+                            roam:false,
                             itemStyle: {
                                 normal: {
-                                    areaColor: '#b4dbf1',
+                                    areaColor: '#bdd6ea',
+                                    borderColor:'none',
                                 },
                                 emphasis: {
                                     label: {
@@ -242,15 +280,12 @@
                                     }
                                 }
                             },
-                            data: [{
-                                    name: 'Afghanistan',
-                                    value: 28397.812
-                                },
-                                {
-                                    name: 'China',
-                                    value: 2000
+                            data:_this.countryList.map(function(item,index){
+                                return {
+                                    name:item.name_en,
+                                    value:100,
                                 }
-                            ]
+                            }),
                         }]
                     };
                     myChart.setOption(option);
@@ -277,9 +312,9 @@
                         _this.$set(_this.$data, 'page', tmp)
 
                         console.log('data', data)
-                       setTimeout(function(){
-                        _this.init()
-                       },200)
+                        setTimeout(function () {
+                            _this.init()
+                        }, 200)
                     },
                     error: function () {
                         _this.loading = false
