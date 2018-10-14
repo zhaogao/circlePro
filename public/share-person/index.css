@@ -62,7 +62,14 @@ baseline; background: transparent; }
         background: #fff;
         margin-bottom: 2%;
     }
-
+    .banner_img{
+        
+        background-repeat: no-repeat;
+        background-position:center center;
+        width:100%;
+        height:180px;
+        background-size: cover;
+    }
     .form-item {
         border: 1px solid #adadad;
         color: #353535;
@@ -93,8 +100,8 @@ baseline; background: transparent; }
     .header-box {
         position: relative;
         margin-bottom: 10px;
-        height: 160px;
-        padding-top: 80px;
+        height: 140px;
+        padding-top: 76px;
         text-align: center;
         background: #fff;
     }
@@ -139,7 +146,7 @@ baseline; background: transparent; }
     }
 
     .block {
-        padding: 18px 15px;
+        padding: 15px 15px;
         background: #fff;
     }
     .center{

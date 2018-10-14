@@ -5,26 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-    <title>企业分享标题</title>
+    <title>商品分享标题</title>
 </head>
 <link rel="stylesheet" href="./index.css?version=v1">
 
 <body>
-    <template id="sourceitem">
-        <div class="section">
-            <p class="ft-14" style="padding-bottom:2%">
-                <span class="title">{{title}}:&nbsp;</span>
-                <span v-if="oneLine">{{desc ? desc :'-'}}</span>
-            </p>
-
-            <div v-for="(item,index) in desc" :key="index" v-if="!oneLine" class="form-item clearfix">
-                <div :style="{width:width}" class="title pull-left">[{{item.label}}]</div>
-                <div class="pull-left">{{item.value ? item.value :'-'}}</div>
-            </div>
-        </div>
-    </template>
-
-    <div id="app" :style="{backgroundColor:loading ? '#fff' : '#f1f1f1'}">
+    <div id="app" style="background:#fff;">
         <template v-if="loading">
             <div v-for="index in 5" :key="index" class="ladingbox">
                 <div class="preload">
@@ -40,92 +26,181 @@
             <div style="font-size:0;">
                 <img src="/images/share-1/banner-default.png" width="100%" alt="">
             </div>
-            <div class="header-box">
-                <div class="badge">
-                    <img src="/images/share-1/auth-0.png" class="badge-icon" alt="">
-                    <span style="color:#adadad;vertical-align: middle;">中国</span>
-                </div>
-                <div class="portrait" :style="{width:headWidth+'px',height:headWidth+'px'}">
-                    <img src="/images/share-1/head-default.png" width="100%" height="100%" alt="">
-                </div>
-                <div style="padding: 0px 20% 15px 20%;">
-                    <strong class="vertical-middle ft-14" style="margin-bottom:0.5em;">{{page.company}}</strong>
-                    <p style="color:#2c2c2c;">{{page.company_en}}</p>
-                </div>
-                <div style="border-top:1px solid #e0e0e0;text-align: left;">
-                    <div style="padding:15px 0 10px;">
-                        <strong>关于我们</strong>
-                    </div>
-                    <p class="gray-text">{{page.desc}}</p>
-                </div>
+            <div class="block" style="font-weight: bold;">
+                HS 3808 杀虫剂、杀鼠剂杀虫剂、杀虫剂、杀虫剂、杀虫剂、杀虫剂、杀虫剂、杀虫剂、杀虫剂、杀虫剂、杀虫剂、杀虫剂、杀虫剂、杀虫剂、杀虫剂、杀虫剂、杀虫剂、
+            </div>
+            <div class="block center ft-14">
+                <h2>全球宏观数据分析</h2>
             </div>
             <div class="block" style="margin-bottom:10px;">
-                <strong>进出口国家分析</strong>
-                <div class="section-line"></div>
+                <div style="margin-bottom:16px;">
+                    <strong class="border-line">进口地区数据统计</strong>
+                </div>
+                <ul class="report-list">
+                    <li>
+                        <span>统计年份</span>
+                        <span>2017年</span>
+                    </li>
+                    <li>
+                        <span>全球进口总额（美元）</span>
+                        <span>${{formatData(page.report.imp_value)}}</span>
+                    </li>
+                    <li>
+                        <span>进口地区数量</span>
+                        <span>{{page.report.imp_count}}</span>
+                    </li>
+                    <li>
+                        <span>最大进口地区</span>
+                        <span>{{page.report.imp_maxcountry}}</span>
+                    </li>
+                </ul>
                 <div class="chart-box" style="margin-bottom:20px;">
-                    <div class="chart-body"></div>
-                    <div class="chart-footer gray-text" style="padding:10px;">
-                        新兴铸管（上海）资源有限公司进口国家和地区共71个，出口国家和地区共6个
+                    <table border="0" cellspacing="0" cellpadding="0" class="table-list">
+                        <thead>
+                            <th>排序</th>
+                            <th>地区</th>
+                            <th>2017年进口额（万元）</th>
+                            <th>与去年对比（万元）</th>
+                        </thead>
+                        <tbody>
+                            <tr v-if="index < 5" :key="index" v-for="(country,index) in page.imp_country_zf">
+                                <td>{{index + 1}}</td>
+                                <td>{{country.name_chn}}</td>
+                                <td>-</td>
+                                <td>${{formatData(country.value/10000)}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="center">
+                        <a class="more-btn" href="javascript:;">更多&gt;&gt;</a>
                     </div>
                 </div>
-                <strong>进出口商品分析</strong>
-                <div class="section-line"></div>
-                <div class="chart-box">
-                    <div class="chart-body"></div>
-                    <div class="chart-footer gray-text" style="padding:10px;">
-                        新兴铸管（上海）资源有限公司进口商品148种，出口商品125种
+                <div style="margin-bottom:16px;">
+                    <strong class="border-line">出口地区数据统计</strong>
+                </div>
+                <ul class="report-list">
+                    <li>
+                        <span>统计年份</span>
+                        <span>2017年</span>
+                    </li>
+                    <li>
+                        <span>全球出口总额（美元）</span>
+                        <span>${{formatData(page.report.exp_value)}}</span>
+                    </li>
+                    <li>
+                        <span>出口地区数量</span>
+                        <span>{{page.report.exp_count}}</span>
+                    </li>
+                    <li>
+                        <span>最大出口地区</span>
+                        <span>{{page.report.exp_maxcountry}}</span>
+                    </li>
+                </ul>
+                <div class="chart-box" style="margin-bottom:20px;">
+                    <table border="0" cellspacing="0" cellpadding="0" class="table-list">
+                        <thead>
+                            <th>排序</th>
+                            <th>地区</th>
+                            <th>2017年出口额（万元）</th>
+                            <th>与去年对比（万元）</th>
+                        </thead>
+                        <tbody>
+                            <tr v-if="index < 5" :key="index" v-for="(country,index) in page.exp_country_zf">
+                                <td>{{index + 1}}</td>
+                                <td>{{country.name_chn}}</td>
+                                <td>-</td>
+                                <td>${{formatData(country.value/10000)}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="center">
+                        <a class="more-btn" href="javascript:;">更多&gt;&gt;</a>
                     </div>
                 </div>
-            </div>
+                <div style="margin-bottom:16px;">
+                    <strong class="border-line">顺差和逆差统计</strong>
+                </div>
+                <ul class="report-list">
+                    <li>
+                        <span>最大顺差地区</span>
+                        <span>{{ exp_count.length > 0 ? exp_count[0].name_chn : '--' }}</span>
+                    </li>
+                    <li>
+                        <span>最大逆差地区</span>
+                        <span>{{imp_count.length}}</span>
+                    </li>
+                </ul>
+                <div class="chart-box" style="margin-bottom:20px;">
+                    <table border="0" cellspacing="0" cellpadding="0" class="table-list table-three">
+                        <thead>
+                            <th>排序</th>
+                            <th>地区</th>
+                            <th>2017年贸易顺差（万元）</th>
+                        </thead>
+                        <tbody>
+                            <tr v-if="index < 3" :key="index" v-for="(country,index) in exp_count">
+                                <td>{{index + 1}}</td>
+                                <td>{{country.name_chn}}</td>
+                                <td>${{formatData(country.value/10000)}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="center">
+                        <a class="more-btn" href="javascript:;">更多&gt;&gt;</a>
+                    </div>
+                </div>
+                <div class="chart-box" style="margin-bottom:20px;">
+                    <table border="0" cellspacing="0" cellpadding="0" class="table-list table-three">
+                        <thead>
+                            <th>排序</th>
+                            <th>地区</th>
+                            <th>2017年贸易逆差（万元）</th>
+                        </thead>
+                        <tbody>
+                            <tr v-if="index < 3" :key="index" v-for="(country,index) in imp_count">
+                                <td>{{index + 1}}</td>
+                                <td>{{country.name_chn}}</td>
+                                <td>${{country.value/10000}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="center">
+                        <a class="more-btn" href="javascript:;">更多&gt;&gt;</a>
+                    </div>
+                </div>
 
-            <div class="block">
-                <div style="padding-bottom:10px;">
-                    <strong>联系方式</strong>
+                <div class="block center ft-14">
+                    <h2>推荐企业</h2>
                 </div>
-                <ul class="gray-text">
-                    <li class="concat-item" :key="index" v-for="(item,index) in page.contact">
-                        <img :src="'/images/share-1/' + item.type +'.png' " class="item-icon" alt="">
-                        <span>{{item.text}}</span>
+
+                <ul>
+                    <li :key="index" v-for="(company ,index) in page.companys" class="company-item">
+                        <span>{{company.companyname.split('')[0].toUpperCase() }}</span>
+                        <div>{{company.companyname}}</div>
                     </li>
                 </ul>
 
-            </div>
-            <div class="block" style="border-bottom:1px solid #e0e0e0;margin-bottom:10px;padding-top:0;padding-bottom:6px;">
-                <div style="padding:15px 0;border-top:1px solid #dfdfdf;">
-                    <strong>企业员工</strong>
-                </div>
-                <div class="img-item business-item" v-show="index < shownum " v-for="(staff,index) in page.staffList" :key="index">
-                    <img :src="staff.head ? staff.head: '/images/share-1/head-default.png'" alt="">
-                    <div style="flex:1;padding-top:2%;border-bottom:1px solid #dfdfdf;">
-                        <strong>{{staff.name}}</strong>
-                        <p class="ft-10" style="margin-top:0.5em;">{{staff.job}}</p>
+                <div class="block" style="border-bottom:1px solid #e0e0e0;padding-bottom:40px;background:#fff;">
+                    <div class="dated-line">
+                        <strong>关于圈企来APP</strong>
+                    </div>
+                    <p style="margin:15px 0 8px 0;">打造国际贸易一站式服务平台：</p>
+                    <ul class="info-list">
+                        <li>提供全球商品贸易大数据分析</li>
+                        <li>提供海外客户挖掘服务，帮您解决市场开拓难的问题</li>
+                        <li>提供国际贸易信息发布，贸易服务撮合平台</li>
+                    </ul>
+                    <div style="display:flex;margin-top:10px;">
+                        <div class="flex-center">
+                            <img src="/images/share-1/ewm_1.png" width="80%" alt="">
+                        </div>
+                        <div class="right-info flex-center">
+                            <p>关注圈企来 <a class="more" href="javascript:;">公众号</a> </p>
+                            <p>请长按或扫一扫</p>
+                            <p>获取更多信息</p>
+                        </div>
                     </div>
                 </div>
-                <div class="center" v-if="page.staffList.length > shownum">
-                    <button class="more" style="padding:8px 10px;" @click="handleShow">查看更多</button>
-                </div>
-            </div>
-            <div class="block" style="border-bottom:1px solid #e0e0e0;padding-bottom:40px;background:#fff;">
-                <div class="dated-line">
-                    <strong>关于圈企来APP</strong>
-                </div>
-                <p style="margin:15px 0 8px 0;">打造国际贸易一站式服务平台：</p>
-                <ul class="info-list">
-                    <li>提供全球商品贸易大数据分析</li>
-                    <li>提供海外客户挖掘服务，帮您解决市场开拓难的问题</li>
-                    <li>提供国际贸易信息发布，贸易服务撮合平台</li>
-                </ul>
-                <div style="display:flex;margin-top:10px;">
-                    <div class="flex-center">
-                        <img src="/images/share-1/ewm_1.png" width="80%" alt="">
-                    </div>
-                    <div class="right-info flex-center">
-                        <p>关注圈企来 <a class="more" href="javascript:;">公众号</a> </p>
-                        <p>请长按或扫一扫</p>
-                        <p>获取更多信息</p>
-                    </div>
-                </div>
-            </div>
 
         </template>
     </div>
@@ -173,61 +248,100 @@
                         headurl: '',
                         company: '新兴铸管上海金属资源有限公司',
                         company_en: 'XINXING PIPES(SHANGHAI)METAL RESOURCES CO.LTD',
-                        addurl: '', //添加好友的app路径
-                        authentication: 0, // 0 认证 1 未认证
-                        desc: '从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工从业铜铁加工',
-                        contact: [{
-                                type: 'phone',
-                                text: '18701766820',
-                            },
-                            {
-                                type: 'weibo',
-                                text: 'xxxxxxxxxx',
-                            },
-                            {
-                                type: 'email',
-                                text: 'xxxxxx@xxx.com',
-                            }, {
-                                type: 'qq',
-                                text: 'xxxxxx@xxx.com',
-                            }, {
-                                type: 'wechat',
-                                text: 'xxxxxx@xxx.com',
-                            }, {
-                                type: 'card',
-                                text: '名片',
-                            },
-                        ],
-                        businesscard: ['/images/share-1/card-1.png', '/images/share-1/card-2.png',
-                            '/images/share-1/card-2.png'
-                        ],
-                        staffList: [{
-                                name: '李萌萌',
-                                job: '总经理',
-                                head:'',
-                            },
-                            {
-                                name: '李萌萌',
-                                job: '总经理',
-                                head:'',
-                            },
-                            {
-                                name: '李萌萌',
-                                job: '总经理',
-                                head:'',
-                            },
-                            {
-                                name: '李萌萌',
-                                job: '总经理',
-                                head:''
-                            },
-                        ]
+                        imp_country_zf: [],
+                        exp_country_zf: [],
+                        report: {
+                            imp_value: 32628769000,
+                            exp_value: 33886978000,
+                            exp_country: "中国",
+                            imp_count: 130,
+                            imp_country: "巴西",
+                            exp_count: 139,
+                            exp_country: "中国",
+                            exp_maxcountry: "中国",
+                            exp_value: 33886978000,
+                            imp_count: 130,
+                            imp_country: "巴西",
+                            imp_maxcountry: "加拿大",
+                            imp_value: 32628769000
+                        },
+                        companys: []
                     }
                 }
             },
             computed: {
                 headWidth: function () {
                     return Math.round((window.screen.width) * 0.25)
+                },
+                exp_count: function () {
+
+                    var exp_country_zf = this.page.exp_country_zf;
+                    var imp_country_zf = this.page.imp_country_zf;
+                    var result = [];
+
+                    for (var e = 0; e < exp_country_zf.length; e++) {
+
+                        var target = imp_country_zf.filter(function (item) {
+                            return item.name_en == exp_country_zf[e].name_en
+                        });
+
+                        if (target.length > 0) {
+                            result.push({
+                                name_chn: exp_country_zf[e].name_chn,
+                                name_en: exp_country_zf[e].name_en,
+                                value: exp_country_zf[e].value - target[0].value,
+                            })
+                        } else {
+                            result.push(exp_country_zf[e])
+                        }
+
+                    }
+
+                    result.sort(function (a, b) {
+                        return  b.value  - a.value
+                    })
+
+                    return result
+
+                },
+                imp_count: function () {
+
+                    var exp_country_zf = this.page.exp_country_zf;
+                    var imp_country_zf = this.page.imp_country_zf;
+                    var result = [];
+
+                    for (var e = 0; e < imp_country_zf.length; e++) {
+
+                        var target = exp_country_zf.filter(function (item) {
+                            return item.name_en == imp_country_zf[e].name_en
+                        });
+
+                        if (target.length > 0) {
+                            result.push({
+                                name_chn: imp_country_zf[e].name_chn,
+                                name_en: imp_country_zf[e].name_en,
+                                value: target[0].value -  imp_country_zf[e].value,
+                            })
+                        } else {
+                            result.push({
+                                name_chn: imp_country_zf[e].name_chn,
+                                name_en: imp_country_zf[e].name_en,
+                                value: -imp_country_zf[e].value
+                            })
+                        }
+
+                    }
+
+                    // console.log('result',result)
+
+                    result.sort(function (a, b) {
+                        return a.value - b.value
+                    })
+
+                    // console.log('sort',result)
+
+                    return result
+
                 }
             },
             methods: {
@@ -236,6 +350,15 @@
                     var r = window.location.search.substr(1).match(reg);
                     if (r != null) return unescape(r[2]);
                     return null;
+                },
+                formatData(num) {
+                    num = num + '';
+                    if (!num.includes('.')) {
+                        num += '.'
+                    }
+                    return num.replace(/(\d)(?=(\d{3})+\.)/g, function ($0, $1) {
+                        return $1 + ',';
+                    }).replace(/\.$/, '');
                 },
                 handleShow: function (name) {
                     $('.business-item').show();
@@ -262,7 +385,11 @@
                     },
                     success: function (data) {
                         _this.loading = false
-                        console.log('data', data)
+                        if (data.ret_msg.result == 'fail') return;
+                        var tmp = {}
+                        $.extend(true, tmp, data.ret_msg.product_data)
+                        _this.$set(_this.$data, 'page', tmp)
+
                     },
                     error: function () {
                         _this.loading = false

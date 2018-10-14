@@ -23,8 +23,7 @@
             </div>
         </template>
         <template v-else>
-            <div style="font-size:0;">
-                <img src="/images/share-1/banner-default.png" width="100%" alt="">
+            <div class="banner_img" :style="{backgroundImage:'url(' + (page.backimg ? img_root + page.backimg :'/images/share-1/banner-default.png') +')',height:banneHeight +'px'}">
             </div>
             <div class="header-box">
                 <div class="badge">
@@ -38,7 +37,8 @@
                     </template>
                 </div>
                 <div class="portrait" :style="{width:headWidth+'px',height:headWidth+'px'}">
-                    <img src="/images/share-1/head-default.png" width="100%" height="100%" alt="">
+                    <img :src=" page.pic ? img_root + page.pic : '/images/share-1/head-default.png'" width="100%"
+                        height="100%" alt="">
                 </div>
                 <p class="ft-14">
                     <strong class="vertical-middle">{{page.first_name}}{{page.last_name}}</strong> <span class="vertical-middle">|</span>
@@ -70,15 +70,14 @@
                         <img :src="'/images/share-1/' + item.key +'.png' " class="item-icon" alt="">
                         <span>{{item.value}}</span>
                     </li>
-                    <li class="concat-item">
+                    <li v-if="page.cardurl" class="concat-item">
                         <img src="/images/share-1/card.png" style="height:14px;" class="item-icon" alt="">
                         <span>名片</span>
                     </li>
                 </ul>
-                <div style="overflow-x: auto;overflow-y:hidden;margin-top:10px;">
+                <div v-if="page.cardurl" style="overflow-x: auto;overflow-y:hidden;margin-top:10px;">
                     <div style="white-space:nowrap;">
-                        <img :key="index" v-for="(item,index) in page.businesscard" :src="item" style="width:40%;margin-right:10px;"
-                            alt="">
+                        <img :src="img_root+page.cardurl" style="width:40%;margin-right:10px;" alt="">
                     </div>
                 </div>
             </div>
@@ -129,6 +128,7 @@
         <img src="/images/share-1/logo.png" style="height:35px;margin:7px 0 0 12px;" alt="">
         <a id="down-btn" href="javascript:;" class="pull-right down-btn">下载</a>
     </div>
+    <script src="/config.js"></script>
     <script src="http://cdn.bootcss.com/vue/2.5.2/vue.js"></script>
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 
@@ -165,6 +165,7 @@
                     showMore: true,
                     shownum: 3,
                     random: ['38%', '45%', '40%', '32%', '55%'],
+                    img_root: config.img_root,
                     page: {
                         headurl: '',
                         first_name: '-',
@@ -186,8 +187,7 @@
                                 value: '',
                             }]
                         },
-                        businesscard: ['/images/share-1/card-1.png', '/images/share-1/card-2.png',
-                        ],
+                        cardurl: '',
                         quotes: []
                     }
                 }
@@ -195,7 +195,10 @@
             computed: {
                 headWidth: function () {
                     return Math.round((window.screen.width) * 0.35)
-                }
+                },
+                banneHeight: function () {
+                    return Math.round((window.screen.width) * 0.55)
+                },
             },
             methods: {
                 getUrlParam: function (name) {
@@ -229,7 +232,7 @@
                     },
                     success: function (data) {
                         _this.loading = false
-                        if(data.ret_msg.result == 'fail') return;
+                        if (data.ret_msg.result == 'fail') return;
                         var tmp = {}
                         $.extend(true, tmp, data.ret_msg.user_data)
                         _this.$set(_this.$data, 'page', tmp)

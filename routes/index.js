@@ -2,6 +2,9 @@ var express = require('express');
 var router = express.Router();
 var request = require('request')
 
+
+var url_root = 'http://120.79.19.33:8008/';
+
 /* GET home page. */
 router.get('/', function (req, res, next) {
     res.render('index', {
@@ -14,6 +17,7 @@ router.post('/getProductDetail', function (req, res, next) {
 
     request({
         url: 'http://220.248.87.150:8013/getwebproductinfo',
+        // url:url_root+'getwebproductinfo',
         method: "POST",
         headers: {
             'API-VERSION': '1.1',
@@ -53,7 +57,8 @@ router.post('/getuserdata', function (req, res, next) {
     var userid = req.body.userid;
 
     request({
-        url: 'http://220.248.87.150:8017/getuserinfo',
+        // url: 'http://220.248.87.150:8017/getuserinfo',
+        url:url_root+'getuserinfo',
         method: "POST",
         headers: {
             'API-VERSION': '1.1',
@@ -95,7 +100,8 @@ router.post('/getcompanyinfo', function (req, res, next) {
     var companycode = req.body.companycode;
 
     request({
-        url: 'http://220.248.87.150:8017/getcompanyinfo',
+        // url: 'http://220.248.87.150:8017/getcompanyinfo',
+        url:url_root+'getcompanyinfo',
         method: "POST",
         headers: {
             'API-VERSION': '1.1',
@@ -137,7 +143,8 @@ router.post('/getproductinfo', function (req, res, next) {
     var hscode = req.body.hscode;
 
     request({
-        url: 'http://220.248.87.150:8017/getproductinfo',
+        // url: 'http://220.248.87.150:8017/getproductinfo',
+        url:url_root+'getproductinfo',
         method: "POST",
         headers: {
             'API-VERSION': '1.1',

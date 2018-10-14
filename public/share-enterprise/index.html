@@ -23,18 +23,16 @@
             </div>
         </template>
         <template v-else>
-            <div style="font-size:0;">
-                <img :src="page.backurl ? img_root + page.backurl : '/images/share-1/banner-default.png'" width="100%"
-                    alt="">
-            </div>
+            <div class="banner_img" :style="{backgroundImage:'url(' + (page.backimg ? img_root + page.backimg :'/images/share-1/banner-default.png') +')',height:banneHeight +'px'}"></div>
             <div class="header-box">
                 <div class="badge">
                     <img :src="img_root+page.countryico" class="badge-icon" alt="">
                     <span style="color:#adadad;vertical-align: middle;">{{page.country}}</span>
                 </div>
-                <div class="portrait" :style="{width:headWidth+'px',height:headWidth+'px'}">
-                    <img :src="page.pic ?  img_root + page.pic : '/images/share-1/head-default.png'" width="100%"
-                        height="100%" alt="">
+                <div class="portrait header-logo" :style="{width:headWidth+'px',height:headWidth+'px',backgroundImage:'url(' + (page.pic ? img_root + page.pic :'/images/share-1/banner-default.png') +')'}">
+                    <span v-if="!page.pic">{{page.company.split('')[0].toUpperCase()}}</span>
+                    <!-- <img  :src="page.pic ?  img_root + page.pic : '/images/share-1/head-default.png'" width="100%"
+                        height="100%" alt=""> -->
                 </div>
                 <div style="padding: 0px 20% 15px 20%;">
                     <strong class="vertical-middle ft-14" style="margin-bottom:0.5em;">{{page.company}}</strong>
@@ -80,13 +78,13 @@
                 <div class="chart-box" style="margin-bottom:20px;">
                     <div class="chart-body" id="main"></div>
                     <div class="chart-footer gray-text" style="padding:10px;">
-                        <p style="padding-left:3%;" >公司进口国家和地区共{{countryTotal}}个</p>
-                        <div class="clearfix" >
+                        <p style="padding-left:3%;">公司进口国家和地区共{{countryTotal}}个</p>
+                        <div class="clearfix">
                             <div v-if="index < 9" class="country-item" v-for="(country,index) in countryList">
-                                <img  :src="img_root+country.ico" alt="">
+                                <img :src="img_root+country.ico" alt="">
                                 <p>{{country.name_chn}}</p>
                             </div>
-                            <div class="country-item" >
+                            <div class="country-item">
                                 <a class="country-more-btn" href="javascript:;">更多</a>
                             </div>
                         </div>
@@ -96,9 +94,14 @@
                 <strong>进出口商品分析</strong>
                 <div class="section-line"></div>
                 <div class="chart-box">
-                    <div class="chart-body"></div>
+                    <div class="chart-body" id="product-area">
+                        <div>
+                            <span :key="index" :style="{color:colorList[index%8],marginLeft:index%4 * 5 +'px'}" v-for="(product,index) in productyList">HS
+                                {{product.hscode.slice(0,4)}} {{product.code_desc.slice(0,index%8)}}</span>
+                        </div>
+                    </div>
                     <div class="chart-footer gray-text" style="padding:10px;">
-                        公司进口商品148种，出口商品125种
+                        公司进出口商品共{{productTotal}}种
                     </div>
                 </div>
             </div>
@@ -110,10 +113,10 @@
                     :key="index">
                     <img :src="staff.pic ?  img_root + staff.pic: '/images/share-1/head-default.png'" alt="">
                     <div style="flex:1;padding-top:2%;">
-                        <p style="color:#292929;" >{{staff.name}}</p>
+                        <p style="color:#292929;">{{staff.name}}</p>
                         <p class="ft-10" style="margin-top:0.5em;color:#888888;">{{staff.job}}</p>
                     </div>
-                    <div class="add-btn-box" style="" >
+                    <div class="add-btn-box" style="">
                         <a class="add-btn" href="javascript:;">+ 好友</a>
                     </div>
                 </div>
@@ -142,45 +145,25 @@
                     </div>
                 </div>
             </div>
-
+            <div class="fixed-down">
+                <img src="/images/share-1/logo.png" style="height:35px;margin:7px 0 0 12px;" alt="">
+                <a id="down-btn" @click="handleNotice" :href="downUrl" class="pull-right down-btn">下载</a>
+            </div>
+            <div v-if="showMask" class="down-mask">
+                <span @click="showMask = false" class="close-btn" >x 关闭</span>
+                <img id="guide-img" style="width:80%;float:right;" :src="'/images/'+(isAndroid ? 'android': 'ios')+'_browser_tips.png'"
+                    alt="">
+            </div>
         </template>
     </div>
-    <div class="fixed-down">
-        <img src="/images/share-1/logo.png" style="height:35px;margin:7px 0 0 12px;" alt="">
-        <a id="down-btn" href="javascript:;" class="pull-right down-btn">下载</a>
-    </div>
+
     <script src="/config.js"></script>
     <script src="http://cdn.bootcss.com/vue/2.5.2/vue.js"></script>
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/3.8.5/echarts.min.js"></script>
     <script src="http://echarts.baidu.com/asset/map/js/world.js"></script>
-
     <script>
-        var ios_app = 'https://itunes.apple.com/cn/app/id1415575117?l=zh&ls=1&mt=8';
-        var android_app = 'https://www.circledin.net/download/app-release.apk'
-        // var android_app = 'circled-in://main_activity'
-
-        var u = navigator.userAgent,
-            app = navigator.appVersion;
-        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
-        var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-
-        var down_btn = document.getElementById('down-btn')
-
-        if (isAndroid) {
-            down_btn.href = android_app
-        }
-
-        if (isIOS) {
-            down_btn.href = ios_app
-        }
-
-
-        document.addEventListener("WeixinJSBridgeReady", function () {
-            //   alert('微信里')
-        }, false);
-
         var app = new Vue({
             el: '#app',
             data: function () {
@@ -190,6 +173,13 @@
                     shownum: 3,
                     random: ['38%', '45%', '40%', '32%', '55%'],
                     img_root: config.img_root,
+                    showMask: false,
+                    ios_app: 'https://itunes.apple.com/cn/app/id1415575117?l=zh&ls=1&mt=8',
+                    android_app: 'https://www.circledin.net/download/app-release.apk',
+                    downUrl: 'javascript:;',
+                    colorList: ['#91e877', '#ec5487', '#89c6fc', '#888ccc', '#ffcd93', '#8eb4d8', '#ec5487',
+                        '#666'
+                    ],
                     page: {
                         backurl: '',
                         pic: '',
@@ -203,37 +193,71 @@
                             exportcountrycnt: 0,
                             exportcountrys: [],
                             importcountrycnt: 0,
-                            importcountrys: [{
-                                ico: '',
-                                name_en: '',
-                                name_chn: '',
-                            }]
+                            importcountrys: []
                         },
-                        employee: [{
-                            name: '李萌萌',
-                            job: '总经理',
-                            pic: '',
-                            company: ''
-                        }, ]
+                        employee: [],
+                        quoteinfo: {
+                            exp_quotes: [],
+                            imp_quotes: []
+                        }
                     }
                 }
             },
             computed: {
+                isAndroid: function () {
+                    var u = navigator.userAgent;
+                    return isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1;
+                },
+                isIos: function () {
+                    var u = navigator.userAgent;
+                    return !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+                },
+                isWeiXin: function () {
+                    var ua = navigator.userAgent.toLowerCase();
+                    return ua.indexOf('micromessenger') != -1;
+                },
                 headWidth: function () {
-                    return Math.round((window.screen.width) * 0.25)
+                    return Math.round((window.screen.width) * 0.20)
+                },
+                banneHeight: function () {
+                    return Math.round((window.screen.width) * 0.55)
                 },
                 countryTotal: function () {
                     var countrydata = this.page.countrydata;
                     return countrydata.exportcountrycnt + countrydata.importcountrycnt;
+                },
+                productTotal: function () {
+                    var quoteinfo = this.page.quoteinfo;
+                    return quoteinfo.exportcnt + quoteinfo.importcnt;
                 },
                 countryList: function () {
                     var countrydata = this.page.countrydata;
                     var tmpList = [];
                     $.extend(true, tmpList, countrydata.exportcountrys, countrydata.importcountrys)
                     return tmpList;
+                },
+                productyList: function () {
+                    var quoteinfo = this.page.quoteinfo;
+                    var tmpList = [];
+                    $.extend(true, tmpList, quoteinfo.exp_quotes, quoteinfo.imp_quotes)
+                    return tmpList;
                 }
             },
             methods: {
+                setPlatformInfo: function () {
+                    if (this.isWeiXin) {
+                        if (this.isIos) {
+                            this.downUrl = this.ios_app;
+                        }
+                    } else {
+                        this.downUrl = this.isAndroid ? this.android_app : this.ios_app;
+                    }
+                },
+                handleNotice:function(){
+                    if(this.isWeiXin && this.isAndroid){
+                        this.showMask = true;
+                    }
+                },
                 getUrlParam: function (name) {
                     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
                     var r = window.location.search.substr(1).match(reg);
@@ -243,6 +267,56 @@
                 handleShow: function (name) {
                     $('.business-item').show();
                     $('.more').parent().hide()
+                },
+                worldMap2: function () {
+                    var _this = this;
+                    var text =
+                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean bibendum erat ac justo sollicitudin, quis lacinia ligula fringilla';
+                    var data = text
+                        .split(/[,\. ]+/g)
+                        .reduce(function (arr, word) {
+                            var obj = arr.find(function (obj) {
+                                return obj.name === word;
+                            });
+                            if (obj) {
+                                obj.weight += 1;
+                            } else {
+                                obj = {
+                                    name: word,
+                                    weight: 1
+                                };
+                                arr.push(obj);
+                            }
+                            return arr;
+                        }, []);
+
+                    var list = _this.page.quoteinfo.imp_quotes.map(function (item) {
+                        var str = 'HS ' + item.hscode + ' ' + item.code_desc;
+                        if (str.length > 10) {
+                            var _str = str.split('');
+                            var pos = _str.length / 2;
+                            _str.splice(pos, 0, '\n')
+                            str = _str.join('')
+                        }
+                        return {
+                            name: str,
+                            weight: 3
+                        }
+                    })
+
+                    Highcharts.chart('product-area', {
+                        series: [{
+                            type: 'wordcloud',
+                            data: list
+                        }],
+                        title: {
+                            text: ' '
+                        }
+                    });
+                },
+                worldMap: function () {
+
+
                 },
                 init: function () {
                     var _this = this;
@@ -268,11 +342,11 @@
                             top: '2%',
                             right: '2%',
                             bottom: '2%',
-                            roam:false,
+                            roam: false,
                             itemStyle: {
                                 normal: {
                                     areaColor: '#bdd6ea',
-                                    borderColor:'none',
+                                    borderColor: 'none',
                                 },
                                 emphasis: {
                                     label: {
@@ -280,10 +354,10 @@
                                     }
                                 }
                             },
-                            data:_this.countryList.map(function(item,index){
+                            data: _this.countryList.map(function (item, index) {
                                 return {
-                                    name:item.name_en,
-                                    value:100,
+                                    name: item.name_en,
+                                    value: 100,
                                 }
                             }),
                         }]
@@ -296,8 +370,8 @@
 
                 var _this = this;
                 var params = this.getUrlParam('id')
-                // return
                 _this.loading = true
+                _this.setPlatformInfo();
                 $.ajax({
                     url: '/getcompanyinfo',
                     type: 'post',
@@ -314,7 +388,9 @@
                         console.log('data', data)
                         setTimeout(function () {
                             _this.init()
-                        }, 200)
+                            _this.worldMap()
+                            // _this.worldMap2()
+                        }, 300)
                     },
                     error: function () {
                         _this.loading = false

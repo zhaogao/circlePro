@@ -1,3 +1,3 @@
 var config = {
-    img_root:'http://220.248.87.150:8014/',
+    img_root:'http://120.79.19.33:8004/',
 }
