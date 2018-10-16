@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-    <title>分享标题</title>
+    <title>个人主页</title>
 </head>
 <link rel="stylesheet" href="./index.css?version=v1">
 
@@ -129,7 +129,7 @@
         <a id="down-btn" href="javascript:;" class="pull-right down-btn">下载</a>
     </div>
     <script src="/config.js"></script>
-    <script src="http://cdn.bootcss.com/vue/2.5.2/vue.js"></script>
+    <script src="http://cdn.bootcss.com/vue/2.5.2/vue.min.js"></script>
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 
     <script>
@@ -221,7 +221,7 @@
                 this.init()
 
                 var _this = this;
-                var params = this.getUrlParam('id')
+                var params = this.getUrlParam('userid')
                 _this.loading = true
                 //8618701766820
                 $.ajax({

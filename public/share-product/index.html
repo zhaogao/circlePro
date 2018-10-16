@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-    <title>商品分享标题</title>
+    <title>商品分享</title>
 </head>
 <link rel="stylesheet" href="./index.css?version=v1">
 
@@ -24,10 +24,10 @@
         </template>
         <template v-else>
             <div style="font-size:0;">
-                <img src="/images/share-1/banner-default.png" width="100%" alt="">
+                <img :src=" page.baseinfo.backurl ? img_root + page.baseinfo.backurl :  '/images/share-1/banner-default.png'" width="100%" alt="">
             </div>
             <div class="block" style="font-weight: bold;">
-                HS 3808 杀虫剂、杀鼠剂杀虫剂、杀虫剂、杀虫剂、杀虫剂、杀虫剂、杀虫剂、杀虫剂、杀虫剂、杀虫剂、杀虫剂、杀虫剂、杀虫剂、杀虫剂、杀虫剂、杀虫剂、杀虫剂、
+                {{page.baseinfo.code_desc}}
             </div>
             <div class="block center ft-14">
                 <h2>全球宏观数据分析</h2>
@@ -60,13 +60,13 @@
                             <th>排序</th>
                             <th>地区</th>
                             <th>2017年进口额（万元）</th>
-                            <th>与去年对比（万元）</th>
+                            <!-- <th>与去年对比（万元）</th> -->
                         </thead>
                         <tbody>
                             <tr v-if="index < 5" :key="index" v-for="(country,index) in page.imp_country_zf">
                                 <td>{{index + 1}}</td>
                                 <td>{{country.name_chn}}</td>
-                                <td>-</td>
+                                <!-- <td>-</td> -->
                                 <td>${{formatData(country.value/10000)}}</td>
                             </tr>
                         </tbody>
@@ -102,13 +102,13 @@
                             <th>排序</th>
                             <th>地区</th>
                             <th>2017年出口额（万元）</th>
-                            <th>与去年对比（万元）</th>
+                            <!-- <th>与去年对比（万元）</th> -->
                         </thead>
                         <tbody>
                             <tr v-if="index < 5" :key="index" v-for="(country,index) in page.exp_country_zf">
                                 <td>{{index + 1}}</td>
                                 <td>{{country.name_chn}}</td>
-                                <td>-</td>
+                                <!-- <td>-</td> -->
                                 <td>${{formatData(country.value/10000)}}</td>
                             </tr>
                         </tbody>
@@ -127,7 +127,7 @@
                     </li>
                     <li>
                         <span>最大逆差地区</span>
-                        <span>{{imp_count.length}}</span>
+                        <span>{{imp_count.length > 0 ? imp_count[0].name_chn : '--'}}</span>
                     </li>
                 </ul>
                 <div class="chart-box" style="margin-bottom:20px;">
@@ -208,7 +208,8 @@
         <img src="/images/share-1/logo.png" style="height:35px;margin:7px 0 0 12px;" alt="">
         <a id="down-btn" href="javascript:;" class="pull-right down-btn">下载</a>
     </div>
-    <script src="http://cdn.bootcss.com/vue/2.5.2/vue.js"></script>
+    <script src="/config.js"></script>
+    <script src="http://cdn.bootcss.com/vue/2.5.2/vue.min.js"></script>
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 
     <script>
@@ -243,9 +244,13 @@
                     loading: false,
                     showMore: true,
                     shownum: 3,
+                    img_root: config.img_root,
                     random: ['38%', '45%', '40%', '32%', '55%'],
                     page: {
-                        headurl: '',
+                        baseinfo:{
+                            backurl:'',
+                            code_desc:'',
+                        },
                         company: '新兴铸管上海金属资源有限公司',
                         company_en: 'XINXING PIPES(SHANGHAI)METAL RESOURCES CO.LTD',
                         imp_country_zf: [],
@@ -332,13 +337,9 @@
 
                     }
 
-                    // console.log('result',result)
-
                     result.sort(function (a, b) {
                         return a.value - b.value
                     })
-
-                    // console.log('sort',result)
 
                     return result
 
@@ -374,7 +375,7 @@
                 this.init()
 
                 var _this = this;
-                var params = this.getUrlParam('id')
+                var params = this.getUrlParam('hscode')
                 // return
                 _this.loading = true
                 $.ajax({

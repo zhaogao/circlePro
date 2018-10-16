@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-    <title>企业分享标题</title>
+    <title>企业分享</title>
 </head>
 <link rel="stylesheet" href="./index.css?version=v1">
 
@@ -30,9 +30,7 @@
                     <span style="color:#adadad;vertical-align: middle;">{{page.country}}</span>
                 </div>
                 <div class="portrait header-logo" :style="{width:headWidth+'px',height:headWidth+'px',backgroundImage:'url(' + (page.pic ? img_root + page.pic :'/images/share-1/banner-default.png') +')'}">
-                    <span v-if="!page.pic">{{page.company.split('')[0].toUpperCase()}}</span>
-                    <!-- <img  :src="page.pic ?  img_root + page.pic : '/images/share-1/head-default.png'" width="100%"
-                        height="100%" alt=""> -->
+                    <span v-if="!page.pic">{{ page.company ? page.company.split('')[0].toUpperCase() : '-'}}</span>
                 </div>
                 <div style="padding: 0px 20% 15px 20%;">
                     <strong class="vertical-middle ft-14" style="margin-bottom:0.5em;">{{page.company}}</strong>
@@ -85,7 +83,7 @@
                                 <p>{{country.name_chn}}</p>
                             </div>
                             <div class="country-item">
-                                <a class="country-more-btn" href="javascript:;">更多</a>
+                                <a class="country-more-btn"  @click="handleDown" href="javascript:;">更多</a>
                             </div>
                         </div>
 
@@ -95,9 +93,8 @@
                 <div class="section-line"></div>
                 <div class="chart-box">
                     <div class="chart-body" id="product-area">
-                        <div>
-                            <span :key="index" :style="{color:colorList[index%8],marginLeft:index%4 * 5 +'px'}" v-for="(product,index) in productyList">HS
-                                {{product.hscode.slice(0,4)}} {{product.code_desc.slice(0,index%8)}}</span>
+                        <div class="center" >
+                            <span :key="index" :style="{color:colorList[index%8],marginLeft:index%4 * 5 +'px'}" v-for="(product,index) in productyList">{{product.code_desc}}</span>
                         </div>
                     </div>
                     <div class="chart-footer gray-text" style="padding:10px;">
@@ -117,11 +114,11 @@
                         <p class="ft-10" style="margin-top:0.5em;color:#888888;">{{staff.job}}</p>
                     </div>
                     <div class="add-btn-box" style="">
-                        <a class="add-btn" href="javascript:;">+ 好友</a>
+                        <a class="add-btn"  @click="handleDown" href="javascript:;">+ 好友</a>
                     </div>
                 </div>
                 <div class="center" v-if="page.employee.length > shownum">
-                    <button class="more" style="padding:8px 10px;" @click="handleShow">查看更多</button>
+                    <button class="more" style="padding:8px 10px;"  @click="handleDown">查看更多</button>
                 </div>
             </div>
             <div class="block" style="border-bottom:1px solid #e0e0e0;padding-bottom:40px;background:#fff;">
@@ -147,18 +144,18 @@
             </div>
             <div class="fixed-down">
                 <img src="/images/share-1/logo.png" style="height:35px;margin:7px 0 0 12px;" alt="">
-                <a id="down-btn" @click="handleNotice" :href="downUrl" class="pull-right down-btn">下载</a>
+                <a id="down-btn" @click="handleDown" href="javascript:;" class="pull-right down-btn">下载</a>
             </div>
             <div v-if="showMask" class="down-mask">
                 <span @click="showMask = false" class="close-btn" >x 关闭</span>
-                <img id="guide-img" style="width:80%;float:right;" :src="'/images/'+(isAndroid ? 'android': 'ios')+'_browser_tips.png'"
+                <img @click="showMask = false" id="guide-img" style="width:80%;float:right;" :src="'/images/'+(isAndroid ? 'android': 'ios')+'_browser_tips.png'"
                     alt="">
             </div>
         </template>
     </div>
 
     <script src="/config.js"></script>
-    <script src="http://cdn.bootcss.com/vue/2.5.2/vue.js"></script>
+    <script src="http://cdn.bootcss.com/vue/2.5.2/vue.min.js"></script>
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/3.8.5/echarts.min.js"></script>
@@ -244,18 +241,16 @@
                 }
             },
             methods: {
-                setPlatformInfo: function () {
-                    if (this.isWeiXin) {
+                handleDown:function(){
+                    
+                    if(this.isWeiXin){
                         if (this.isIos) {
-                            this.downUrl = this.ios_app;
+                            location.href = this.ios_app;
+                        }else{
+                            this.showMask = true;
                         }
-                    } else {
-                        this.downUrl = this.isAndroid ? this.android_app : this.ios_app;
-                    }
-                },
-                handleNotice:function(){
-                    if(this.isWeiXin && this.isAndroid){
-                        this.showMask = true;
+                    }else{
+                        location.href= this.isAndroid ? this.android_app : this.ios_app;
                     }
                 },
                 getUrlParam: function (name) {
@@ -369,9 +364,8 @@
             mounted: function () {
 
                 var _this = this;
-                var params = this.getUrlParam('id')
+                var params = this.getUrlParam('companycode')
                 _this.loading = true
-                _this.setPlatformInfo();
                 $.ajax({
                     url: '/getcompanyinfo',
                     type: 'post',

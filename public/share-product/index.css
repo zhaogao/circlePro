@@ -185,8 +185,8 @@ baseline; background: transparent; }
         text-align: center;
     }
     .table-list th {
-        width:30%;
-        padding: 4px 6px;
+        width:33%;
+        padding: 8px 6px;
         background: #e9eae5;
 
     }
@@ -194,7 +194,7 @@ baseline; background: transparent; }
         padding:6px 10px;
     }
     .table-list th:first-child{
-        width:80px;
+        width:10%;
     }
     .report-list li:last-child{
         border-bottom:none;
