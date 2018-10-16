@@ -10,24 +10,50 @@
 <link rel="stylesheet" href="./index.css?version=v1">
 
 <body>
+    <div id="ladingbox" class="ladingbox">
+        <div class="preload">
+            <div class="title-block"></div>
+            <div class="line-block"></div>
+            <div class="cloumn-line" style="left:38%;"></div>
+            <div class="line-block-2"></div>
+            <div class="line-block-3"></div>
+        </div>
+        <div class="preload">
+            <div class="title-block"></div>
+            <div class="line-block"></div>
+            <div class="cloumn-line" style="left:45%;"></div>
+            <div class="line-block-2"></div>
+            <div class="line-block-3"></div>
+        </div>
+        <div class="preload">
+            <div class="title-block"></div>
+            <div class="line-block"></div>
+            <div class="cloumn-line" style="left:40%;"></div>
+            <div class="line-block-2"></div>
+            <div class="line-block-3"></div>
+        </div>
+        <div class="preload">
+            <div class="title-block"></div>
+            <div class="line-block"></div>
+            <div class="cloumn-line" style="left:32%;"></div>
+            <div class="line-block-2"></div>
+            <div class="line-block-3"></div>
+        </div>
+        <div class="preload">
+            <div class="title-block"></div>
+            <div class="line-block"></div>
+            <div class="cloumn-line" style="left:55%;"></div>
+            <div class="line-block-2"></div>
+            <div class="line-block-3"></div>
+        </div>
+    </div>
     <div id="app" :style="{backgroundColor:loading ? '#fff' : '#f1f1f1'}">
-        <template v-if="loading">
-            <div v-for="index in 5" :key="index" class="ladingbox">
-                <div class="preload">
-                    <div class="title-block"></div>
-                    <div class="line-block"></div>
-                    <div class="cloumn-line" :style="{left:random[index]}"></div>
-                    <div class="line-block-2"></div>
-                    <div class="line-block-3"></div>
-                </div>
-            </div>
-        </template>
-        <template v-else>
+        <template v-if="!loading">
             <div class="banner_img" :style="{backgroundImage:'url(' + (page.backimg ? img_root + page.backimg :'/images/share-1/banner-default.png') +')',height:banneHeight +'px'}"></div>
             <div class="header-box">
                 <div class="badge">
                     <img :src="img_root+page.countryico" class="badge-icon" alt="">
-                    <span style="color:#adadad;vertical-align: middle;">{{page.country}}</span>
+                    <span style="color:#adadad;vertical-align: middle;margin-left:4px;">{{page.country}}</span>
                 </div>
                 <div class="portrait header-logo" :style="{width:headWidth+'px',height:headWidth+'px',backgroundImage:'url(' + (page.pic ? img_root + page.pic :'/images/share-1/banner-default.png') +')'}">
                     <span v-if="!page.pic">{{ page.company ? page.company.split('')[0].toUpperCase() : '-'}}</span>
@@ -40,7 +66,7 @@
                     <div style="padding:15px 0 10px;">
                         <strong>关于我们</strong>
                     </div>
-                    <p class="gray-text">{{page.remark}}</p>
+                    <p class="gray-text collpage">{{page.remark}}</p>
                 </div>
                 <div class="" style="text-align:left;padding-top:10px;border-top:1px solid #e7e7e7;">
                     <div style="padding-bottom:10px;">
@@ -71,9 +97,21 @@
                 </div>
             </div>
             <div class="block">
-                <strong>进出口国家分析</strong>
+                <strong>进出口商品分析</strong>
                 <div class="section-line"></div>
                 <div class="chart-box" style="margin-bottom:20px;">
+                    <div class="chart-body" id="product-area">
+                        <div class="center">
+                            <span :key="index" :style="{color:colorList[index%8],marginLeft:index%4 * 5 +'px'}" v-for="(product,index) in productyList">{{product.code_desc}}</span>
+                        </div>
+                    </div>
+                    <div class="chart-footer gray-text" style="padding:10px;">
+                        公司进出口商品共{{productTotal}}种
+                    </div>
+                </div>
+                <strong>进出口国家分析</strong>
+                <div class="section-line"></div>
+                <div class="chart-box">
                     <div class="chart-body" id="main"></div>
                     <div class="chart-footer gray-text" style="padding:10px;">
                         <p style="padding-left:3%;">公司进口国家和地区共{{countryTotal}}个</p>
@@ -83,22 +121,10 @@
                                 <p>{{country.name_chn}}</p>
                             </div>
                             <div class="country-item">
-                                <a class="country-more-btn"  @click="handleDown" href="javascript:;">更多</a>
+                                <a class="country-more-btn" @click="handleDown" href="javascript:;">更多</a>
                             </div>
                         </div>
 
-                    </div>
-                </div>
-                <strong>进出口商品分析</strong>
-                <div class="section-line"></div>
-                <div class="chart-box">
-                    <div class="chart-body" id="product-area">
-                        <div class="center" >
-                            <span :key="index" :style="{color:colorList[index%8],marginLeft:index%4 * 5 +'px'}" v-for="(product,index) in productyList">{{product.code_desc}}</span>
-                        </div>
-                    </div>
-                    <div class="chart-footer gray-text" style="padding:10px;">
-                        公司进出口商品共{{productTotal}}种
                     </div>
                 </div>
             </div>
@@ -106,19 +132,18 @@
                 <div style="padding-bottom:18px;">
                     <strong>企业员工</strong>
                 </div>
-                <div class="img-item business-item" v-show="index < shownum " v-for="(staff,index) in page.employee"
-                    :key="index">
+                <div class="img-item business-item" v-if="index < shownum " v-for="(staff,index) in page.employee" :key="index">
                     <img :src="staff.pic ?  img_root + staff.pic: '/images/share-1/head-default.png'" alt="">
                     <div style="flex:1;padding-top:2%;">
                         <p style="color:#292929;">{{staff.name}}</p>
                         <p class="ft-10" style="margin-top:0.5em;color:#888888;">{{staff.job}}</p>
                     </div>
                     <div class="add-btn-box" style="">
-                        <a class="add-btn"  @click="handleDown" href="javascript:;">+ 好友</a>
+                        <a class="add-btn" @click="handleDown" href="javascript:;">+ 好友</a>
                     </div>
                 </div>
                 <div class="center" v-if="page.employee.length > shownum">
-                    <button class="more" style="padding:8px 10px;"  @click="handleDown">查看更多</button>
+                    <button class="more" style="padding:8px 10px;" @click="handleDown">查看更多</button>
                 </div>
             </div>
             <div class="block" style="border-bottom:1px solid #e0e0e0;padding-bottom:40px;background:#fff;">
@@ -127,10 +152,13 @@
                 </div>
                 <p style="margin:15px 0 8px 0;">打造国际贸易一站式服务平台：</p>
                 <ul class="info-list">
-                    <li>提供全球商品贸易大数据分析</li>
-                    <li>提供海外客户挖掘服务，帮您解决市场开拓难的问题</li>
-                    <li>提供国际贸易信息发布，贸易服务撮合平台</li>
+                    <li>提供全球150+家企业进出口数据</li>
+                    <li>8000多个商品宏观分析</li>
+                    <li>提供市场开拓服务，客户对接，数据分析服务</li>
+                    <li>提供国际贸易信息发布，贸易服务撮合</li>
                 </ul>
+                <a class="btn-check" href="javascript:;"> <img style="vertical-align: middle;margin-right:5px;" width="16"
+                        src="/images/share-1/search.png" alt=""> <span>查商品、查企业、查人脉</span></a>
                 <div style="display:flex;margin-top:10px;">
                     <div class="flex-center">
                         <img src="/images/share-1/ewm_1.png" width="80%" alt="">
@@ -147,7 +175,7 @@
                 <a id="down-btn" @click="handleDown" href="javascript:;" class="pull-right down-btn">下载</a>
             </div>
             <div v-if="showMask" class="down-mask">
-                <span @click="showMask = false" class="close-btn" >x 关闭</span>
+                <span @click="showMask = false" class="close-btn">x 关闭</span>
                 <img @click="showMask = false" id="guide-img" style="width:80%;float:right;" :src="'/images/'+(isAndroid ? 'android': 'ios')+'_browser_tips.png'"
                     alt="">
             </div>
@@ -155,16 +183,18 @@
     </div>
 
     <script src="/config.js"></script>
-    <script src="http://cdn.bootcss.com/vue/2.5.2/vue.min.js"></script>
-    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/3.8.5/echarts.min.js"></script>
-    <script src="http://echarts.baidu.com/asset/map/js/world.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/vue.min.js"></script>
+    <script src="/js/echarts.min.js"></script>
     <script>
+        $.ajaxSetup({
+            cache: true
+        });
         var app = new Vue({
             el: '#app',
             data: function () {
                 return {
+                    syncjs: 'http://echarts.baidu.com/asset/map/js/world.js',
                     loading: false,
                     showMore: true,
                     shownum: 3,
@@ -241,16 +271,30 @@
                 }
             },
             methods: {
-                handleDown:function(){
-                    
-                    if(this.isWeiXin){
+                loadJsAsync: function (url, callback) {
+
+                    $.getScript(url, function () {
+                        console.log('world.js loaed')
+                        var body = document.getElementsByTagName('body')[0];
+                        var jsNode = document.createElement('script');
+
+                        jsNode.setAttribute('type', 'text/javascript');
+                        jsNode.setAttribute('src', url);
+                        body.appendChild(jsNode);
+                        callback && callback()
+                    });
+
+                },
+                handleDown: function () {
+
+                    if (this.isWeiXin) {
                         if (this.isIos) {
                             location.href = this.ios_app;
-                        }else{
+                        } else {
                             this.showMask = true;
                         }
-                    }else{
-                        location.href= this.isAndroid ? this.android_app : this.ios_app;
+                    } else {
+                        location.href = this.isAndroid ? this.android_app : this.ios_app;
                     }
                 },
                 getUrlParam: function (name) {
@@ -262,56 +306,6 @@
                 handleShow: function (name) {
                     $('.business-item').show();
                     $('.more').parent().hide()
-                },
-                worldMap2: function () {
-                    var _this = this;
-                    var text =
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean bibendum erat ac justo sollicitudin, quis lacinia ligula fringilla';
-                    var data = text
-                        .split(/[,\. ]+/g)
-                        .reduce(function (arr, word) {
-                            var obj = arr.find(function (obj) {
-                                return obj.name === word;
-                            });
-                            if (obj) {
-                                obj.weight += 1;
-                            } else {
-                                obj = {
-                                    name: word,
-                                    weight: 1
-                                };
-                                arr.push(obj);
-                            }
-                            return arr;
-                        }, []);
-
-                    var list = _this.page.quoteinfo.imp_quotes.map(function (item) {
-                        var str = 'HS ' + item.hscode + ' ' + item.code_desc;
-                        if (str.length > 10) {
-                            var _str = str.split('');
-                            var pos = _str.length / 2;
-                            _str.splice(pos, 0, '\n')
-                            str = _str.join('')
-                        }
-                        return {
-                            name: str,
-                            weight: 3
-                        }
-                    })
-
-                    Highcharts.chart('product-area', {
-                        series: [{
-                            type: 'wordcloud',
-                            data: list
-                        }],
-                        title: {
-                            text: ' '
-                        }
-                    });
-                },
-                worldMap: function () {
-
-
                 },
                 init: function () {
                     var _this = this;
@@ -366,6 +360,7 @@
                 var _this = this;
                 var params = this.getUrlParam('companycode')
                 _this.loading = true
+                $('#ladingbox').hide();
                 $.ajax({
                     url: '/getcompanyinfo',
                     type: 'post',
@@ -381,9 +376,7 @@
 
                         console.log('data', data)
                         setTimeout(function () {
-                            _this.init()
-                            _this.worldMap()
-                            // _this.worldMap2()
+                            _this.loadJsAsync(_this.syncjs, _this.init)
                         }, 300)
                     },
                     error: function () {
@@ -393,6 +386,7 @@
             }
         })
     </script>
+ 
 </body>
 
 </html>

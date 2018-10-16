@@ -23,7 +23,7 @@
             </div>
         </template>
         <template v-else>
-            <div style="font-size:0;">
+            <div style="font-size:0;min-height:150px;">
                 <img :src=" page.baseinfo.backurl ? img_root + page.baseinfo.backurl :  '/images/share-1/banner-default.png'" width="100%" alt="">
             </div>
             <div class="block" style="font-weight: bold;">
@@ -209,8 +209,8 @@
         <a id="down-btn" href="javascript:;" class="pull-right down-btn">下载</a>
     </div>
     <script src="/config.js"></script>
-    <script src="http://cdn.bootcss.com/vue/2.5.2/vue.min.js"></script>
-    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/vue.min.js"></script>
 
     <script>
         var ios_app = 'https://itunes.apple.com/cn/app/id1415575117?l=zh&ls=1&mt=8';

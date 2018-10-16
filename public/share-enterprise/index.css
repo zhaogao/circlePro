@@ -122,6 +122,15 @@ baseline; background: transparent; }
         display: inline-block;
         font-size: 14px;
     }
+    .collpage{
+        text-overflow: -o-ellipsis-lastline;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 10;
+        -webkit-box-orient: vertical;
+
+    }
     .section .title {
         color: #6e6e6e;
     }
@@ -209,6 +218,19 @@ baseline; background: transparent; }
         border: none;
         color: #fff;
         font-size: 14px;
+    }
+
+    .btn-check{
+        margin-top:14px;
+        width: 100%;
+        display: inline-block;
+        height: 36px;
+        line-height: 36px;
+        border-radius: 4px;
+        color: #fff;
+        text-decoration: none;
+        background: #0084ff;
+        text-align: center;
     }
 
     .add-btn-box{

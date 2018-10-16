@@ -9,8 +9,8 @@
 </head>
 <link rel="stylesheet" href="./index.css?version=v1">
 
-<body>
-    <div id="app" :style="{backgroundColor:loading ? '#fff' : '#f1f1f1'}">
+<body :style="{backgroundColor:loading ? '#fff' : '#f1f1f1'}">
+    <div id="app" >
         <template v-if="loading">
             <div v-for="index in 5" :key="index" class="ladingbox">
                 <div class="preload">
@@ -60,11 +60,11 @@
                 <ul class="gray-text">
                     <li class="concat-item">
                         <img src="/images/share-1/phone.png" class="item-icon" alt="">
-                        <span>{{page.contact.phone[0].value}}</span>
+                        <span>{{page.phone ? page.phone : '-'}}</span>
                     </li>
                     <li class="concat-item">
                         <img src="/images/share-1/email.png" style="height:14px;" class="item-icon" alt="">
-                        <span>{{page.contact.email}}</span>
+                        <span>{{page.contact.email ? page.contact.email : '-'}}</span>
                     </li>
                     <li class="concat-item" :key="index" v-for="(item,index) in page.contact.talksoft">
                         <img :src="'/images/share-1/' + item.key +'.png' " class="item-icon" alt="">
@@ -129,8 +129,8 @@
         <a id="down-btn" href="javascript:;" class="pull-right down-btn">下载</a>
     </div>
     <script src="/config.js"></script>
-    <script src="http://cdn.bootcss.com/vue/2.5.2/vue.min.js"></script>
-    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/vue.min.js"></script>
 
     <script>
         var ios_app = 'https://itunes.apple.com/cn/app/id1415575117?l=zh&ls=1&mt=8';
@@ -176,11 +176,12 @@
                         addurl: '', //添加好友的app路径
                         realemployee: 0, // 0 认证 1 未认证
                         signature: '-',
+                        phone:'',
                         contact: {
                             email: '',
-                            phone: [{
-                                value: '-'
-                            }],
+                            // phone: [{
+                            //     value: '-'
+                            // }],
                             talksoft: [{
                                 tag: '',
                                 key: '',
