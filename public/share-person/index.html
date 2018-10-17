@@ -9,8 +9,8 @@
 </head>
 <link rel="stylesheet" href="./index.css?version=v1">
 
-<body :style="{backgroundColor:loading ? '#fff' : '#f1f1f1'}">
-    <div id="app" >
+<body>
+    <div id="app"  :style="{backgroundColor:loading ? '#fff' : '#f1f1f1'}" >
         <template v-if="loading">
             <div v-for="index in 5" :key="index" class="ladingbox">
                 <div class="preload">

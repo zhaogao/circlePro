@@ -66,55 +66,37 @@
                     <div style="padding:15px 0 10px;">
                         <strong>关于我们</strong>
                     </div>
-                    <p class="gray-text collpage">{{page.remark}}</p>
+                    <p v-if="page.remark" class="gray-text collpage">{{page.remark}}</p>
+                    <p v-else class="empty-text">暂无企业介绍</p>
                 </div>
-                <div class="" style="text-align:left;padding-top:10px;border-top:1px solid #e7e7e7;">
-                    <div style="padding-bottom:10px;">
-                        <strong>联系方式</strong>
-                    </div>
-                    <ul class="gray-text">
-                        <li class="concat-item">
-                            <img src="/images/share-1/phone.png" class="item-icon" alt="">
-                            <span>{{page.mobile}}</span>
-                        </li>
-                        <li class="concat-item">
-                            <img src="/images/share-1/email.png" class="item-icon" alt="">
-                            <span>{{page.email}}</span>
-                        </li>
-                        <li class="concat-item">
-                            <img src="/images/share-1/address.png" class="item-icon" alt="">
-                            <span>{{page.address}}</span>
-                        </li>
-                        <li class="concat-item">
-                            <img src="/images/share-1/site.png" class="item-icon" alt="">
-                            <span>{{page.netaddress}}</span>
-                        </li>
-                        <li class="concat-item">
-                            <img src="/images/share-1/fax.png" class="item-icon" alt="">
-                            <span>{{page.fax}}</span>
-                        </li>
-                    </ul>
-                </div>
+
             </div>
-            <div class="block">
-                <strong>进出口商品分析</strong>
-                <div class="section-line"></div>
-                <div class="chart-box" style="margin-bottom:20px;">
+            <div class="block" style="margin-bottom:10px;">
+                <div style="margin-bottom:15px;" >
+                    <strong>进出口商品分析</strong>
+                </div>
+                <!-- <div class="section-line"></div> -->
+                <div v-if="productTotal > 0" class="chart-box" style="margin-bottom:20px;">
                     <div class="chart-body" id="product-area">
                         <div class="center">
                             <span :key="index" :style="{color:colorList[index%8],marginLeft:index%4 * 5 +'px'}" v-for="(product,index) in productyList">{{product.code_desc}}</span>
                         </div>
                     </div>
                     <div class="chart-footer gray-text" style="padding:10px;">
-                        公司进出口商品共{{productTotal}}种
+                        公司进口商品<span class="blue-text" > {{page.quoteinfo.importcnt}}</span> 种；出口商品 <span class="blue-text" >{{page.quoteinfo.exportcnt}}</span> 种。
                     </div>
                 </div>
-                <strong>进出口国家分析</strong>
-                <div class="section-line"></div>
+                <p v-else style="margin-bottom:12px;" class="empty-text">暂无商品数据</p>
+                <div style="margin-bottom:15px;" >
+                    <strong>进出口国家分析</strong>
+                </div>
+                <!-- <div class="section-line"></div> -->
                 <div class="chart-box">
                     <div class="chart-body" id="main"></div>
-                    <div class="chart-footer gray-text" style="padding:10px;">
-                        <p style="padding-left:3%;">公司进口国家和地区共{{countryTotal}}个</p>
+                    <div v-if="countryTotal > 0" class="chart-footer gray-text" style="padding:6px;">
+                        <p style="padding-left:3%;">
+                            公司进口国家和地区共<span class="blue-text" > {{page.countrydata.importcountrycnt}}</span> 个；出口国家和地区共 <span class="blue-text" >{{page.countrydata.exportcountrycnt}}</span> 种。
+                        </p>
                         <div class="clearfix">
                             <div v-if="index < 9" class="country-item" v-for="(country,index) in countryList">
                                 <img :src="img_root+country.ico" alt="">
@@ -124,27 +106,58 @@
                                 <a class="country-more-btn" @click="handleDown" href="javascript:;">更多</a>
                             </div>
                         </div>
-
                     </div>
+                    <p v-else style="margin:12px;" class="empty-text">暂无伙伴国数据</p>
                 </div>
             </div>
-            <div class="block" style="border-bottom:1px solid #e0e0e0;margin-bottom:10px;padding-top:0;padding-bottom:6px;">
+            <div class="block" style="text-align:left;padding-top:10px;border-top:1px solid #e7e7e7;margin-bottom:10px;">
+                <div style="padding-bottom:10px;">
+                    <strong>联系方式</strong>
+                </div>
+                <ul class="gray-text">
+                    <li class="concat-item">
+                        <img src="/images/share-1/phone.png" class="item-icon" alt="">
+                        <span>{{page.mobile ? page.mobile :'-'}}</span>
+                    </li>
+                    <li class="concat-item">
+                        <img src="/images/share-1/email.png" class="item-icon" alt="">
+                        <span>{{page.email ? page.email :'-'}}</span>
+                    </li>
+                    <li class="concat-item">
+                        <img src="/images/share-1/address.png" class="item-icon" alt="">
+                        <span>{{page.address ? page.address :'-'}}</span>
+                    </li>
+                    <li class="concat-item">
+                        <img src="/images/share-1/site.png" class="item-icon" alt="">
+                        <span>{{page.netaddress ? page.netaddress :'-'}}</span>
+                    </li>
+                    <li class="concat-item">
+                        <img src="/images/share-1/fax.png" class="item-icon" alt="">
+                        <span>{{page.fax ? page.fax :'-'}}</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="block" style="border-bottom:1px solid #e0e0e0;margin-bottom:10px;">
                 <div style="padding-bottom:18px;">
                     <strong>企业员工</strong>
                 </div>
-                <div class="img-item business-item" v-if="index < shownum " v-for="(staff,index) in page.employee" :key="index">
-                    <img :src="staff.pic ?  img_root + staff.pic: '/images/share-1/head-default.png'" alt="">
-                    <div style="flex:1;padding-top:2%;">
-                        <p style="color:#292929;">{{staff.name}}</p>
-                        <p class="ft-10" style="margin-top:0.5em;color:#888888;">{{staff.job}}</p>
+                <template v-if="page.employee.length > 0" >
+                    <div class="img-item business-item" v-if="index < shownum " v-for="(staff,index) in page.employee"
+                        :key="index">
+                        <img :src="staff.pic ?  img_root + staff.pic: '/images/share-1/head-default.png'" alt="">
+                        <div style="flex:1;padding-top:2%;">
+                            <p style="color:#292929;">{{staff.name}}</p>
+                            <p class="ft-10" style="margin-top:0.5em;color:#888888;">{{staff.job}}</p>
+                        </div>
+                        <div class="add-btn-box" style="">
+                            <a class="add-btn" @click="handleDown" href="javascript:;">+ 好友</a>
+                        </div>
                     </div>
-                    <div class="add-btn-box" style="">
-                        <a class="add-btn" @click="handleDown" href="javascript:;">+ 好友</a>
+                    <div class="center" v-if="page.employee.length > shownum">
+                        <button class="more" style="padding:8px 10px;" @click="handleDown">查看更多</button>
                     </div>
-                </div>
-                <div class="center" v-if="page.employee.length > shownum">
-                    <button class="more" style="padding:8px 10px;" @click="handleDown">查看更多</button>
-                </div>
+                </template>
+                <p v-else class="empty-text">暂无注册员工</p>
             </div>
             <div class="block" style="border-bottom:1px solid #e0e0e0;padding-bottom:40px;background:#fff;">
                 <div class="dated-line">
@@ -157,8 +170,8 @@
                     <li>提供市场开拓服务，客户对接，数据分析服务</li>
                     <li>提供国际贸易信息发布，贸易服务撮合</li>
                 </ul>
-                <a class="btn-check" href="javascript:;"> <img style="vertical-align: middle;margin-right:5px;" width="16"
-                        src="/images/share-1/search.png" alt=""> <span>查商品、查企业、查人脉</span></a>
+                <a class="btn-check" @click="handleDown" href="javascript:;"> <img style="vertical-align: middle;margin-right:5px;"
+                        width="16" src="/images/share-1/search.png" alt=""> <span>查商品、查企业、查人脉</span></a>
                 <div style="display:flex;margin-top:10px;">
                     <div class="flex-center">
                         <img src="/images/share-1/ewm_1.png" width="80%" alt="">
@@ -360,7 +373,7 @@
                 var _this = this;
                 var params = this.getUrlParam('companycode')
                 _this.loading = true
-                $('#ladingbox').hide();
+
                 $.ajax({
                     url: '/getcompanyinfo',
                     type: 'post',
@@ -369,6 +382,7 @@
                     },
                     success: function (data) {
                         _this.loading = false
+                        $('#ladingbox').hide();
                         var tmp = {}
                         _this.loading = false
                         $.extend(true, tmp, data.ret_msg.company_data)
@@ -386,7 +400,7 @@
             }
         })
     </script>
- 
+
 </body>
 
 </html>

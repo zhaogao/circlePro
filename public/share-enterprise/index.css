@@ -233,6 +233,15 @@ baseline; background: transparent; }
         text-align: center;
     }
 
+    .empty-text{
+        color:#999;
+    }
+
+    .blue-text{
+        color:#0084ff;
+        font-weight: bold;
+    }
+
     .add-btn-box{
         display: flex;
         justify-content: flex-end;
