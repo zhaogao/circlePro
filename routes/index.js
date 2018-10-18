@@ -2,6 +2,9 @@ var express = require('express');
 var router = express.Router();
 var request = require('request')
 
+var getRealParams = function(val){
+    return new Buffer(val.trim(),'base64').toString(); 
+}
 
 var url_root = 'http://120.79.19.33:8008/';
 
@@ -13,7 +16,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/getProductDetail', function (req, res, next) {
-    var code = req.body.code;
+    var code = req.body.id;
 
     request({
         url: 'http://220.248.87.150:8013/getwebproductinfo',
@@ -34,7 +37,7 @@ router.post('/getProductDetail', function (req, res, next) {
             'PHONE': '18116352909'
         },
         body: JSON.stringify({
-            hscode: code
+            hscode: getRealParams(code)
         }),
     }, function (error, response, body) {
 
@@ -54,7 +57,7 @@ router.post('/getProductDetail', function (req, res, next) {
 
 
 router.post('/getuserdata', function (req, res, next) {
-    var userid = req.body.userid;
+    var userid = req.body.id;
 
     request({
         // url: 'http://220.248.87.150:8017/getuserinfo',
@@ -78,7 +81,7 @@ router.post('/getuserdata', function (req, res, next) {
         body: JSON.stringify({
             // userid:''
             // toUserId: userid
-            userid: userid
+            userid: getRealParams(userid)
         }),
     }, function (error, response, body) {
 
@@ -97,7 +100,7 @@ router.post('/getuserdata', function (req, res, next) {
 });
 
 router.post('/getcompanyinfo', function (req, res, next) {
-    var companycode = req.body.companycode;
+    var companycode = req.body.id;
 
     request({
         // url: 'http://220.248.87.150:8017/getcompanyinfo',
@@ -121,7 +124,7 @@ router.post('/getcompanyinfo', function (req, res, next) {
         body: JSON.stringify({
             // userid:''
             // toUserId: userid
-            companycode: companycode
+            companycode: getRealParams(companycode)
         }),
     }, function (error, response, body) {
 
@@ -140,7 +143,7 @@ router.post('/getcompanyinfo', function (req, res, next) {
 });
 
 router.post('/getproductinfo', function (req, res, next) {
-    var hscode = req.body.hscode;
+    var hscode = req.body.id;
 
     request({
         // url: 'http://220.248.87.150:8017/getproductinfo',
@@ -164,7 +167,7 @@ router.post('/getproductinfo', function (req, res, next) {
         body: JSON.stringify({
             // userid:''
             // toUserId: userid
-            hscode: hscode
+            hscode: getRealParams(hscode)
         }),
     }, function (error, response, body) {
 

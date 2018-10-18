@@ -251,24 +251,24 @@
                             backurl:'',
                             code_desc:'',
                         },
-                        company: '新兴铸管上海金属资源有限公司',
-                        company_en: 'XINXING PIPES(SHANGHAI)METAL RESOURCES CO.LTD',
+                        company: '--',
+                        company_en: '--',
                         imp_country_zf: [],
                         exp_country_zf: [],
                         report: {
-                            imp_value: 32628769000,
-                            exp_value: 33886978000,
-                            exp_country: "中国",
-                            imp_count: 130,
-                            imp_country: "巴西",
-                            exp_count: 139,
-                            exp_country: "中国",
-                            exp_maxcountry: "中国",
-                            exp_value: 33886978000,
-                            imp_count: 130,
-                            imp_country: "巴西",
-                            imp_maxcountry: "加拿大",
-                            imp_value: 32628769000
+                            imp_value: 0,
+                            exp_value: 0,
+                            exp_country: "-",
+                            imp_count: 0,
+                            imp_country: "-",
+                            exp_count: 0,
+                            exp_country: "-",
+                            exp_maxcountry: "-",
+                            exp_value: 0,
+                            imp_count: 0,
+                            imp_country: "-",
+                            imp_maxcountry: "-",
+                            imp_value: 0
                         },
                         companys: []
                     }
@@ -372,21 +372,19 @@
             },
             mounted: function () {
 
-                this.init()
-
                 var _this = this;
-                var params = this.getUrlParam('hscode')
-                // return
+                var params = this.getUrlParam('id')
                 _this.loading = true
                 $.ajax({
                     url: '/getproductinfo',
                     type: 'post',
                     data: {
-                        hscode: params ? params : '3808',
+                        //3808
+                        id: params ? params : ' MzgwNw==',
                     },
                     success: function (data) {
                         _this.loading = false
-                        if (data.ret_msg.result == 'fail') return;
+                        if (data.ret_msg.result == 'fail' || !data.ret_msg.product_data) return;
                         var tmp = {}
                         $.extend(true, tmp, data.ret_msg.product_data)
                         _this.$set(_this.$data, 'page', tmp)

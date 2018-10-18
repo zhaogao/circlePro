@@ -222,14 +222,14 @@
                 this.init()
 
                 var _this = this;
-                var params = this.getUrlParam('userid')
+                var params = this.getUrlParam('id')
                 _this.loading = true
-                //8618701766820
                 $.ajax({
                     url: '/getuserdata',
                     type: 'post',
                     data: {
-                        userid: params ? params : '8618701766820',
+                        // 8618701766820
+                        id: params ? params : 'ODYxODUxNjEyMzU2NQ==',
                     },
                     success: function (data) {
                         _this.loading = false

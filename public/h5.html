@@ -480,7 +480,8 @@ tbody, tfoot, thead, tr, th, td, h1, h2, h3 {
                     url: '/getProductDetail',
                     type: 'post',
                     data: {
-                        code: params ? params : '9602009000',
+                        // 9602009000
+                        id: params ? params : 'OTYwMjAwOTAwMA==',
                     },
                     success: function (data) {
                         _this.loading = false
