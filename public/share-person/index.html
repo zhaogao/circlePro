@@ -5,12 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-    <title>个人主页</title>
+    <title id="title">--</title>
 </head>
+<link rel="stylesheet" href="/stylesheets/common.css">
 <link rel="stylesheet" href="./index.css?version=v1">
 
 <body>
-    <div id="app"  :style="{backgroundColor:loading ? '#fff' : '#f1f1f1'}" >
+    <div id="app" :style="{backgroundColor:loading ? '#fff' : '#f1f1f1'}">
         <template v-if="loading">
             <div v-for="index in 5" :key="index" class="ladingbox">
                 <div class="preload">
@@ -40,22 +41,22 @@
                     <img :src=" page.pic ? img_root + page.pic : '/images/share-1/head-default.png'" width="100%"
                         height="100%" alt="">
                 </div>
-                <p class="ft-14">
+                <p class="ft-16" style="margin-bottom:5px;">
                     <strong class="vertical-middle">{{page.first_name}}{{page.last_name}}</strong> <span class="vertical-middle">|</span>
                     <span class="gray-text vertical-middle" style="color:#6d6d6d;">{{page.job}}</span>
                 </p>
                 <p class="" style="color:#2c2c2c;">{{page.company}}</p>
                 <p class="" style="color:#2c2c2c;">{{page.company_en}}</p>
             </div>
-            <div class="block" style="border-bottom:1px solid #e0e0e0;">
+            <div class="block q-mb-10">
                 <div style="padding-bottom:10px;">
-                    <strong>个人介绍</strong>
+                    <strong class="ft-14">个人介绍</strong>
                 </div>
                 <p class="gray-text">{{page.signature}}</p>
             </div>
-            <div class="block">
+            <div class="block q-mb-10">
                 <div style="padding-bottom:10px;">
-                    <strong>联系方式</strong>
+                    <strong class="ft-14">联系方式</strong>
                 </div>
                 <ul class="gray-text">
                     <li class="concat-item">
@@ -82,8 +83,8 @@
                 </div>
             </div>
             <div class="block" style="border-bottom:1px solid #e0e0e0;margin-bottom:10px;">
-                <div style="padding-bottom:10px;">
-                    <strong>Ta关注的业务</strong>
+                <div style="padding-bottom:18px;">
+                    <strong class="ft-14">Ta关注的业务</strong>
                 </div>
                 <div class="card-box borderd business-item" v-show="index < shownum" v-for="(item,index) in page.quotes"
                     :key="index">
@@ -97,19 +98,22 @@
                     </div>
                 </div>
                 <div class="center" v-if="page.quotes.length > shownum">
-                    <button class="more" style="padding:8px 10px;" @click="handleShow">查看更多</button>
+                    <button class="more" style="padding:8px 10px;" @click="handleDown">查看更多</button>
                 </div>
             </div>
             <div class="block" style="border-bottom:1px solid #e0e0e0;padding-bottom:40px;background:#fff;">
                 <div class="dated-line">
-                    <strong>关于圈企来APP</strong>
+                    <strong class="ft-14">关于圈企来APP</strong>
                 </div>
                 <p style="margin:15px 0 8px 0;">打造国际贸易一站式服务平台：</p>
                 <ul class="info-list">
-                    <li>提供全球商品贸易大数据分析</li>
-                    <li>提供海外客户挖掘服务，帮您解决市场开拓难的问题</li>
-                    <li>提供国际贸易信息发布，贸易服务撮合平台</li>
+                    <li>提供全球150+家企业进出口数据</li>
+                    <li>8000多个商品宏观分析</li>
+                    <li>提供市场开拓服务，客户对接，数据分析服务</li>
+                    <li>提供国际贸易信息发布，贸易服务撮合</li>
                 </ul>
+                <a class="btn-check" @click="handleDown" href="javascript:;"> <img style="vertical-align: middle;margin-right:5px;"
+                        width="16" src="/images/share-1/search.png" alt=""> <span>查商品、查企业、查人脉</span></a>
                 <div style="display:flex;margin-top:10px;">
                     <div class="flex-center">
                         <img src="/images/share-1/ewm_1.png" width="80%" alt="">
@@ -121,42 +125,26 @@
                     </div>
                 </div>
             </div>
-
+            <div class="fixed-down">
+                <img src="/images/share-1/logo.png" style="height:35px;margin:7px 0 0 12px;" alt="">
+                <a id="down-btn" href="javascript:;" @click="handleDown" class="pull-right down-btn">下载</a>
+            </div>
+            <div v-if="showMask" class="down-mask">
+                <span @click="showMask = false" class="close-btn">x 关闭</span>
+                <img @click="showMask = false" id="guide-img" style="width:80%;float:right;" :src="'/images/'+(isAndroid ? 'android': 'ios')+'_browser_tips.png'"
+                    alt="">
+            </div>
         </template>
     </div>
-    <div class="fixed-down">
-        <img src="/images/share-1/logo.png" style="height:35px;margin:7px 0 0 12px;" alt="">
-        <a id="down-btn" href="javascript:;" class="pull-right down-btn">下载</a>
-    </div>
+
     <script src="/config.js"></script>
     <script src="/js/jquery.min.js"></script>
     <script src="/js/vue.min.js"></script>
 
     <script>
-        var ios_app = 'https://itunes.apple.com/cn/app/id1415575117?l=zh&ls=1&mt=8';
-        var android_app = 'https://www.circledin.net/download/app-release.apk'
-        // var android_app = 'circled-in://main_activity'
-
-        var u = navigator.userAgent,
-            app = navigator.appVersion;
-        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
-        var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-
-        var down_btn = document.getElementById('down-btn')
-
-        if (isAndroid) {
-            down_btn.href = android_app
-        }
-
-        if (isIOS) {
-            down_btn.href = ios_app
-        }
-
-
-        document.addEventListener("WeixinJSBridgeReady", function () {
-            console.log('微信里')
-        }, false);
-
+        $.ajaxSetup({
+            cache: true
+        });
         var app = new Vue({
             el: '#app',
             data: function () {
@@ -165,18 +153,21 @@
                     showMore: true,
                     shownum: 3,
                     random: ['38%', '45%', '40%', '32%', '55%'],
+                    showMask: false,
                     img_root: config.img_root,
+                    ios_app: config.ios_app,
+                    android_app: config.android_app,
                     page: {
                         headurl: '',
                         first_name: '-',
                         last_name: '-',
                         job: '-',
-                        company: '新兴铸管上海金属资源有限公司',
+                        company: '--',
                         company_en: 'xinxing dsfad  adfsfsadf',
                         addurl: '', //添加好友的app路径
                         realemployee: 0, // 0 认证 1 未认证
                         signature: '-',
-                        phone:'',
+                        phone: '',
                         contact: {
                             email: '',
                             // phone: [{
@@ -194,14 +185,52 @@
                 }
             },
             computed: {
+                isAndroid: function () {
+                    var u = navigator.userAgent;
+                    return isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1;
+                },
+                isIos: function () {
+                    var u = navigator.userAgent;
+                    return !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+                },
+                isWeiXin: function () {
+                    var ua = navigator.userAgent.toLowerCase();
+                    return ua.indexOf('micromessenger') != -1;
+                },
                 headWidth: function () {
-                    return Math.round((window.screen.width) * 0.35)
+                    return Math.round((window.screen.width) * 0.28)
                 },
                 banneHeight: function () {
                     return Math.round((window.screen.width) * 0.55)
                 },
             },
             methods: {
+                loadJsAsync: function (url, callback) {
+
+                    $.getScript(url, function () {
+                        console.log('world.js loaed')
+                        var body = document.getElementsByTagName('body')[0];
+                        var jsNode = document.createElement('script');
+
+                        jsNode.setAttribute('type', 'text/javascript');
+                        jsNode.setAttribute('src', url);
+                        body.appendChild(jsNode);
+                        callback && callback()
+                    });
+
+                },
+                handleDown: function () {
+
+                    if (this.isWeiXin) {
+                        if (this.isIos) {
+                            location.href = this.ios_app;
+                        } else {
+                            this.showMask = true;
+                        }
+                    } else {
+                        location.href = this.isAndroid ? this.android_app : this.ios_app;
+                    }
+                },
                 getUrlParam: function (name) {
                     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
                     var r = window.location.search.substr(1).match(reg);
@@ -212,14 +241,8 @@
                     $('.business-item').show();
                     $('.more').parent().hide()
                 },
-                init: function () {
-
-
-                }
             },
             mounted: function () {
-
-                this.init()
 
                 var _this = this;
                 var params = this.getUrlParam('id')
@@ -237,6 +260,10 @@
                         var tmp = {}
                         $.extend(true, tmp, data.ret_msg.user_data)
                         _this.$set(_this.$data, 'page', tmp)
+
+                        var oTitle = document.getElementById('title')
+                        oTitle.innerHTML = _this.page.first_name + _this.page.last_name + '-' +
+                            _this.page.company;
 
                         console.log('data', data)
                     },

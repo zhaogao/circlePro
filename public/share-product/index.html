@@ -5,12 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-    <title>商品分享</title>
+    <title id="title">商品全球宏观数据分析</title>
 </head>
+<link rel="stylesheet" href="/stylesheets/common.css">
 <link rel="stylesheet" href="./index.css?version=v1">
 
 <body>
-    <div id="app" style="background:#fff;">
+    <div id="app" :style="{backgroundColor:loading ? '#fff' : '#f1f1f1'}">
         <template v-if="loading">
             <div v-for="index in 5" :key="index" class="ladingbox">
                 <div class="preload">
@@ -24,17 +25,15 @@
         </template>
         <template v-else>
             <div style="font-size:0;min-height:150px;">
-                <img :src=" page.baseinfo.backurl ? img_root + page.baseinfo.backurl :  '/images/share-1/banner-default.png'" width="100%" alt="">
+                <img :src=" page.baseinfo.backurl ? img_root + page.baseinfo.backurl :  '/images/share-1/banner-default.png'"
+                    width="100%" alt="">
             </div>
-            <div class="block" style="font-weight: bold;">
+            <div class="block ft-16 q-mb-10" style="font-weight: bold;">
                 {{page.baseinfo.code_desc}}
-            </div>
-            <div class="block center ft-14">
-                <h2>全球宏观数据分析</h2>
             </div>
             <div class="block" style="margin-bottom:10px;">
                 <div style="margin-bottom:16px;">
-                    <strong class="border-line">进口地区数据统计</strong>
+                    <strong class=" ft-14">进口地区数据统计</strong>
                 </div>
                 <ul class="report-list">
                     <li>
@@ -54,12 +53,12 @@
                         <span>{{page.report.imp_maxcountry}}</span>
                     </li>
                 </ul>
-                <div class="chart-box" style="margin-bottom:20px;">
+                <div class="chart-box" style="margin-bottom:35px;">
                     <table border="0" cellspacing="0" cellpadding="0" class="table-list">
                         <thead>
                             <th>排序</th>
                             <th>地区</th>
-                            <th>2017年进口额（万元）</th>
+                            <th>2017年进口额（美元）</th>
                             <!-- <th>与去年对比（万元）</th> -->
                         </thead>
                         <tbody>
@@ -67,7 +66,7 @@
                                 <td>{{index + 1}}</td>
                                 <td>{{country.name_chn}}</td>
                                 <!-- <td>-</td> -->
-                                <td>${{formatData(country.value/10000)}}</td>
+                                <td>${{formatData(country.value)}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -76,7 +75,7 @@
                     </div>
                 </div>
                 <div style="margin-bottom:16px;">
-                    <strong class="border-line">出口地区数据统计</strong>
+                    <strong class=" ft-14">出口地区数据统计</strong>
                 </div>
                 <ul class="report-list">
                     <li>
@@ -96,12 +95,12 @@
                         <span>{{page.report.exp_maxcountry}}</span>
                     </li>
                 </ul>
-                <div class="chart-box" style="margin-bottom:20px;">
+                <div class="chart-box" style="margin-bottom:35px;">
                     <table border="0" cellspacing="0" cellpadding="0" class="table-list">
                         <thead>
                             <th>排序</th>
                             <th>地区</th>
-                            <th>2017年出口额（万元）</th>
+                            <th>2017年出口额（美元）</th>
                             <!-- <th>与去年对比（万元）</th> -->
                         </thead>
                         <tbody>
@@ -109,133 +108,124 @@
                                 <td>{{index + 1}}</td>
                                 <td>{{country.name_chn}}</td>
                                 <!-- <td>-</td> -->
-                                <td>${{formatData(country.value/10000)}}</td>
+                                <td>${{formatData(country.value)}}</td>
                             </tr>
                         </tbody>
                     </table>
-                    <div class="center">
-                        <a class="more-btn" href="javascript:;">更多&gt;&gt;</a>
+                    <div v-if="page.exp_country_zf.length > 5" class="center">
+                        <a class="more-btn" @click="handleDown" href="javascript:;">更多&gt;&gt;</a>
                     </div>
                 </div>
                 <div style="margin-bottom:16px;">
-                    <strong class="border-line">顺差和逆差统计</strong>
+                    <strong class=" ft-14">顺差和逆差统计</strong>
+                    <span class="pull-right ft-10 gray-text" style="margin-top:3px;">计算公式：出口额减进口额</span>
                 </div>
                 <ul class="report-list">
                     <li>
                         <span>最大顺差地区</span>
                         <span>{{ exp_count.length > 0 ? exp_count[0].name_chn : '--' }}</span>
                     </li>
+                </ul>
+                <div class="chart-box" style="margin-bottom:20px;">
+                    <table border="0" cellspacing="0" cellpadding="0" class="table-list table-three">
+                        <thead>
+                            <th>排序</th>
+                            <th>地区</th>
+                            <th>2017年贸易顺差（美元）</th>
+                        </thead>
+                        <tbody>
+                            <tr v-if="index < 5" :key="index" v-for="(country,index) in exp_count">
+                                <td>{{index + 1}}</td>
+                                <td>{{country.name_chn}}</td>
+                                <td>${{formatData(country.value)}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div v-if="exp_count.length > 5" class="center">
+                        <a class="more-btn" @click="handleDown" href="javascript:;">更多&gt;&gt;</a>
+                    </div>
+                </div>
+                <ul class="report-list">
                     <li>
                         <span>最大逆差地区</span>
                         <span>{{imp_count.length > 0 ? imp_count[0].name_chn : '--'}}</span>
                     </li>
                 </ul>
-                <div class="chart-box" style="margin-bottom:20px;">
+                <div class="chart-box" style="margin-bottom:10px;">
                     <table border="0" cellspacing="0" cellpadding="0" class="table-list table-three">
                         <thead>
                             <th>排序</th>
                             <th>地区</th>
-                            <th>2017年贸易顺差（万元）</th>
+                            <th>2017年贸易逆差（美元）</th>
                         </thead>
                         <tbody>
-                            <tr v-if="index < 3" :key="index" v-for="(country,index) in exp_count">
+                            <tr v-if="index < 5" :key="index" v-for="(country,index) in imp_count">
                                 <td>{{index + 1}}</td>
                                 <td>{{country.name_chn}}</td>
-                                <td>${{formatData(country.value/10000)}}</td>
+                                <td>${{country.value}}</td>
                             </tr>
                         </tbody>
                     </table>
-                    <div class="center">
-                        <a class="more-btn" href="javascript:;">更多&gt;&gt;</a>
+                    <div v-if="imp_count.length > 5" class="center">
+                        <a class="more-btn" @click="handleDown" href="javascript:;">更多&gt;&gt;</a>
                     </div>
                 </div>
-                <div class="chart-box" style="margin-bottom:20px;">
-                    <table border="0" cellspacing="0" cellpadding="0" class="table-list table-three">
-                        <thead>
-                            <th>排序</th>
-                            <th>地区</th>
-                            <th>2017年贸易逆差（万元）</th>
-                        </thead>
-                        <tbody>
-                            <tr v-if="index < 3" :key="index" v-for="(country,index) in imp_count">
-                                <td>{{index + 1}}</td>
-                                <td>{{country.name_chn}}</td>
-                                <td>${{country.value/10000}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="center">
-                        <a class="more-btn" href="javascript:;">更多&gt;&gt;</a>
-                    </div>
-                </div>
-
-                <div class="block center ft-14">
-                    <h2>推荐企业</h2>
-                </div>
-
+            </div>
+            <div class="block q-mb-10 ft-14">
+                <strong class=" ft-14">推荐企业</strong>
                 <ul>
-                    <li :key="index" v-for="(company ,index) in page.companys" class="company-item">
+                    <li :key="index" @click="handleDown" v-for="(company ,index) in page.companys" class="company-item">
                         <span>{{company.companyname.split('')[0].toUpperCase() }}</span>
                         <div>{{company.companyname}}</div>
                     </li>
                 </ul>
 
-                <div class="block" style="border-bottom:1px solid #e0e0e0;padding-bottom:40px;background:#fff;">
-                    <div class="dated-line">
-                        <strong>关于圈企来APP</strong>
+            </div>
+
+            <div class="block q-mb-10" style="border-bottom:1px solid #e0e0e0;padding-bottom:40px;background:#fff;">
+                <div class="dated-line">
+                    <strong>关于圈企来APP</strong>
+                </div>
+                <p style="margin:15px 0 8px 0;">打造国际贸易一站式服务平台：</p>
+                <ul class="info-list">
+                    <li>提供全球150+家企业进出口数据</li>
+                    <li>8000多个商品宏观分析</li>
+                    <li>提供市场开拓服务，客户对接，数据分析服务</li>
+                    <li>提供国际贸易信息发布，贸易服务撮合</li>
+                </ul>
+                <a class="btn-check" href="javascript:;"> <img style="vertical-align: middle;margin-right:5px;" width="16"
+                        src="/images/share-1/search.png" alt=""> <span>查商品、查企业、查人脉</span></a>
+                <div style="display:flex;margin-top:10px;">
+                    <div class="flex-center">
+                        <img src="/images/share-1/ewm_1.png" width="80%" alt="">
                     </div>
-                    <p style="margin:15px 0 8px 0;">打造国际贸易一站式服务平台：</p>
-                    <ul class="info-list">
-                        <li>提供全球商品贸易大数据分析</li>
-                        <li>提供海外客户挖掘服务，帮您解决市场开拓难的问题</li>
-                        <li>提供国际贸易信息发布，贸易服务撮合平台</li>
-                    </ul>
-                    <div style="display:flex;margin-top:10px;">
-                        <div class="flex-center">
-                            <img src="/images/share-1/ewm_1.png" width="80%" alt="">
-                        </div>
-                        <div class="right-info flex-center">
-                            <p>关注圈企来 <a class="more" href="javascript:;">公众号</a> </p>
-                            <p>请长按或扫一扫</p>
-                            <p>获取更多信息</p>
-                        </div>
+                    <div class="right-info flex-center">
+                        <p>关注圈企来 <a class="more" href="javascript:;">公众号</a> </p>
+                        <p>请长按或扫一扫</p>
+                        <p>获取更多信息</p>
                     </div>
                 </div>
-
+            </div>
+            <div class="fixed-down">
+                <img src="/images/share-1/logo.png" style="height:35px;margin:7px 0 0 12px;" alt="">
+                <a id="down-btn" href="javascript:;" @click="handleDown" class="pull-right down-btn">下载</a>
+            </div>
+            <div v-if="showMask" class="down-mask">
+                <span @click="showMask = false" class="close-btn">x 关闭</span>
+                <img @click="showMask = false" id="guide-img" style="width:80%;float:right;" :src="'/images/'+(isAndroid ? 'android': 'ios')+'_browser_tips.png'"
+                    alt="">
+            </div>
         </template>
     </div>
-    <div class="fixed-down">
-        <img src="/images/share-1/logo.png" style="height:35px;margin:7px 0 0 12px;" alt="">
-        <a id="down-btn" href="javascript:;" class="pull-right down-btn">下载</a>
-    </div>
+
     <script src="/config.js"></script>
     <script src="/js/jquery.min.js"></script>
     <script src="/js/vue.min.js"></script>
 
     <script>
-        var ios_app = 'https://itunes.apple.com/cn/app/id1415575117?l=zh&ls=1&mt=8';
-        var android_app = 'https://www.circledin.net/download/app-release.apk'
-        // var android_app = 'circled-in://main_activity'
-
-        var u = navigator.userAgent,
-            app = navigator.appVersion;
-        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
-        var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-
-        var down_btn = document.getElementById('down-btn')
-
-        if (isAndroid) {
-            down_btn.href = android_app
-        }
-
-        if (isIOS) {
-            down_btn.href = ios_app
-        }
-
-
-        document.addEventListener("WeixinJSBridgeReady", function () {
-            //   alert('微信里')
-        }, false);
+        $.ajaxSetup({
+            cache: true
+        });
 
         var app = new Vue({
             el: '#app',
@@ -244,12 +234,15 @@
                     loading: false,
                     showMore: true,
                     shownum: 3,
+                    showMask: false,
                     img_root: config.img_root,
+                    ios_app: config.ios_app,
+                    android_app: config.android_app,
                     random: ['38%', '45%', '40%', '32%', '55%'],
                     page: {
-                        baseinfo:{
-                            backurl:'',
-                            code_desc:'',
+                        baseinfo: {
+                            backurl: '',
+                            code_desc: '',
                         },
                         company: '--',
                         company_en: '--',
@@ -275,6 +268,18 @@
                 }
             },
             computed: {
+                isAndroid: function () {
+                    var u = navigator.userAgent;
+                    return isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1;
+                },
+                isIos: function () {
+                    var u = navigator.userAgent;
+                    return !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+                },
+                isWeiXin: function () {
+                    var ua = navigator.userAgent.toLowerCase();
+                    return ua.indexOf('micromessenger') != -1;
+                },
                 headWidth: function () {
                     return Math.round((window.screen.width) * 0.25)
                 },
@@ -303,7 +308,7 @@
                     }
 
                     result.sort(function (a, b) {
-                        return  b.value  - a.value
+                        return b.value - a.value
                     })
 
                     return result
@@ -325,7 +330,7 @@
                             result.push({
                                 name_chn: imp_country_zf[e].name_chn,
                                 name_en: imp_country_zf[e].name_en,
-                                value: target[0].value -  imp_country_zf[e].value,
+                                value: target[0].value - imp_country_zf[e].value,
                             })
                         } else {
                             result.push({
@@ -346,6 +351,32 @@
                 }
             },
             methods: {
+                loadJsAsync: function (url, callback) {
+
+                    $.getScript(url, function () {
+                        console.log('world.js loaed')
+                        var body = document.getElementsByTagName('body')[0];
+                        var jsNode = document.createElement('script');
+
+                        jsNode.setAttribute('type', 'text/javascript');
+                        jsNode.setAttribute('src', url);
+                        body.appendChild(jsNode);
+                        callback && callback()
+                    });
+
+                },
+                handleDown: function () {
+
+                    if (this.isWeiXin) {
+                        if (this.isIos) {
+                            location.href = this.ios_app;
+                        } else {
+                            this.showMask = true;
+                        }
+                    } else {
+                        location.href = this.isAndroid ? this.android_app : this.ios_app;
+                    }
+                },
                 getUrlParam: function (name) {
                     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
                     var r = window.location.search.substr(1).match(reg);
@@ -388,6 +419,8 @@
                         var tmp = {}
                         $.extend(true, tmp, data.ret_msg.product_data)
                         _this.$set(_this.$data, 'page', tmp)
+                        var oTitle = document.getElementById('title')
+                        oTitle.innerHTML = oTitle.innerHTML + '-' + _this.page.baseinfo.code_desc;
 
                     },
                     error: function () {

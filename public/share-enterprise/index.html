@@ -7,6 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <title id="title">--</title>
 </head>
+<link rel="stylesheet" href="/stylesheets/common.css">
 <link rel="stylesheet" href="./index.css?version=v1">
 
 <body>
@@ -103,7 +104,7 @@
                                 <img :src="img_root+country.ico" alt="">
                                 <p>{{country.name_chn}}</p>
                             </div>
-                            <div class="country-item">
+                            <div v-if="countryList.length > 7" class="country-item">
                                 <a class="country-more-btn" @click="handleDown" href="javascript:;">更多</a>
                             </div>
                         </div>
@@ -215,8 +216,8 @@
                     random: ['38%', '45%', '40%', '32%', '55%'],
                     img_root: config.img_root,
                     showMask: false,
-                    ios_app: 'https://itunes.apple.com/cn/app/id1415575117?l=zh&ls=1&mt=8',
-                    android_app: 'https://www.circledin.net/download/app-release.apk',
+                    ios_app: config.ios_app,
+                    android_app: config.android_app,
                     downUrl: 'javascript:;',
                     colorList: ['#91e877', '#ec5487', '#89c6fc', '#888ccc', '#ffcd93', '#8eb4d8', '#ec5487',
                         '#666'
@@ -224,8 +225,8 @@
                     page: {
                         backurl: '',
                         pic: '',
-                        company: '新兴铸管上海金属资源有限公司',
-                        company_en: 'XINXING PIPES(SHANGHAI)METAL RESOURCES CO.LTD',
+                        company: '',
+                        company_en: '--',
                         country: '',
                         addurl: '', //添加好友的app路径
                         countryico: '',
@@ -300,7 +301,6 @@
 
                 },
                 handleDown: function () {
-
                     if (this.isWeiXin) {
                         if (this.isIos) {
                             location.href = this.ios_app;
@@ -376,8 +376,7 @@
 
                 var _this = this;
                 var params = this.getUrlParam('id')
-                var oTitle = document.getElementById('title')
-                oTitle.innerHTML = this.page.company + '全球贸易介绍';
+               
                 _this.loading = true
                 // 'qql93128407',
                 $.ajax({
@@ -396,6 +395,8 @@
 
                         console.log('data', data)
                         setTimeout(function () {
+                            var oTitle = document.getElementById('title')
+                             oTitle.innerHTML = _this.page.company + '全球贸易介绍';
                             _this.loadJsAsync(_this.syncjs, _this.init)
                         }, 300)
                     },

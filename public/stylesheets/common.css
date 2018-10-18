@@ -1,0 +1,246 @@
+html, body, div, span, p, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small,
+strike, strong, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, button, table, caption,
+tbody, tfoot, thead, tr, th, td, h1, h2, h3 { margin: 0; padding: 0; border: none; outline: 0; font-size: 100%; vertical-align:
+baseline; background: transparent; }
+ *, :after, :before { box-sizing: border-box; }
+
+    html,
+    body {
+        background: #f1f1f1;
+        font-size: 12px;
+        height: 100%;
+        font-family: 'Microsoft Yahei,sans-serif';
+        -ms-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
+        -webkit-font-smoothing: antialiased;
+    }
+    ul,li{list-style: none;}
+    .clearfix {
+        *zoom: 1;
+    }
+
+    .clearfix:after {
+        content: '';
+        display: table;
+        clear: both;
+    }
+
+    input[type="button"], input[type="submit"], input[type="reset"] {
+        -webkit-appearance : none ;
+    }
+
+    .pull-left {
+        float: left;
+    }
+
+    .pull-right {
+        float: right;
+    }
+
+a {
+  color: #00B7FF;
+}
+
+.borderd{
+  border:1px solid #e0e0e0;
+}
+
+.block {
+  padding: 24px 15px;
+  background: #fff;
+}
+.center{
+  text-align: center;
+}
+
+#app {
+  max-width: 640px;
+  margin: 0 auto;
+  padding-bottom:40px;
+}
+.fixed-down{
+  position:fixed;
+  left:0;
+  bottom:0;
+  width:100%;
+  height:50px;
+  border-top:1px solid #e0e0e0;
+  background:#fff;
+}
+.fixed-down .down-btn{
+  width:40%;height:100%;border:none;background:#ff6600;color:#fff;font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  line-height: 50px;
+}
+.down-mask{
+  position: fixed;
+   left: 0;
+   top: 0;
+   width: 100%;
+   height: 100%;
+   z-index: 300;
+   background: rgba(0,0,0,0.5);
+}
+.close-btn{
+   position: absolute;
+   left:0;
+   top:0;
+   z-index: 2000;
+   padding:40px;
+   color:#fff;
+}
+.section {
+  padding: 3%;
+  background: #fff;
+  margin-bottom: 2%;
+}
+
+.btn-check{
+  margin-top:14px;
+  width: 100%;
+  display: inline-block;
+  height: 40px;
+  font-size:14px;
+  line-height: 40px;
+  border-radius: 4px;
+  color: #fff;
+  text-decoration: none;
+  background: #0084ff;
+  text-align: center;
+}
+
+.q-mb-10{
+  margin-bottom:10px;
+}
+
+.concat-item{
+  padding: 4px 0;
+    font-size: 14px;
+
+}
+
+
+.item-icon{
+  display: inline-block;
+  width:16px;
+  /* height:16px; */
+  /* background:#ccc; */
+  vertical-align: middle;
+  margin-right:8px;
+}
+
+.section .title {
+  color: #6e6e6e;
+}
+
+.gray-text {
+  color: #666;
+}
+
+.collpage{
+  text-overflow: -o-ellipsis-lastline;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 10;
+  -webkit-box-orient: vertical;
+
+}
+
+strong{
+  color:#333;
+}
+
+.ft-16 {
+  font-size: 16px;
+}
+
+.ft-14 {
+  font-size: 14px;
+}
+
+.ft-12 {
+  font-size: 12px;
+}
+
+.ft-10 {
+  font-size: 10px;
+}
+
+.preload {
+  width: 100%;
+  height: 120px;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: placeHolderShimmer;
+  animation-timing-function: linear;
+  background: #eeeeee;
+  background: linear-gradient(to right, #eeeeee 8%, #ddd 18%, #eeeeee 33%);
+  background-size: 1200px 104px;
+  position: relative;
+}
+
+.error-notice {
+  padding: 2%;
+}
+
+@-webkit-keyframes placeHolderShimmer {
+  0% {
+      background-position: -468px 0
+  }
+  100% {
+      background-position: 468px 0
+  }
+}
+
+@keyframes placeHolderShimmer {
+  0% {
+      background-position: -468px 0
+  }
+  100% {
+      background-position: 468px 0
+  }
+}
+
+.ladingbox {
+  margin: 3%;
+}
+
+.preload .title-block {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 60%;
+  height: 30px;
+  background: #fff;
+}
+
+.preload .line-block,
+.preload .line-block-2,
+.preload .line-block-3 {
+  position: absolute;
+  right: 0;
+  top: 30px;
+  width: 100%;
+  height: 16px;
+  background: #fff;
+}
+
+.preload .line-block-2 {
+  top: 70px;
+}
+
+.preload .line-block-3 {
+  top: 110px;
+}
+
+.preload .cloumn-line {
+  position: absolute;
+  left: 40%;
+  top: 30px;
+  width: 8px;
+  height: 90px;
+  background: #fff;
+}
