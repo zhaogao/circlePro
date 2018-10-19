@@ -77,9 +77,9 @@
                 </div>
                 <!-- <div class="section-line"></div> -->
                 <div v-if="productTotal > 0" class="chart-box" style="margin-bottom:20px;">
-                    <div class="chart-body" id="product-area">
+                    <div class="chart-body" style="max-height:240px;overflow-y: auto;" id="product-area">
                         <div class="center">
-                            <span :key="index" v-if="index < 15" :style="[{color:colorList[index%8],marginLeft:index%4 * 5 +'px',fontSize:(product.hs6star >= 3 ? '18px': (product.hs6star >=2 ? '12px' : '8px' )) }]" v-for="(product,index) in productyList">{{product.code_desc}}</span>
+                            <span :key="index" v-if="index < 15" :style="[{color:colorList[index%8],marginLeft:index%4 * 5 +'px',fontSize:setFontSize(product.hs6star) }]" v-for="(product,index) in productyList">{{product.code_desc}}</span>
                         </div>
                     </div>
                     <div class="chart-footer gray-text" style="padding:14px 10px;font-size:13px;">
@@ -286,6 +286,24 @@
                 }
             },
             methods: {
+                setFontSize:function(star){
+                    var size = '';
+                    if(star == 5){
+                        size = 18
+                    }else if(star == 4){
+                        size = 16
+                    }else if(star == 3){
+                        size = 14
+                    }else{
+                        if(this.productyList.length > 9){
+                            size = Math.floor(Math.random()*4 +6)   
+                        }else{
+                            size = 8
+                        }
+                       
+                    }
+                    return size + 'px'
+                },
                 loadJsAsync: function (url, callback) {
 
                     $.getScript(url, function () {
