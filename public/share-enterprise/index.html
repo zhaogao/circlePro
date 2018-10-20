@@ -79,7 +79,8 @@
                 <div v-if="productTotal > 0" class="chart-box" style="margin-bottom:20px;">
                     <div class="chart-body" style="max-height:240px;overflow-y: auto;" id="product-area">
                         <div class="center">
-                            <span :key="index" v-if="index < 15" :style="[{color:colorList[index%8],marginLeft:index%4 * 5 +'px',fontSize:setFontSize(product.hs6star) }]" v-for="(product,index) in productyList">{{product.code_desc}}</span>
+                            <span :key="index" v-if="index < 10" :style="[{color:colorList[index%8],marginLeft:index%4 * 5 +'px',fontSize:setFontSize(product.hs6star) }]" v-for="(product,index) in productyList">  {{setText(product.code_desc)}}</span>
+                            <button  v-if="productyList.length > 10" class="more" style="padding:8px 10px;" @click="handleDown">查看更多</button>
                         </div>
                     </div>
                     <div class="chart-footer gray-text" style="padding:14px 10px;font-size:13px;">
@@ -303,6 +304,10 @@
                        
                     }
                     return size + 'px'
+                },
+                setText:function(item){
+                    item = item.toString().trim();
+                    return item.length > 12 ? item.slice(0,12) + '...' : item;
                 },
                 loadJsAsync: function (url, callback) {
 
