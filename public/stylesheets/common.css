@@ -7,7 +7,7 @@ baseline; background: transparent; }
     html,
     body {
         background: #f1f1f1;
-        font-size: 12px;
+        font-size: 14px;
         height: 100%;
         font-family: 'Microsoft Yahei,sans-serif';
         -ms-text-size-adjust: 100%;
@@ -120,6 +120,19 @@ a {
 
 }
 
+.ellipsis{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chart-box{
+  border:1px solid #e7e7e7;
+}
+.chart-box .chart-body{
+  min-height:220px;
+  background:#f8f8f8;
+}
 
 .item-icon{
   display: inline-block;
@@ -157,7 +170,7 @@ strong{
 }
 
 .ft-14 {
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .ft-12 {

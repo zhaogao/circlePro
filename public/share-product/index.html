@@ -33,6 +33,28 @@
             </div>
             <div class="block" style="margin-bottom:10px;">
                 <div style="margin-bottom:16px;">
+                    <strong class=" ft-14">全球进出口企业分析</strong>
+                </div>
+                <ul class="report-list">
+                    <li>
+                        <span>进口买家企业</span>
+                        <span>{{page.companyinfo.imp_company}}</span>
+                    </li>
+                    <li>
+                        <span>出口买家企业</span>
+                        <span>{{page.companyinfo.exp_company}}</span>
+                    </li>
+                    <li>
+                        <span>全球地区或国家</span>
+                        <span>{{page.companyinfo.country_cnt}}</span>
+                    </li>
+                </ul>
+                <div class="chart-box" style="margin-bottom:20px;">
+                    <div class="chart-body" id="main"></div>
+
+                    <p v-else style="margin:12px;" class="empty-text">暂无伙伴国数据</p>
+                </div>
+                <div style="margin-bottom:16px;">
                     <strong class=" ft-14">进口地区数据统计</strong>
                 </div>
                 <ul class="report-list">
@@ -221,7 +243,7 @@
     <script src="/config.js"></script>
     <script src="/js/jquery.min.js"></script>
     <script src="/js/vue.min.js"></script>
-
+    <script src="/js/echarts.min.js"></script>
     <script>
         $.ajaxSetup({
             cache: true
@@ -231,6 +253,7 @@
             el: '#app',
             data: function () {
                 return {
+                    syncjs: 'http://echarts.baidu.com/asset/map/js/world.js',
                     loading: false,
                     showMore: true,
                     shownum: 3,
@@ -248,6 +271,12 @@
                         company_en: '--',
                         imp_country_zf: [],
                         exp_country_zf: [],
+                        companyinfo: {
+                            country_cnt: 0,
+                            exp_company: 0,
+                            imp_company: 0
+                        },
+                        comapny_country:[],
                         report: {
                             imp_value: 0,
                             exp_value: 0,
@@ -398,6 +427,52 @@
                 },
                 init: function () {
 
+                    var _this = this;
+                    var oMain = document.getElementById('main');
+                    oMain.style.width = document.body.clientWidth - 30 + 'px';
+                    var myChart = echarts.init(document.getElementById('main'));
+                    option = {
+                        backgroundColor: '#f8f8f8',
+                        visualMap: {
+                            min: 0,
+                            show: false,
+                            max: 1000000,
+                            text: ['High', 'Low'],
+                            realtime: false,
+                            calculable: true,
+                            color: ['#568cca', '#568cca']
+                        },
+                        series: [{
+                            backgroundColor: '#f0f',
+                            name: 'World Population (2010)',
+                            type: 'map',
+                            mapType: 'world',
+                            roam: true,
+                            left: '2%',
+                            top: '2%',
+                            right: '2%',
+                            bottom: '2%',
+                            roam: false,
+                            itemStyle: {
+                                normal: {
+                                    areaColor: '#bdd6ea',
+                                    borderColor: 'none',
+                                },
+                                emphasis: {
+                                    label: {
+                                        show: true
+                                    }
+                                }
+                            },
+                            data: _this.page.comapny_country.map(function (item, index) {
+                                return {
+                                    name: item.name_en,
+                                    value: item.cnt,
+                                }
+                            }),
+                        }]
+                    };
+                    myChart.setOption(option);
 
                 }
             },
@@ -419,8 +494,12 @@
                         var tmp = {}
                         $.extend(true, tmp, data.ret_msg.product_data)
                         _this.$set(_this.$data, 'page', tmp)
-                        var oTitle = document.getElementById('title')
-                        oTitle.innerHTML = oTitle.innerHTML + '-' + _this.page.baseinfo.code_desc;
+
+                        setTimeout(function () {
+                            var oTitle = document.getElementById('title')
+                            oTitle.innerHTML = oTitle.innerHTML + '-' + _this.page.baseinfo.code_desc;
+                            _this.loadJsAsync(_this.syncjs, _this.init)
+                        }, 100)
 
                     },
                     error: function () {

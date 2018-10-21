@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-    <title id="title">--</title>
+    <meta name="description" content="">
+	<meta name="author" content="">
+    <title id="title">...</title>
 </head>
 <link rel="stylesheet" href="/stylesheets/common.css">
 <link rel="stylesheet" href="./index.css?version=v1">
@@ -66,21 +68,22 @@
             </div>
             <div class="block" style="margin-bottom:10px;">
                 <div style="padding:0px 0 10px;">
-                    <strong  class="ft-14" >关于我们</strong>
+                    <strong class="ft-14">关于我们</strong>
                 </div>
                 <p v-if="page.remark" class="gray-text">{{page.remark}}</p>
                 <p v-else class="empty-text">暂无企业介绍</p>
             </div>
             <div class="block" style="margin-bottom:10px;">
                 <div style="margin-bottom:15px;">
-                    <strong class="ft-14" >进出口商品分析</strong>
+                    <strong class="ft-14">进出口商品分析</strong>
                 </div>
                 <!-- <div class="section-line"></div> -->
                 <div v-if="productTotal > 0" class="chart-box" style="margin-bottom:20px;">
-                    <div class="chart-body" style="max-height:240px;overflow-y: auto;" id="product-area">
+                    <div class="chart-body" @click="handleDown" style="max-height:240px;overflow-y: auto;" id="product-area">
                         <div class="center">
-                            <span :key="index" v-if="index < 10" :style="[{color:colorList[index%8],marginLeft:index%4 * 5 +'px',fontSize:setFontSize(product.hs6star) }]" v-for="(product,index) in productyList">  {{setText(product.code_desc)}}</span>
-                            <button  v-if="productyList.length > 10" class="more" style="padding:8px 10px;" @click="handleDown">查看更多</button>
+                            <span :key="index" v-if="index < 10" :style="[{color:colorList[index%8],marginLeft:index%4 * 5 +'px',fontSize:setFontSize(product.hs6star) }]"
+                                v-for="(product,index) in productyList"> {{setText(product.code_desc)}}</span>
+                            <button v-if="productyList.length > 10" class="more" style="padding:8px 10px;" @click="handleDown">查看更多</button>
                         </div>
                     </div>
                     <div class="chart-footer gray-text" style="padding:14px 10px;font-size:13px;">
@@ -103,7 +106,7 @@
                         <div class="clearfix">
                             <div v-if="index < 7" class="country-item" v-for="(country,index) in countryList">
                                 <img :src="img_root+country.ico" alt="">
-                                <p>{{country.name_chn}}</p>
+                                <p class="ellipsis" >{{country.name_chn}}</p>
                             </div>
                             <div v-if="countryList.length > 7" class="country-item">
                                 <a class="country-more-btn" @click="handleDown" href="javascript:;">更多</a>
@@ -153,7 +156,7 @@
                             <p class="ft-10" style="margin-top:0.5em;color:#888888;">{{staff.job}}</p>
                         </div>
                         <div class="add-btn-box" style="">
-                            <a class="add-btn" @click="handleDown" href="javascript:;"><span class="ft-16" >+ </span> 好友</a>
+                            <a class="add-btn" @click="handleDown" href="javascript:;"><span class="ft-16">+ </span> 好友</a>
                         </div>
                     </div>
                     <div class="center" v-if="page.employee.length > shownum">
@@ -287,27 +290,27 @@
                 }
             },
             methods: {
-                setFontSize:function(star){
+                setFontSize: function (star) {
                     var size = '';
-                    if(star == 5){
+                    if (star == 5) {
                         size = 18
-                    }else if(star == 4){
+                    } else if (star == 4) {
                         size = 16
-                    }else if(star == 3){
+                    } else if (star == 3) {
                         size = 14
-                    }else{
-                        if(this.productyList.length > 9){
-                            size = Math.floor(Math.random()*4 +6)   
-                        }else{
+                    } else {
+                        if (this.productyList.length > 9) {
+                            size = Math.floor(Math.random() * 4 + 6)
+                        } else {
                             size = 8
                         }
-                       
+
                     }
                     return size + 'px'
                 },
-                setText:function(item){
+                setText: function (item) {
                     item = item.toString().trim();
-                    return item.length > 12 ? item.slice(0,12) + '...' : item;
+                    return item.length > 12 ? item.slice(0, 12) + '...' : item;
                 },
                 loadJsAsync: function (url, callback) {
 
@@ -362,7 +365,7 @@
                             color: ['#568cca', '#568cca']
                         },
                         series: [{
-                            backgroundColor:'#f0f',
+                            backgroundColor: '#f0f',
                             name: 'World Population (2010)',
                             type: 'map',
                             mapType: 'world',
@@ -399,7 +402,7 @@
 
                 var _this = this;
                 var params = this.getUrlParam('id')
-               
+
                 _this.loading = true
                 // 'qql93128407',
                 $.ajax({
@@ -419,9 +422,9 @@
                         console.log('data', data)
                         setTimeout(function () {
                             var oTitle = document.getElementById('title')
-                             oTitle.innerHTML = _this.page.company + '全球贸易介绍';
+                            oTitle.innerHTML = _this.page.company + '全球贸易介绍';
                             _this.loadJsAsync(_this.syncjs, _this.init)
-                        }, 300)
+                        }, 100)
                     },
                     error: function () {
                         _this.loading = false
