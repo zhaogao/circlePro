@@ -25,7 +25,7 @@
         </template>
         <template v-else>
             <div style="font-size:0;min-height:150px;" class="q-mb-10">
-                <img :src=" page.countryico ? img_root + page.countryico :  '/images/share-1/banner-default.png'" width="100%"
+                <img :src=" page.backimg ? img_root + page.backimg :  '/images/share-1/banner-default.png'" width="100%"
                     alt="">
             </div>
             <div class="block q-mb-10">
@@ -145,7 +145,6 @@
                 </ul>
                 <div class="chart-box" style="margin-bottom:20px;">
                     <div class="chart-body" id="product-chart"></div>
-                    <p v-else style="margin:12px;" class="empty-text">暂无伙伴国数据</p>
                 </div>
             </div>
             <div class="block q-mb-10">
@@ -164,7 +163,6 @@
                 </ul>
                 <div class="chart-box" style="margin-bottom:20px;">
                     <div class="chart-body" id="product-map"></div>
-                    <p v-else style="margin:12px;" class="empty-text">暂无伙伴国数据</p>
                 </div>
             </div>
             <div class="block q-mb-10" style="border-bottom:1px solid #e0e0e0;padding-bottom:40px;background:#fff;">
@@ -202,7 +200,6 @@
             </div>
         </template>
     </div>
-    <script src="/js/country.js"></script>
     <script src="/config.js"></script>
     <script src="/js/jquery.min.js"></script>
     <script src="/js/vue.min.js"></script>
@@ -226,6 +223,7 @@
                     android_app: config.android_app,
                     random: ['38%', '45%', '40%', '32%', '55%'],
                     page: {
+                        backimg: '',
                         country: "中国",
                         year: "2017",
                         countryico: "group1/M00/00/75/rBJTVls9xXaAJ3NAAAAcUfsDlOg243.png",
@@ -274,10 +272,13 @@
                 headWidth: function () {
                     return Math.round((window.screen.width) * 0.25)
                 },
+                productList: function () {
+                    var target = this.page.countrysn;
+                    return target.productsc.concat(target.productnc)
+                }
             },
             methods: {
                 loadJsAsync: function (url, callback) {
-
                     $.getScript(url, function () {
                         console.log('world.js loaed')
                         var body = document.getElementsByTagName('body')[0];
@@ -326,26 +327,46 @@
 
                     option = {
                         backgroundColor: '#f8f8f8',
-                        _visualMap: {
-                            min: 0,
-                            show: false,
-                            max: 1000000,
-                            text: ['High', 'Low'],
-                            realtime: false,
-                            calculable: true,
-                            color: ['#568cca', '#568cca']
-                        },
                         series: [{
-                            // name: 'Disk Usage',
+                            name: '进口商品',
                             type: 'treemap',
                             width: '100%',
                             height: '100%',
-                            visibleMin: 300,
+                            visibleMin: 1000,
                             roam: false,
+                            nodeClick: false,
                             label: {
-                                show: true,
-                                fontSize: 16,
-                                formatter: '{b}'
+                                normal: {
+                                    position: 'inside',
+                                    formatter: function (params) {
+                                        var tmp = params.name.split('');
+
+                                        if (tmp.length > 12) {
+                                            tmp.splice(tmp.length / 2, 1, '\n')
+                                        }
+
+                                        return '{name|' + 'HS ' + params.data.code + ' ' +
+                                            tmp.join('') + '}'
+
+                                    },
+                                    rich: {
+                                        name: {
+                                            fontSize: 4,
+                                            color: '#fff'
+                                        },
+                                    }
+                                }
+                            },
+                            breadcrumb: {
+                                show: false,
+                            },
+                            emphasis: {
+                                label: {
+                                    fontSize: 18
+                                },
+                                upperLabel: {
+                                    fontSize: 18
+                                }
                             },
                             itemStyle: {
                                 normal: {
@@ -357,6 +378,7 @@
                                     return {
                                         name: item.name,
                                         value: item.value,
+                                        code: item.hscode
                                     }
                                 }),
                         }]
@@ -373,12 +395,22 @@
                         backgroundColor: '#f8f8f8',
                         visualMap: {
                             min: 0,
-                            show: false,
-                            max: 1000000,
-                            text: ['High', 'Low'],
+                            show: true,
+                            max: 200000000000,
+                            itemWidth: 14,
+                            itemHeight: 60,
+                            left: 0,
+                            text: ['最小', '最大'],
                             realtime: false,
                             calculable: true,
-                            color: ['#568cca', '#568cca']
+                            color: ['#c5e0fe', '#99ccfb', '#72b3f3', '#469ded', '#568cca'],
+                            orient: "horizontal",
+                            formatter: function (value) { //标签的格式化工具。
+                                return '' // 范围标签显示内容。
+                            },
+                            textStyle: {
+                                fontSize: 6
+                            }
                         },
                         series: [{
                             backgroundColor: '#f0f',
@@ -389,7 +421,7 @@
                             left: '2%',
                             top: '2%',
                             right: '2%',
-                            bottom: '2%',
+                            bottom: '4%',
                             roam: false,
                             itemStyle: {
                                 normal: {
@@ -405,7 +437,7 @@
                             data: _this.page[(type == 'imp') ? 'import' : 'export'].partnerlst.map(
                                 function (item, index) {
                                     return {
-                                        name: item.code,
+                                        name: item.country_en,
                                         value: item.value,
                                     }
                                 }),
@@ -413,6 +445,138 @@
                     };
                     myChart.setOption(option);
 
+                },
+                worldMap2: function () {
+
+                    var _this = this;
+                    var oMain = document.getElementById('product-map');
+                    oMain.style.width = document.body.clientWidth - 30 + 'px';
+                    var myChart = echarts.init(oMain);
+                    option = {
+                        backgroundColor: '#f8f8f8',
+                        visualMap: {
+                            min: 0,
+                            show: true,
+                            max: 200000000000,
+                            itemWidth: 14,
+                            itemHeight: 60,
+                            left: 0,
+                            text: ['最小', '最大'],
+                            realtime: false,
+                            calculable: true,
+                            color: ['#c5e0fe', '#99ccfb', '#72b3f3', '#469ded', '#568cca'],
+                            orient: "horizontal",
+                            formatter: function (value) { //标签的格式化工具。
+                                return '' // 范围标签显示内容。
+                            },
+                            textStyle: {
+                                fontSize: 6
+                            }
+                        },
+                        series: [{
+                            backgroundColor: '#f0f',
+                            name: 'World Population (2010)',
+                            type: 'map',
+                            mapType: 'world',
+                            roam: true,
+                            left: '2%',
+                            top: '2%',
+                            right: '2%',
+                            bottom: '4%',
+                            roam: false,
+                            itemStyle: {
+                                normal: {
+                                    areaColor: '#bdd6ea',
+                                    borderColor: 'none',
+                                },
+                                emphasis: {
+                                    label: {
+                                        show: true
+                                    }
+                                }
+                            },
+                            data: _this.page.countrysn.partnerlst.map(
+                                function (item, index) {
+                                    return {
+                                        name: item.country_en,
+                                        value: item.value,
+                                    }
+                                }),
+                        }]
+                    };
+                    myChart.setOption(option);
+                },
+                productChart: function () {
+                    var _this = this;
+                    var oMain = document.getElementById('product-chart');
+                    oMain.style.width = document.body.clientWidth - 30 + 'px';
+                    var myChart = echarts.init(oMain);
+                    var labelRight = {
+                        normal: {
+                            position: 'right'
+                        }
+                    };
+                    option = {
+                        backgroundColor: '#f8f8f8',
+                        xAxis: {
+                            type: 'value',
+                            position: 'top',
+                            splitLine: {
+                                lineStyle: {
+                                    type: 'dashed'
+                                }
+                            },
+                        },
+                        yAxis: {
+                            type: 'category',
+                            axisLine: {
+                                show: false
+                            },
+                            axisLabel: {
+                                show: false
+                            },
+                            axisTick: {
+                                show: false
+                            },
+                            splitLine: {
+                                show: false
+                            },
+                            data: ['ten', 'nine', 'eight', 'seven', 'six', 'five', 'four', 'three',
+                                'two', 'one'
+                            ]
+                        },
+                        series: [{
+                            backgroundColor: '#f0f',
+                            name: 'World Population (2010)',
+                            type: 'bar',
+                            // mapType: 'world',
+                            // roam: true,
+                            left: '2%',
+                            top: '2%',
+                            right: '2%',
+                            bottom: '4%',
+                            roam: false,
+                            itemStyle: {
+                                normal: {
+                                    areaColor: '#bdd6ea',
+                                    borderColor: 'none',
+                                },
+                                emphasis: {
+                                    label: {
+                                        show: true
+                                    }
+                                }
+                            },
+                            data: _this.productList.map(
+                                function (item, index) {
+                                    return {
+                                        name: item.country_en,
+                                        value: item.value,
+                                    }
+                                }),
+                        }]
+                    };
+                    myChart.setOption(option);
                 }
             },
             mounted: function () {
@@ -430,13 +594,9 @@
                     success: function (data) {
                         _this.loading = false
 
-                        console.log('data', ret_msg.product_data)
-
-                        // if (data.ret_msg.result == 'fail' || !data.ret_msg.product_data) return;
+                        if (data.ret_msg.result == 'fail' || !data.ret_msg.product_data) return;
                         var tmp = {}
-                        // $.extend(true, tmp, data.ret_msg.product_data)
-                        _this.$set(_this.$data, 'page', tmp)
-                        $.extend(true, tmp, ret_msg.product_data)
+                        $.extend(true, tmp, data.ret_msg.product_data)
                         _this.$set(_this.$data, 'page', tmp)
 
                         setTimeout(function () {
@@ -450,12 +610,12 @@
                             _this.loadJsAsync(_this.syncjs, function () {
                                 _this.worldMap('imp')
                                 _this.worldMap('exp')
+                                _this.worldMap2()
+                                _this.productChart()
                             })
 
 
                         }, 100)
-
-
 
                         // 加载进出口商品地区  worldmap
 
