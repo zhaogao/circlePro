@@ -142,11 +142,18 @@
                         <span>最大的逆差商品</span>
                         <span>HS {{page.countrysn.productsn[1]}}</span>
                     </li>
+                    <li>
+                        <span>逆差</span>
+                        <span>顺差</span>
+                    </li>
                 </ul>
                 <div class="chart-box" style="margin-bottom:20px;">
                     <div class="chart-body" id="product-chart"></div>
                 </div>
             </div>
+            <!-- <div>
+                {{imp_count}}
+            </div> -->
             <div class="block q-mb-10">
                 <div style="margin-bottom:16px;">
                     <strong class=" ft-14">伙伴地区的顺逆差统计</strong>
@@ -274,7 +281,47 @@
                 },
                 productList: function () {
                     var target = this.page.countrysn;
-                    return target.productsc.concat(target.productnc)
+                    var list = target.productnc.concat(target.productsc);
+
+                    return list.map(function (item) {
+                        item.value = parseInt(item.value / 100000000)
+                        return item;
+                    })
+                },
+                imp_count: function () {
+
+                    var exp_country_zf = this.page.export.partnerlst;
+                    var imp_country_zf = this.page.import.partnerlst;
+                    var result = [];
+
+                    for (var e = 0; e < imp_country_zf.length; e++) {
+
+                        var target = exp_country_zf.filter(function (item) {
+                            return item.country_en == imp_country_zf[e].country_en
+                        });
+
+                        if (target.length > 0) {
+                            result.push({
+                                country: imp_country_zf[e].country,
+                                country_en: imp_country_zf[e].country_en,
+                                value: target[0].value - imp_country_zf[e].value,
+                            })
+                        } else {
+                            result.push({
+                                country: imp_country_zf[e].country,
+                                country_en: imp_country_zf[e].country_en,
+                                value: -imp_country_zf[e].value
+                            })
+                        }
+
+                    }
+
+                    result.sort(function (a, b) {
+                        return a.value - b.value
+                    })
+
+                    return result
+
                 }
             },
             methods: {
@@ -447,6 +494,7 @@
 
                 },
                 worldMap2: function () {
+                    // 逆差颜色  61c5c3
 
                     var _this = this;
                     var oMain = document.getElementById('product-map');
@@ -454,9 +502,9 @@
                     var myChart = echarts.init(oMain);
                     option = {
                         backgroundColor: '#f8f8f8',
-                        visualMap: {
+                        _visualMap: {
                             min: 0,
-                            show: true,
+                            show: false,
                             max: 200000000000,
                             itemWidth: 14,
                             itemHeight: 60,
@@ -474,10 +522,11 @@
                             }
                         },
                         series: [{
-                            backgroundColor: '#f0f',
-                            name: 'World Population (2010)',
+                            name: '顺差',
                             type: 'map',
-                            mapType: 'world',
+                            map: 'world',
+                            stack: '地图',
+                            // selectedMode: 'multiple',
                             roam: true,
                             left: '2%',
                             top: '2%',
@@ -487,12 +536,19 @@
                             itemStyle: {
                                 normal: {
                                     areaColor: '#bdd6ea',
+                                    // color: 'red',
                                     borderColor: 'none',
                                 },
-                                emphasis: {
-                                    label: {
-                                        show: true
-                                    }
+                                emphasis: { // 也是选中样式
+                                    // borderWidth: 2,
+                                    // borderColor: '#fff',
+                                    // areaColor: 'red',
+                                    // label: {
+                                    //     show: true,
+                                    //     textStyle: {
+                                    //         color: '#fff'
+                                    //     }
+                                    // }
                                 }
                             },
                             data: _this.page.countrysn.partnerlst.map(
@@ -500,6 +556,63 @@
                                     return {
                                         name: item.country_en,
                                         value: item.value,
+                                        itemStyle: {
+                                            normal: {
+                                                color: '#568cca',
+                                                label: {
+                                                    show: true,
+                                                    textStyle: {
+                                                        color: '#fff',
+                                                        fontSize: 12
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }),
+                        }, {
+                            name: '逆差',
+                            type: 'map',
+                            map: 'world',
+                            roam: true,
+                            left: '2%',
+                            top: '2%',
+                            right: '2%',
+                            bottom: '4%',
+                            roam: false,
+                            itemStyle: {
+                                normal: {
+                                    areaColor: '#bdd6ea',
+                                    color: 'green',
+                                    borderColor: 'none',
+                                },
+                                emphasis: {
+                                    label: {
+                                        show: true
+                                    },
+                                    itemStyle: {
+                                        areaColor: '#f0f'
+                                    }
+                                }
+                            },
+                            data: _this.imp_count.map(
+                                function (item, index) {
+                                    console.log('imp',item)
+                                    return {
+                                        name: item.country_en,
+                                        value: Math.abs(item.value),
+                                        itemStyle: {
+                                            normal: {
+                                                color: '#f0f',
+                                                label: {
+                                                    show: true,
+                                                    textStyle: {
+                                                        color: '#fff',
+                                                        fontSize: 15
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }),
                         }]
@@ -510,12 +623,8 @@
                     var _this = this;
                     var oMain = document.getElementById('product-chart');
                     oMain.style.width = document.body.clientWidth - 30 + 'px';
+                    oMain.style.height = 320 + 'px'
                     var myChart = echarts.init(oMain);
-                    var labelRight = {
-                        normal: {
-                            position: 'right'
-                        }
-                    };
                     option = {
                         backgroundColor: '#f8f8f8',
                         xAxis: {
@@ -526,52 +635,49 @@
                                     type: 'dashed'
                                 }
                             },
+                            axisLabel: {
+                                formatter: '{value} 亿（美元）'
+                            }
+                        },
+                        grid: {
+                            top: 5,
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
                         },
                         yAxis: {
                             type: 'category',
-                            axisLine: {
-                                show: false
-                            },
-                            axisLabel: {
-                                show: false
-                            },
-                            axisTick: {
-                                show: false
-                            },
-                            splitLine: {
-                                show: false
-                            },
-                            data: ['ten', 'nine', 'eight', 'seven', 'six', 'five', 'four', 'three',
-                                'two', 'one'
-                            ]
                         },
                         series: [{
                             backgroundColor: '#f0f',
-                            name: 'World Population (2010)',
                             type: 'bar',
-                            // mapType: 'world',
-                            // roam: true,
-                            left: '2%',
-                            top: '2%',
-                            right: '2%',
-                            bottom: '4%',
-                            roam: false,
-                            itemStyle: {
-                                normal: {
-                                    areaColor: '#bdd6ea',
-                                    borderColor: 'none',
-                                },
-                                emphasis: {
-                                    label: {
-                                        show: true
+                            label: {
+                                show: true,
+                                formatter: function (params) {
+                                    var str = params.data.name;
+                                    if (str.length > 10) {
+                                        str = str.split('').splice(0, 10);
+                                        str.push('...');
+                                        str.join('')
                                     }
-                                }
+                                    return 'HS ' + params.data.hscode + ' ' + str
+                                },
                             },
+
                             data: _this.productList.map(
                                 function (item, index) {
+                                    var _color = item.value > 0 ? '#e0232a' : '#52aab8';
                                     return {
-                                        name: item.country_en,
+                                        name: item.name,
                                         value: item.value,
+                                        hscode: item.hscode,
+                                        itemStyle: {
+                                            color: _color
+                                        },
+                                        label: {
+                                            fontSize: 4,
+                                        }
                                     }
                                 }),
                         }]
