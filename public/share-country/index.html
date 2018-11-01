@@ -150,10 +150,8 @@
                 <div class="chart-box" style="margin-bottom:20px;">
                     <div class="chart-body" id="product-chart"></div>
                 </div>
+
             </div>
-            <!-- <div>
-                {{imp_count}}
-            </div> -->
             <div class="block q-mb-10">
                 <div style="margin-bottom:16px;">
                     <strong class=" ft-14">伙伴地区的顺逆差统计</strong>
@@ -170,6 +168,10 @@
                 </ul>
                 <div class="chart-box" style="margin-bottom:20px;">
                     <div class="chart-body" id="product-map"></div>
+                    <ul class="type-notice" >
+                        <li>顺差</li>
+                        <li>逆差</li>
+                    </ul>
                 </div>
             </div>
             <div class="block q-mb-10" style="border-bottom:1px solid #e0e0e0;padding-bottom:40px;background:#fff;">
@@ -183,8 +185,8 @@
                     <li>提供市场开拓服务，客户对接，数据分析服务</li>
                     <li>提供国际贸易信息发布，贸易服务撮合</li>
                 </ul>
-                <a class="btn-check" href="javascript:;"> <img style="vertical-align: middle;margin-right:5px;" width="16"
-                        src="/images/share-1/search.png" alt=""> <span>查商品、查企业、查人脉</span></a>
+                <a class="btn-check" @click="handleDown" href="javascript:;"> <img style="vertical-align: middle;margin-right:5px;"
+                        width="16" src="/images/share-1/search.png" alt=""> <span>查商品、查企业、查人脉</span></a>
                 <div style="display:flex;margin-top:10px;">
                     <div class="flex-center">
                         <img src="/images/share-1/ewm_1.png" width="80%" alt="">
@@ -305,12 +307,14 @@
                                 country: imp_country_zf[e].country,
                                 country_en: imp_country_zf[e].country_en,
                                 value: target[0].value - imp_country_zf[e].value,
+                                nc:true,
                             })
                         } else {
                             result.push({
                                 country: imp_country_zf[e].country,
                                 country_en: imp_country_zf[e].country_en,
-                                value: -imp_country_zf[e].value
+                                value: -imp_country_zf[e].value,
+                                nc:true,
                             })
                         }
 
@@ -320,8 +324,16 @@
                         return a.value - b.value
                     })
 
+                    result = result.filter(function(item){
+                        return item.value < 0
+                    })
+
                     return result
 
+                },
+                worldMapList(){
+                   
+                    return  this.page.countrysn.partnerlst.concat(this.imp_count)
                 }
             },
             methods: {
@@ -425,7 +437,7 @@
                                     return {
                                         name: item.name,
                                         value: item.value,
-                                        code: item.hscode
+                                        code: item.hscode,
                                     }
                                 }),
                         }]
@@ -450,7 +462,8 @@
                             text: ['最小', '最大'],
                             realtime: false,
                             calculable: true,
-                            color: ['#c5e0fe', '#99ccfb', '#72b3f3', '#469ded', '#568cca'],
+                            // color: ['#c5e0fe', '#99ccfb', '#72b3f3', '#469ded', '#568cca'],
+                            color: ['#c5e0fe', '#568cca'],
                             orient: "horizontal",
                             formatter: function (value) { //标签的格式化工具。
                                 return '' // 范围标签显示内容。
@@ -495,38 +508,17 @@
                 },
                 worldMap2: function () {
                     // 逆差颜色  61c5c3
-
                     var _this = this;
                     var oMain = document.getElementById('product-map');
                     oMain.style.width = document.body.clientWidth - 30 + 'px';
                     var myChart = echarts.init(oMain);
                     option = {
                         backgroundColor: '#f8f8f8',
-                        _visualMap: {
-                            min: 0,
-                            show: false,
-                            max: 200000000000,
-                            itemWidth: 14,
-                            itemHeight: 60,
-                            left: 0,
-                            text: ['最小', '最大'],
-                            realtime: false,
-                            calculable: true,
-                            color: ['#c5e0fe', '#99ccfb', '#72b3f3', '#469ded', '#568cca'],
-                            orient: "horizontal",
-                            formatter: function (value) { //标签的格式化工具。
-                                return '' // 范围标签显示内容。
-                            },
-                            textStyle: {
-                                fontSize: 6
-                            }
-                        },
                         series: [{
                             name: '顺差',
                             type: 'map',
                             map: 'world',
                             stack: '地图',
-                            // selectedMode: 'multiple',
                             roam: true,
                             left: '2%',
                             top: '2%',
@@ -536,79 +528,23 @@
                             itemStyle: {
                                 normal: {
                                     areaColor: '#bdd6ea',
-                                    // color: 'red',
                                     borderColor: 'none',
                                 },
-                                emphasis: { // 也是选中样式
-                                    // borderWidth: 2,
-                                    // borderColor: '#fff',
-                                    // areaColor: 'red',
-                                    // label: {
-                                    //     show: true,
-                                    //     textStyle: {
-                                    //         color: '#fff'
-                                    //     }
-                                    // }
-                                }
                             },
-                            data: _this.page.countrysn.partnerlst.map(
+                            data: _this.worldMapList.map(
                                 function (item, index) {
-                                    return {
-                                        name: item.country_en,
-                                        value: item.value,
-                                        itemStyle: {
-                                            normal: {
-                                                color: '#568cca',
-                                                label: {
-                                                    show: true,
-                                                    textStyle: {
-                                                        color: '#fff',
-                                                        fontSize: 12
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }),
-                        }, {
-                            name: '逆差',
-                            type: 'map',
-                            map: 'world',
-                            roam: true,
-                            left: '2%',
-                            top: '2%',
-                            right: '2%',
-                            bottom: '4%',
-                            roam: false,
-                            itemStyle: {
-                                normal: {
-                                    areaColor: '#bdd6ea',
-                                    color: 'green',
-                                    borderColor: 'none',
-                                },
-                                emphasis: {
-                                    label: {
-                                        show: true
-                                    },
-                                    itemStyle: {
-                                        areaColor: '#f0f'
-                                    }
-                                }
-                            },
-                            data: _this.imp_count.map(
-                                function (item, index) {
-                                    console.log('imp',item)
+                                    var _color = item.nc ? '#61c5c3' : '#568cca';
                                     return {
                                         name: item.country_en,
                                         value: Math.abs(item.value),
                                         itemStyle: {
                                             normal: {
-                                                color: '#f0f',
+                                                color: _color,
                                                 label: {
                                                     show: true,
                                                     textStyle: {
                                                         color: '#fff',
-                                                        fontSize: 15
+                                                        fontSize: 12
                                                     }
                                                 }
                                             }
@@ -623,7 +559,7 @@
                     var _this = this;
                     var oMain = document.getElementById('product-chart');
                     oMain.style.width = document.body.clientWidth - 30 + 'px';
-                    oMain.style.height = 320 + 'px'
+                    oMain.style.height = 280 + 'px'
                     var myChart = echarts.init(oMain);
                     option = {
                         backgroundColor: '#f8f8f8',
@@ -683,7 +619,8 @@
                         }]
                     };
                     myChart.setOption(option);
-                }
+                },
+
             },
             mounted: function () {
 

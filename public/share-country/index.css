@@ -221,4 +221,22 @@
         display: inline-block;
     }
 
+    .type-notice{
+        position: absolute;
+        left:10px;
+        bottom:0px;
+
+    }
+    .type-notice li{
+        border-left:16px solid #568cca;
+        padding-left:10px;
+        margin-bottom:6px;
+        font-size:10px;
+    }
+    .type-notice li:last-child{
+        border-color:#61c5c3;
+    }
+
+    
+
     
