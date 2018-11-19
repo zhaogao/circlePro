@@ -38,13 +38,6 @@
         background:#0084ff;
         margin:10px 0 15px 0;
     }
-    .chart-box{
-        border:1px solid #efefef;
-    }
-    .chart-box .chart-body{
-        min-height:200px;
-        background:#ccc;
-    }
 
     .badge .badge-icon {
         display: inline-block;
@@ -84,8 +77,8 @@
    .report-list li{
        display: flex;
        justify-content: space-between;
-       padding-bottom:10px;
-       margin-bottom: 10px;
+       padding-bottom:15px;
+       margin-bottom: 15px;
        border-bottom:1px solid #efefef;
        
     } 
@@ -99,18 +92,33 @@
     }
     .table-list th {
         /* width:40%; */
-        padding: 8px 6px;
+        font-size:12px;
+        padding: 8px 5%;
         background: #e9eae5;
 
     }
     .table-list td{
-        padding:6px 10px;
+        padding:8px 5%;
     }
     .table-list td:last-child{
         text-align: right;
     }
     .table-list th:last-child{
-        width:45%;
+       text-align:right;
+    }
+    .table-list th:first-child{
+        text-align: left;
+    }
+    .table-list td:first-child{
+        width:26%;
+        text-align: left;
+    }
+    .table-list td:nth-child(2){
+        width:30%;
+        text-align: left;
+    }
+    .table-list th:nth-child(2){
+        text-align: left;
     }
     .report-list li:last-child{
         border-bottom:none;
@@ -144,11 +152,11 @@
     }
 
     .company-item{
-        padding:6px;
+        padding:12px 0px;
         display: flex;
         align-content: center;
     }
-    .company-item span{
+    .company-item .compony-icon{
         display: inline-block;
         width:36px;
         height:36px;
@@ -163,12 +171,19 @@
         box-shadow: 0 0 1px #999;
     }
 
-    .company-item div{
-        height: 50px;
+    .country-flag{
+        width:20px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .company-item>div{
+        /* height: 50px; */
         /* justify-content: center; */
-        flex: 1;
+        /* flex: 1;
         display: flex;
-        align-items: center;
+        align-items: center; */
+        width:88%;
         border-bottom: 1px solid #ddd;
     }
 
@@ -219,6 +234,30 @@
     .vertical-middle{
         vertical-align: middle;
         display: inline-block;
+    }
+
+    .country-item-box{
+        position: relative;
+    }
+
+    .country-item-box:after,.country-item-box:before{
+        content:'';
+        position: absolute;
+        top:20px;
+        border-style:solid;
+        border-color:transparent;
+        border-width:10px;
+
+    }
+
+    .country-item-box:after{
+        right:2px;
+        border-left-color:#fff;
+    }
+
+    .country-item-box:before{
+        right:0;
+        border-left-color:#666;
     }
 
     

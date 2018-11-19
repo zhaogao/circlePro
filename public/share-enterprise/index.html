@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta name="description" content="">
-	<meta name="author" content="">
+    <meta name="author" content="">
     <title id="title">...</title>
 </head>
-<link rel="stylesheet" href="/stylesheets/common.css">
-<link rel="stylesheet" href="./index.css?version=v1">
+<link rel="stylesheet" href="/stylesheets/common.css?version=v2">
+<link rel="stylesheet" href="./index.css?version=v2">
 
 <body>
     <div id="ladingbox" class="ladingbox">
@@ -56,7 +56,7 @@
             <div class="header-box">
                 <div class="badge">
                     <img :src="img_root+page.countryico" class="badge-icon" alt="">
-                    <span style="color:#adadad;vertical-align: middle;margin-left:4px;">{{page.country}}</span>
+                    <span class="gray-4" style="vertical-align: middle;margin-left:4px;">{{page.country}}</span>
                 </div>
                 <div class="portrait header-logo" :style="{width:headWidth+'px',height:headWidth+'px',backgroundImage:'url(' + (page.pic ? img_root + page.pic :'/images/share-1/banner-default.png') +')'}">
                     <span v-if="!page.pic">{{ page.company ? page.company.split('')[0].toUpperCase() : '-'}}</span>
@@ -70,7 +70,7 @@
                 <div style="padding:0px 0 10px;">
                     <strong class="ft-14">关于我们</strong>
                 </div>
-                <p v-if="page.remark" class="gray-text">{{page.remark}}</p>
+                <p v-if="page.remark" class="gray-2">{{page.remark}}</p>
                 <p v-else class="empty-text">暂无企业介绍</p>
             </div>
             <div class="block" style="margin-bottom:10px;">
@@ -79,9 +79,9 @@
                 </div>
                 <!-- <div class="section-line"></div> -->
                 <div v-if="productTotal > 0" class="chart-box" style="margin-bottom:20px;">
-                    <div class="chart-body" @click="handleDown" style="max-height:240px;overflow-y: auto;" id="product-area">
+                    <div class="chart-body" @click="handleDown" style="max-height:300px;overflow-y: auto;" id="product-area">
                         <div class="center">
-                            <span :key="index" v-if="index < 10" :style="[{color:colorList[index%8],marginLeft:index%4 * 5 +'px',fontSize:setFontSize(product.hs6star) }]"
+                            <span :key="index" v-if="index < 10" :style="[{color:colorList[index%8],marginLeft:index%4 * 5 +'px',fontSize:setFontSize(product.hs6star,index) }]"
                                 v-for="(product,index) in productyList"> {{setText(product.code_desc)}}</span>
                             <button v-if="productyList.length > 10" class="more" style="padding:8px 10px;" @click="handleDown">查看更多</button>
                         </div>
@@ -97,6 +97,10 @@
                 </div>
                 <!-- <div class="section-line"></div> -->
                 <div class="chart-box">
+                    <ul class="type-notice" >
+                        <li>进口</li>
+                        <li>出口</li>
+                    </ul>
                     <div class="chart-body" id="main"></div>
                     <div v-if="countryTotal > 0" class="chart-footer gray-text" style="padding:14px 6px;">
                         <p style="padding-left:3%;margin-bottom:8px;font-size:13px;">
@@ -106,7 +110,7 @@
                         <div class="clearfix">
                             <div v-if="index < 7" class="country-item" v-for="(country,index) in countryList">
                                 <img :src="img_root+country.ico" alt="">
-                                <p class="ellipsis" >{{country.name_chn}}</p>
+                                <p class="ellipsis">{{country.name_chn}}</p>
                             </div>
                             <div v-if="countryList.length > 7" class="country-item">
                                 <a class="country-more-btn" @click="handleDown" href="javascript:;">更多</a>
@@ -236,10 +240,28 @@
                         countryico: '',
                         remark: '',
                         countrydata: {
-                            exportcountrycnt: 0,
-                            exportcountrys: [],
-                            importcountrycnt: 0,
-                            importcountrys: []
+                            exportcountrycnt: 3,
+                            exportcountrys: [{
+                                    name_en: "Nigeria"
+                                },
+                                {
+                                    name_en: "Peru"
+                                },
+                                {
+                                    name_en: "United Kingdom"
+                                },
+                            ],
+                            importcountrycnt: 3,
+                            importcountrys: [{
+                                    name_en: "Colombia"
+                                },
+                                {
+                                    name_en: "Panama"
+                                },
+                                {
+                                    name_en: "United States"
+                                },
+                            ]
                         },
                         employee: [],
                         quoteinfo: {
@@ -278,22 +300,45 @@
                 },
                 countryList: function () {
                     var countrydata = this.page.countrydata;
+                    var exportList = countrydata.exportcountrys.map(function(item){
+                        item.direct = 1
+                        return item
+                    })
+                    var importList = countrydata.importcountrys.map(function(item){
+                        item.direct = -1
+                        return item
+                    })
                     var tmpList = [];
-                    $.extend(true, tmpList, countrydata.exportcountrys, countrydata.importcountrys)
+                    $.extend(true, tmpList,exportList,importList)
                     return tmpList;
                 },
                 productyList: function () {
                     var quoteinfo = this.page.quoteinfo;
                     var tmpList = [];
+
                     $.extend(true, tmpList, quoteinfo.exp_quotes, quoteinfo.imp_quotes)
+
+                    tmpList.sort(function(a,b){
+                        return  b.hs6star - a.hs6star;
+                    })
+
+                    tmpList = tmpList.slice(0,10)
+
+                    var middleIndex = Math.floor(tmpList.length/2);
+                    var maxItem = tmpList[0];
+                    var willFirst = tmpList[middleIndex]
+
+                    tmpList[middleIndex] = $.extend(true,{},maxItem)
+                    tmpList[0] = $.extend(true,{},willFirst)
+
                     return tmpList;
                 }
             },
             methods: {
-                setFontSize: function (star) {
+                setFontSize: function (star, index) {
                     var size = '';
                     if (star == 5) {
-                        size = 18
+                        size = 24
                     } else if (star == 4) {
                         size = 16
                     } else if (star == 3) {
@@ -305,6 +350,12 @@
                             size = 8
                         }
 
+                    }
+                    if(index == 4){
+                        size = 30
+                    }
+                    if(index == 3){
+                        size = 28
                     }
                     return size + 'px'
                 },
@@ -351,33 +402,35 @@
 
                     var _this = this;
                     var oMain = document.getElementById('main');
-                    oMain.style.width = document.body.clientWidth - 30 + 'px';
+                    oMain.style.width = document.body.clientWidth - 32 + 'px';
+                    oMain.style.height = document.body.clientWidth * 0.6 + 'px';
+
                     var myChart = echarts.init(document.getElementById('main'));
                     option = {
-                        backgroundColor: '#f8f8f8',
-                        visualMap: {
-                            min: 0,
-                            show: false,
-                            max: 1000000,
-                            text: ['High', 'Low'],
-                            realtime: false,
-                            calculable: true,
-                            color: ['#568cca', '#568cca']
-                        },
+                        backgroundColor: '#fbfbfb',
+                        // visualMap: {
+                        //     min: 0,
+                        //     show: false,
+                        //     max: 1000000,
+                        //     text: ['High', 'Low'],
+                        //     realtime: false,
+                        //     calculable: true,
+                        //     color: ['#568cca', '#568cca']
+                        // },
                         series: [{
                             backgroundColor: '#f0f',
                             name: 'World Population (2010)',
                             type: 'map',
                             mapType: 'world',
                             roam: true,
-                            left: '2%',
-                            top: '2%',
-                            right: '2%',
-                            bottom: '2%',
+                            left: '6%',
+                            top: '10%',
+                            right: '6%',
+                            bottom: '10%',
                             roam: false,
                             itemStyle: {
                                 normal: {
-                                    areaColor: '#bdd6ea',
+                                    areaColor: '#eaeff4',
                                     borderColor: 'none',
                                 },
                                 emphasis: {
@@ -387,9 +440,14 @@
                                 }
                             },
                             data: _this.countryList.map(function (item, index) {
+
+                                var color = item.direct > 0 ? '#57bca5' : '#558bc9';
                                 return {
                                     name: item.name_en,
                                     value: 100,
+                                    itemStyle:{
+                                        color:color
+                                    }
                                 }
                             }),
                         }]
@@ -402,8 +460,11 @@
 
                 var _this = this;
                 var params = this.getUrlParam('id')
+                // _this.init()
+                // return;
 
                 _this.loading = true
+               
                 // 'qql93128407',
                 $.ajax({
                     url: '/getcompanyinfo',

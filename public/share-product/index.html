@@ -93,7 +93,7 @@
                         </tbody>
                     </table>
                     <div class="center">
-                        <a class="more-btn" href="javascript:;">更多&gt;&gt;</a>
+                        <a class="more-btn"  @click="handleDown" href="javascript:;">更多&gt;&gt;</a>
                     </div>
                 </div>
                 <div style="margin-bottom:16px;">
@@ -194,11 +194,21 @@
                 </div>
             </div>
             <div class="block q-mb-10 ft-14">
-                <strong class=" ft-14">推荐企业</strong>
+                <p class="q-mb-10">
+                    <strong class=" ft-14">推荐企业</strong>
+                </p>
                 <ul>
                     <li :key="index" @click="handleDown" v-for="(company ,index) in page.companys" class="company-item">
-                        <span>{{company.companyname.split('')[0].toUpperCase() }}</span>
-                        <div>{{company.companyname}}</div>
+                        <span class="compony-icon">{{company.companyname.split('')[0].toUpperCase() }}</span>
+                        <div class="country-item-box" >
+                            <div>{{company.companyname}}</div>
+                            <p class="gray-text ft-12">xxxxxxxxxxx</p>
+                            <div class="ft-12" style="margin:4px 0 8px;" >
+                                <img src="http://120.79.19.33:8004/group1/M00/00/75/rBJTVls9xXaAJ3NAAAAcUfsDlOg243.png"
+                                    class="country-flag" alt="">
+                                <span class="gray-4" style="vertical-align: middle;margin-left:6px;">中国</span>
+                            </div>
+                        </div>
                     </li>
                 </ul>
 
@@ -215,8 +225,8 @@
                     <li>提供市场开拓服务，客户对接，数据分析服务</li>
                     <li>提供国际贸易信息发布，贸易服务撮合</li>
                 </ul>
-                <a class="btn-check"  @click="handleDown" href="javascript:;"> <img style="vertical-align: middle;margin-right:5px;" width="16"
-                        src="/images/share-1/search.png" alt=""> <span>查商品、查企业、查人脉</span></a>
+                <a class="btn-check" @click="handleDown" href="javascript:;"> <img style="vertical-align: middle;margin-right:5px;"
+                        width="16" src="/images/share-1/search.png" alt=""> <span>查商品、查企业、查人脉</span></a>
                 <div style="display:flex;margin-top:10px;">
                     <div class="flex-center">
                         <img src="/images/share-1/ewm_1.png" width="80%" alt="">
@@ -276,7 +286,7 @@
                             exp_company: 0,
                             imp_company: 0
                         },
-                        comapny_country:[],
+                        comapny_country: [],
                         report: {
                             imp_value: 0,
                             exp_value: 0,
@@ -429,10 +439,12 @@
 
                     var _this = this;
                     var oMain = document.getElementById('main');
-                    oMain.style.width = document.body.clientWidth - 30 + 'px';
+                    oMain.style.width = document.body.clientWidth - 32 + 'px';
+                    oMain.style.height = document.body.clientWidth * 0.6 + 'px';
                     var myChart = echarts.init(document.getElementById('main'));
+
                     option = {
-                        backgroundColor: '#f8f8f8',
+                        backgroundColor: '#fbfbfb',
                         visualMap: {
                             min: 0,
                             show: false,
@@ -448,14 +460,14 @@
                             type: 'map',
                             mapType: 'world',
                             roam: true,
-                            left: '2%',
-                            top: '2%',
-                            right: '2%',
-                            bottom: '2%',
+                            left: '6%',
+                            top: '10%',
+                            right: '6%',
+                            bottom: '10%',
                             roam: false,
                             itemStyle: {
                                 normal: {
-                                    areaColor: '#bdd6ea',
+                                    areaColor: '#eaeff4',
                                     borderColor: 'none',
                                 },
                                 emphasis: {
@@ -497,7 +509,8 @@
 
                         setTimeout(function () {
                             var oTitle = document.getElementById('title')
-                            oTitle.innerHTML = oTitle.innerHTML + '-' + _this.page.baseinfo.code_desc;
+                            oTitle.innerHTML = oTitle.innerHTML + '-' + _this.page.baseinfo
+                                .code_desc;
                             _this.loadJsAsync(_this.syncjs, _this.init)
                         }, 100)
 

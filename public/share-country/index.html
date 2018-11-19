@@ -7,11 +7,11 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <title id="title">宏观数据分析</title>
 </head>
-<link rel="stylesheet" href="/stylesheets/common.css">
-<link rel="stylesheet" href="./index.css?version=v1">
+<link rel="stylesheet" href="/stylesheets/common.css?version=v2">
+<link rel="stylesheet" href="./index.css?version=v2">
 
 <body>
-    <div id="app" :style="{backgroundColor:loading ? '#fff' : '#f1f1f1'}">
+    <div id="app" style="color:#333;" :style="{backgroundColor:loading ? '#fff' : '#f1f1f1'}">
         <template v-if="loading">
             <div v-for="index in 5" :key="index" class="ladingbox">
                 <div class="preload">
@@ -29,7 +29,7 @@
                     alt="">
             </div>
             <div class="block q-mb-10">
-                <div style="margin-bottom:16px;">
+                <div style="margin-bottom:20px;">
                     <strong class=" ft-14">进口地区的商品统计</strong>
                 </div>
                 <ul class="report-list">
@@ -53,11 +53,10 @@
                 </ul>
                 <div class="chart-box" style="margin-bottom:20px;">
                     <div class="chart-body" id="treemap-imp"></div>
-                    <p v-else style="margin:12px;" class="empty-text">暂无伙伴国数据</p>
                 </div>
             </div>
             <div class="block q-mb-10">
-                <div style="margin-bottom:16px;">
+                <div style="margin-bottom:20px;">
                     <strong class=" ft-14">进口伙伴地区的统计</strong>
                 </div>
                 <ul class="report-list">
@@ -72,11 +71,10 @@
                 </ul>
                 <div class="chart-box" style="margin-bottom:20px;">
                     <div class="chart-body" id="map-imp"></div>
-                    <p v-else style="margin:12px;" class="empty-text">暂无伙伴国数据</p>
                 </div>
             </div>
             <div class="block q-mb-10">
-                <div style="margin-bottom:16px;">
+                <div style="margin-bottom:20px;">
                     <strong class=" ft-14">出口地区的商品统计</strong>
                 </div>
                 <ul class="report-list">
@@ -97,13 +95,13 @@
                         <span>HS {{page.export.productcode}}</span>
                     </li>
                 </ul>
-                <div class="chart-box" style="margin-bottom:20px;">
+                <div  class="chart-box" style="margin-bottom:20px;">
                     <div class="chart-body" id="treemap-exp"></div>
                     <p v-else style="margin:12px;" class="empty-text">暂无伙伴国数据</p>
                 </div>
             </div>
             <div class="block q-mb-10">
-                <div style="margin-bottom:16px;">
+                <div style="margin-bottom:20px;">
                     <strong class=" ft-14">出口伙伴地区的统计</strong>
                 </div>
                 <ul class="report-list">
@@ -122,7 +120,7 @@
                 </div>
             </div>
             <div class="block q-mb-10">
-                <div style="margin-bottom:16px;">
+                <div style="margin-bottom:20px;">
                     <strong class=" ft-14">商品顺逆差统计</strong>
                 </div>
                 <ul class="report-list">
@@ -142,7 +140,7 @@
                         <span>最大的逆差商品</span>
                         <span>HS {{page.countrysn.productsn[1]}}</span>
                     </li>
-                    <li>
+                    <li class="chart-info">
                         <span>逆差</span>
                         <span>顺差</span>
                     </li>
@@ -153,7 +151,7 @@
 
             </div>
             <div class="block q-mb-10">
-                <div style="margin-bottom:16px;">
+                <div class="q-mb-20">
                     <strong class=" ft-14">伙伴地区的顺逆差统计</strong>
                 </div>
                 <ul class="report-list">
@@ -161,18 +159,19 @@
                         <span>最大顺差地区</span>
                         <span>{{page.countrysn.maxpartner}}</span>
                     </li>
+                    <div class="chart-box q-mb-20">
+                        <div class="chart-body" id="product-map-sc"></div>
+                    </div>
                     <li>
                         <span>最大逆差地区</span>
                         <span>{{page.countrysn.minpartner}}</span>
                     </li>
+                    <div class="chart-box q-mb-20">
+                        <div class="chart-body q-mb-20" id="product-map-nc"></div>
+                    </div>
                 </ul>
-                <div class="chart-box" style="margin-bottom:20px;">
-                    <div class="chart-body" id="product-map"></div>
-                    <ul class="type-notice" >
-                        <li>顺差</li>
-                        <li>逆差</li>
-                    </ul>
-                </div>
+
+
             </div>
             <div class="block q-mb-10" style="border-bottom:1px solid #e0e0e0;padding-bottom:40px;background:#fff;">
                 <div class="dated-line">
@@ -283,6 +282,11 @@
                 },
                 productList: function () {
                     var target = this.page.countrysn;
+
+                    target.productsc.sort(function (m, n) {
+                        return m.value - n.value;
+                    })
+
                     var list = target.productnc.concat(target.productsc);
 
                     return list.map(function (item) {
@@ -307,14 +311,14 @@
                                 country: imp_country_zf[e].country,
                                 country_en: imp_country_zf[e].country_en,
                                 value: target[0].value - imp_country_zf[e].value,
-                                nc:true,
+                                nc: true,
                             })
                         } else {
                             result.push({
                                 country: imp_country_zf[e].country,
                                 country_en: imp_country_zf[e].country_en,
                                 value: -imp_country_zf[e].value,
-                                nc:true,
+                                nc: true,
                             })
                         }
 
@@ -324,16 +328,16 @@
                         return a.value - b.value
                     })
 
-                    result = result.filter(function(item){
+                    result = result.filter(function (item) {
                         return item.value < 0
                     })
 
                     return result
 
                 },
-                worldMapList(){
-                   
-                    return  this.page.countrysn.partnerlst.concat(this.imp_count)
+                worldMapList() {
+
+                    return this.page.countrysn.partnerlst.concat(this.imp_count)
                 }
             },
             methods: {
@@ -381,7 +385,8 @@
 
                     var _this = this;
                     var oMain = document.getElementById('treemap-' + type);
-                    oMain.style.width = document.body.clientWidth - 30 + 'px';
+                    oMain.style.width = document.body.clientWidth - 32 + 'px';
+                    oMain.style.height = document.body.clientWidth * 0.6 + 'px';
                     var myChart = echarts.init(oMain);
 
                     option = {
@@ -408,25 +413,13 @@
                                             tmp.join('') + '}'
 
                                     },
-                                    rich: {
-                                        name: {
-                                            fontSize: 4,
-                                            color: '#fff'
-                                        },
-                                    }
+                                    rich: {}
                                 }
                             },
                             breadcrumb: {
                                 show: false,
                             },
-                            emphasis: {
-                                label: {
-                                    fontSize: 18
-                                },
-                                upperLabel: {
-                                    fontSize: 18
-                                }
-                            },
+
                             itemStyle: {
                                 normal: {
                                     borderColor: '#fff'
@@ -434,36 +427,45 @@
                             },
                             data: _this.page[(type == 'imp') ? 'import' : 'export'].productlst.map(
                                 function (item, index) {
+                                    let _fontSize = 12 - index < 2 ? 2 : 12 - index;
                                     return {
                                         name: item.name,
                                         value: item.value,
                                         code: item.hscode,
+                                        label: {
+                                            fontSize: _fontSize,
+                                        }
                                     }
                                 }),
                         }]
                     };
                     myChart.setOption(option);
+                    myChart.on('click',function(){
+                       setTimeout(function(){
+                        _this.handleDown()
+                       },100)
+                    })
                 },
                 worldMap: function (type) {
 
                     var _this = this;
                     var oMain = document.getElementById('map-' + type);
-                    oMain.style.width = document.body.clientWidth - 30 + 'px';
+                    oMain.style.width = document.body.clientWidth - 32 + 'px';
+                    oMain.style.height = document.body.clientWidth * 0.6 + 'px';
                     var myChart = echarts.init(oMain);
                     option = {
-                        backgroundColor: '#f8f8f8',
+                        backgroundColor: '#fbfbfb',
                         visualMap: {
                             min: 0,
                             show: true,
                             max: 200000000000,
-                            itemWidth: 14,
+                            itemWidth: 8,
                             itemHeight: 60,
                             left: 0,
                             text: ['最小', '最大'],
                             realtime: false,
                             calculable: true,
-                            // color: ['#c5e0fe', '#99ccfb', '#72b3f3', '#469ded', '#568cca'],
-                            color: ['#c5e0fe', '#568cca'],
+                            color: ['#b7d7fc', '#3982f7'],
                             orient: "horizontal",
                             formatter: function (value) { //标签的格式化工具。
                                 return '' // 范围标签显示内容。
@@ -478,14 +480,14 @@
                             type: 'map',
                             mapType: 'world',
                             roam: true,
-                            left: '2%',
-                            top: '2%',
-                            right: '2%',
-                            bottom: '4%',
+                            left: '6%',
+                            top: '10%',
+                            right: '6%',
+                            bottom: '10%',
                             roam: false,
                             itemStyle: {
                                 normal: {
-                                    areaColor: '#bdd6ea',
+                                    areaColor: '#eaeff4',
                                     borderColor: 'none',
                                 },
                                 emphasis: {
@@ -504,34 +506,133 @@
                         }]
                     };
                     myChart.setOption(option);
+                    myChart.on('click',function(){
+                       setTimeout(function(){
+                        _this.handleDown()
+                       },100)
+                    })
 
                 },
-                worldMap2: function () {
+                worldMapSc: function () {
                     // 逆差颜色  61c5c3
                     var _this = this;
-                    var oMain = document.getElementById('product-map');
-                    oMain.style.width = document.body.clientWidth - 30 + 'px';
+                    var oMain = document.getElementById('product-map-sc');
+                    oMain.style.width = document.body.clientWidth - 32 + 'px';
+                    oMain.style.height = document.body.clientWidth * 0.6 + 'px';
                     var myChart = echarts.init(oMain);
                     option = {
-                        backgroundColor: '#f8f8f8',
+                        backgroundColor: '#fbfbfb',
+                        visualMap: {
+                            min: 0,
+                            show: true,
+                            max: 20000000000,
+                            itemWidth: 8,
+                            itemHeight: 60,
+                            left: 0,
+                            text: ['最小', '最大'],
+                            realtime: false,
+                            calculable: true,
+                            color: ['#d72823', '#ffc4c2'],
+                            orient: "horizontal",
+                            formatter: function (value) { //标签的格式化工具。
+                                return '' // 范围标签显示内容。
+                            },
+                            textStyle: {
+                                fontSize: 6
+                            }
+                        },
                         series: [{
                             name: '顺差',
                             type: 'map',
                             map: 'world',
                             stack: '地图',
                             roam: true,
-                            left: '2%',
-                            top: '2%',
-                            right: '2%',
-                            bottom: '4%',
+                            left: '6%',
+                            top: '10%',
+                            right: '6%',
+                            bottom: '10%',
                             roam: false,
                             itemStyle: {
                                 normal: {
-                                    areaColor: '#bdd6ea',
+                                    areaColor: '#e9eff4',
                                     borderColor: 'none',
                                 },
                             },
-                            data: _this.worldMapList.map(
+                            data: _this.page.countrysn.partnerlst.map(
+                                function (item, index) {
+                                    // var _color = item.nc ? '#61c5c3' : '#568cca';
+                                    return {
+                                        name: item.country_en,
+                                        value: Math.abs(item.value),
+                                        itemStyle: {
+                                            normal: {
+                                                // color: _color,
+                                                label: {
+                                                    show: true,
+                                                    textStyle: {
+                                                        color: '#fff',
+                                                        fontSize: 12
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }),
+                        }]
+                    };
+                    myChart.setOption(option);
+                    myChart.on('click',function(){
+                       setTimeout(function(){
+                        _this.handleDown()
+                       },100)
+                    })
+                },
+                worldMapNc: function () {
+                    // 逆差颜色  61c5c3
+                    var _this = this;
+                    var oMain = document.getElementById('product-map-nc');
+                    oMain.style.width = document.body.clientWidth - 32 + 'px';
+                    oMain.style.height = document.body.clientWidth * 0.6 + 'px';
+                    var myChart = echarts.init(oMain);
+                    option = {
+                        backgroundColor: '#fbfbfb',
+                        visualMap: {
+                            min: 0,
+                            show: true,
+                            max: 20000000000,
+                            itemWidth: 8,
+                            itemHeight: 60,
+                            left: 0,
+                            text: ['最小', '最大'],
+                            realtime: false,
+                            calculable: true,
+                            color: ['#c1edf2', '#5c9da5'],
+                            orient: "horizontal",
+                            formatter: function (value) { //标签的格式化工具。
+                                return '' // 范围标签显示内容。
+                            },
+                            textStyle: {
+                                fontSize: 6
+                            }
+                        },
+                        series: [{
+                            name: '顺差',
+                            type: 'map',
+                            map: 'world',
+                            stack: '地图',
+                            roam: true,
+                            left: '6%',
+                            top: '10%',
+                            right: '6%',
+                            bottom: '10%',
+                            roam: false,
+                            itemStyle: {
+                                normal: {
+                                    areaColor: '#e9eff4',
+                                    borderColor: 'none',
+                                },
+                            },
+                            data: _this.imp_count.map(
                                 function (item, index) {
                                     var _color = item.nc ? '#61c5c3' : '#568cca';
                                     return {
@@ -554,12 +655,17 @@
                         }]
                     };
                     myChart.setOption(option);
+                    myChart.on('click',function(){
+                       setTimeout(function(){
+                        _this.handleDown()
+                       },100)
+                    })
                 },
                 productChart: function () {
                     var _this = this;
                     var oMain = document.getElementById('product-chart');
-                    oMain.style.width = document.body.clientWidth - 30 + 'px';
-                    oMain.style.height = 280 + 'px'
+                    oMain.style.width = document.body.clientWidth - 32 + 'px';
+                    oMain.style.height = 260 + 'px'
                     var myChart = echarts.init(oMain);
                     option = {
                         backgroundColor: '#f8f8f8',
@@ -572,7 +678,8 @@
                                 }
                             },
                             axisLabel: {
-                                formatter: '{value} 亿（美元）'
+                                formatter: '{value} 亿（美元）',
+                                fontSize: 8,
                             }
                         },
                         grid: {
@@ -592,10 +699,8 @@
                                 show: true,
                                 formatter: function (params) {
                                     var str = params.data.name;
-                                    if (str.length > 10) {
-                                        str = str.split('').splice(0, 10);
-                                        str.push('...');
-                                        str.join('')
+                                    if (str.length > 5) {
+                                        str = str.slice(0, 3) + '...'
                                     }
                                     return 'HS ' + params.data.hscode + ' ' + str
                                 },
@@ -604,6 +709,7 @@
                             data: _this.productList.map(
                                 function (item, index) {
                                     var _color = item.value > 0 ? '#e0232a' : '#52aab8';
+                                    var direct = item.value > 0 ? 'right' : 'left';
                                     return {
                                         name: item.name,
                                         value: item.value,
@@ -612,7 +718,12 @@
                                             color: _color
                                         },
                                         label: {
-                                            fontSize: 4,
+                                            fontSize: 6,
+                                            // align:direct,
+                                            rich: {
+                                                // align:direct
+                                            }
+                                            // align:direct
                                         }
                                     }
                                 }),
@@ -653,18 +764,13 @@
                             _this.loadJsAsync(_this.syncjs, function () {
                                 _this.worldMap('imp')
                                 _this.worldMap('exp')
-                                _this.worldMap2()
+                                _this.worldMapNc()
+                                _this.worldMapSc()
                                 _this.productChart()
                             })
 
-
                         }, 100)
 
-                        // 加载进出口商品地区  worldmap
-
-                        // 加载顺逆差 条形图
-
-                        // 加载顺逆差 worldmap
 
                     },
                     error: function () {

@@ -7,8 +7,8 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <title id="title">...</title>
 </head>
-<link rel="stylesheet" href="/stylesheets/common.css">
-<link rel="stylesheet" href="./index.css?version=v1">
+<link rel="stylesheet" href="/stylesheets/common.css?version=v2">
+<link rel="stylesheet" href="./index.css?version=v2">
 
 <body>
     <div id="app" :style="{backgroundColor:loading ? '#fff' : '#f1f1f1'}">
@@ -42,23 +42,23 @@
                         height="100%" alt="">
                 </div>
                 <p class="ft-16" style="margin-bottom:5px;">
-                    <strong class="vertical-middle">{{page.first_name}}{{page.last_name}}</strong> <span class="vertical-middle">|</span>
-                    <span class="gray-text vertical-middle" style="color:#6d6d6d;">{{page.job}}</span>
+                    <strong class="vertical-middle">{{page.first_name}}{{page.last_name}}</strong> <span class="vertical-middle gray-3"  >|</span>
+                    <span class="gray-text vertical-middle gray-2"  >{{page.job}}</span>
                 </p>
-                <p class="" style="color:#2c2c2c;">{{page.company}}</p>
-                <p class="" style="color:#2c2c2c;">{{page.company_en}}</p>
+                <p class="" style="color:#333;">{{page.company}}</p>
+                <p class="" style="color:#333;">{{page.company_en}}</p>
             </div>
             <div class="block q-mb-10">
                 <div style="padding-bottom:10px;">
                     <strong class="ft-14">个人介绍</strong>
-                </div>
-                <p class="gray-text">{{page.signature}}</p>
+                </div> 
+                <p class="gray-4">{{page.signature}}</p>
             </div>
             <div class="block q-mb-10">
                 <div style="padding-bottom:10px;">
                     <strong class="ft-14">联系方式</strong>
                 </div>
-                <ul class="gray-text">
+                <ul class="gray-2">
                     <li class="concat-item">
                         <img src="/images/share-1/phone.png" class="item-icon" alt="">
                         <span>{{page.phone ? page.phone : '-'}}</span>
@@ -86,14 +86,14 @@
                 <div style="padding-bottom:18px;">
                     <strong class="ft-14">Ta关注的业务</strong>
                 </div>
-                <div class="card-box borderd business-item" v-show="index < shownum" v-for="(item,index) in page.quotes"
+                <div class="card-box business-item" v-show="index < shownum" v-for="(item,index) in page.quotes"
                     :key="index">
                     <div style="margin:0 20px;">
                         <span class="business-type">{{item.remark.business}}</span>
                     </div>
 
-                    <p style="margin:0 20px;">{{item.remark.remark}}</p>
-                    <div class="block-card" style="color:#7d7d7d;">
+                    <p style="margin:0 20px;" class="gray-1 " >{{item.remark.remark}}</p>
+                    <div class="block-card ft-12 gray-3 ellipsis-2" >
                         HS {{item.hscode}} {{item.code_desc}}
                     </div>
                 </div>
@@ -163,7 +163,7 @@
                         last_name: '-',
                         job: '-',
                         company: '--',
-                        company_en: 'xinxing dsfad  adfsfsadf',
+                        company_en: '',
                         addurl: '', //添加好友的app路径
                         realemployee: 0, // 0 认证 1 未认证
                         signature: '-',

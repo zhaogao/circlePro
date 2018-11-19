@@ -38,14 +38,15 @@
         background:#0084ff;
         margin:10px 0 15px 0;
     }
-    .chart-box{
-        border:1px solid #efefef;
-    }
-    .chart-box .chart-body{
-        min-height:200px;
-        background:#ccc;
-    }
 
+    .chart-info{
+        position: absolute;
+        z-index: 2000;
+        bottom: -90px;
+        font-size: 10px;
+        width: 100%;
+        padding: 0 2%;
+    }
     .badge .badge-icon {
         display: inline-block;
         width: 16px;
@@ -81,11 +82,16 @@
         display: inline-block;
     }
 
+    .report-list{
+        position: relative;
+    }
+
    .report-list li{
+       
        display: flex;
        justify-content: space-between;
-       padding-bottom:10px;
-       margin-bottom: 10px;
+       padding-bottom:15px;
+       margin-bottom: 15px;
        border-bottom:1px solid #efefef;
        
     } 
@@ -221,21 +227,7 @@
         display: inline-block;
     }
 
-    .type-notice{
-        position: absolute;
-        left:10px;
-        bottom:0px;
 
-    }
-    .type-notice li{
-        border-left:16px solid #568cca;
-        padding-left:10px;
-        margin-bottom:6px;
-        font-size:10px;
-    }
-    .type-notice li:last-child{
-        border-color:#61c5c3;
-    }
 
     
 
