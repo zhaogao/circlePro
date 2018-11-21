@@ -7,6 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta name="description" content="">
     <meta name="author" content="">
+
     <title id="title">...</title>
 </head>
 <link rel="stylesheet" href="/stylesheets/common.css?version=v2">
@@ -126,23 +127,28 @@
                 </div>
                 <ul class="gray-text">
                     <li class="concat-item">
-                        <img src="/images/share-1/phone.png" class="item-icon" alt="">
+                        <!-- <img src="/images/share-1/phone.png" class="item-icon" alt=""> -->
+                        <span>电话：</span>
                         <span>{{page.mobile ? page.mobile :'-'}}</span>
                     </li>
                     <li class="concat-item">
-                        <img src="/images/share-1/email.png" class="item-icon" alt="">
+                        <!-- <img src="/images/share-1/email.png" class="item-icon" alt=""> -->
+                        <span>邮箱：</span>
                         <span>{{page.email ? page.email :'-'}}</span>
                     </li>
                     <li class="concat-item">
-                        <img src="/images/share-1/address.png" class="item-icon" alt="">
+                        <!-- <img src="/images/share-1/address.png" class="item-icon" alt=""> -->
+                        <span>地址：</span>
                         <span>{{page.address ? page.address :'-'}}</span>
                     </li>
                     <li class="concat-item">
-                        <img src="/images/share-1/site.png" class="item-icon" alt="">
+                        <!-- <img src="/images/share-1/site.png" class="item-icon" alt=""> -->
+                        <span>网址：</span>
                         <span>{{page.netaddress ? page.netaddress :'-'}}</span>
                     </li>
                     <li class="concat-item">
-                        <img src="/images/share-1/fax.png" class="item-icon" alt="">
+                        <!-- <img src="/images/share-1/fax.png" class="item-icon" alt=""> -->
+                        <span>传真：</span>
                         <span>{{page.fax ? page.fax :'-'}}</span>
                     </li>
                 </ul>
@@ -193,7 +199,7 @@
                     </div>
                 </div>
             </div>
-            <div class="fixed-down">
+            <div class="fixed-down" :style="{bottom:isIphoneX ? '32px' :'0' }">
                 <img src="/images/share-1/logo.png" style="height:35px;margin:7px 0 0 12px;" alt="">
                 <a id="down-btn" @click="handleDown" href="javascript:;" class="pull-right down-btn">下载</a>
             </div>
@@ -222,6 +228,7 @@
                     showMore: true,
                     shownum: 3,
                     random: ['38%', '45%', '40%', '32%', '55%'],
+                    isIphoneX:config.isIphoneX(),
                     img_root: config.img_root,
                     showMask: false,
                     ios_app: config.ios_app,

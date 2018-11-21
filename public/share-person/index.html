@@ -60,20 +60,23 @@
                 </div>
                 <ul class="gray-2">
                     <li class="concat-item">
-                        <img src="/images/share-1/phone.png" class="item-icon" alt="">
+                        <!-- <img src="/images/share-1/phone.png" class="item-icon" alt=""> -->
+                        <span>电话：</span>
                         <span>{{page.phone ? page.phone : '-'}}</span>
                     </li>
                     <li class="concat-item">
-                        <img src="/images/share-1/email.png" style="height:14px;" class="item-icon" alt="">
+                        <!-- <img src="/images/share-1/email.png" style="height:14px;" class="item-icon" alt=""> -->
+                        <span>邮箱：</span>
                         <span>{{page.contact.email ? page.contact.email : '-'}}</span>
                     </li>
                     <li class="concat-item" :key="index" v-for="(item,index) in page.contact.talksoft">
-                        <img :src="'/images/share-1/' + item.key +'.png' " class="item-icon" alt="">
+                        <!-- <img :src="'/images/share-1/' + item.key +'.png' " class="item-icon" alt=""> -->
+                        <span>{{talkosftLabel[item.key]}}：</span>
                         <span>{{item.value}}</span>
                     </li>
                     <li v-if="page.cardurl" class="concat-item">
-                        <img src="/images/share-1/card.png" style="height:14px;" class="item-icon" alt="">
-                        <span>名片</span>
+                        <!-- <img src="/images/share-1/card.png" style="height:14px;" class="item-icon" alt=""> -->
+                        <span>名片：</span>
                     </li>
                 </ul>
                 <div v-if="page.cardurl" style="overflow-x: auto;overflow-y:hidden;margin-top:10px;">
@@ -125,7 +128,7 @@
                     </div>
                 </div>
             </div>
-            <div class="fixed-down">
+            <div class="fixed-down" :style="{bottom:isIphoneX ? '32px' :'0' }" >
                 <img src="/images/share-1/logo.png" style="height:35px;margin:7px 0 0 12px;" alt="">
                 <a id="down-btn" href="javascript:;" @click="handleDown" class="pull-right down-btn">下载</a>
             </div>
@@ -154,6 +157,7 @@
                     shownum: 3,
                     random: ['38%', '45%', '40%', '32%', '55%'],
                     showMask: false,
+                    isIphoneX:config.isIphoneX(),
                     img_root: config.img_root,
                     ios_app: config.ios_app,
                     android_app: config.android_app,
@@ -181,7 +185,13 @@
                         },
                         cardurl: '',
                         quotes: []
-                    }
+                    },
+                    talkosftLabel:{
+                        qq:'QQ',
+                        weibo:'微博',
+                        weixin:'微信',
+                        linkedin:'领英',
+                    },
                 }
             },
             computed: {

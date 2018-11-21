@@ -238,7 +238,7 @@
                     </div>
                 </div>
             </div>
-            <div class="fixed-down">
+            <div class="fixed-down" :style="{bottom:isIphoneX ? '32px' :'0' }">
                 <img src="/images/share-1/logo.png" style="height:35px;margin:7px 0 0 12px;" alt="">
                 <a id="down-btn" href="javascript:;" @click="handleDown" class="pull-right down-btn">下载</a>
             </div>
@@ -268,6 +268,7 @@
                     showMore: true,
                     shownum: 3,
                     showMask: false,
+                    isIphoneX:config.isIphoneX(),
                     img_root: config.img_root,
                     ios_app: config.ios_app,
                     android_app: config.android_app,
