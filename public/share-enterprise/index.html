@@ -10,8 +10,8 @@
 
     <title id="title">...</title>
 </head>
-<link rel="stylesheet" href="/stylesheets/common.css?version=v2">
-<link rel="stylesheet" href="./index.css?version=v2">
+<link rel="stylesheet" href="/stylesheets/common.css?version=v3">
+<link rel="stylesheet" href="./index.css?version=v3">
 
 <body>
     <div id="ladingbox" class="ladingbox">
@@ -63,26 +63,26 @@
                     <span v-if="!page.pic">{{ page.company ? page.company.split('')[0].toUpperCase() : '-'}}</span>
                 </div>
                 <div style="padding: 0px 10%">
-                    <strong class="vertical-middle ft-16" style="margin-bottom:0.5em;">{{page.company}}</strong>
-                    <p v-if="page.company_en" style="color:#666;">{{page.company_en}}</p>
+                    <strong class="vertical-middle ft-18" style="margin-bottom:0.5em;">{{page.company}}</strong>
+                    <p v-if="page.company_en" class="ft-13" >{{page.company_en}}</p>
                 </div>
             </div>
             <div class="block" style="margin-bottom:10px;">
                 <div style="padding:0px 0 10px;">
-                    <strong class="ft-14">关于我们</strong>
+                    <strong class="ft-16">关于我们</strong>
                 </div>
-                <p v-if="page.remark" class="gray-2">{{page.remark}}</p>
+                <p v-if="page.remark" class="">{{page.remark}}</p>
                 <p v-else class="empty-text">暂无企业介绍</p>
             </div>
             <div class="block" style="margin-bottom:10px;">
                 <div style="margin-bottom:15px;">
-                    <strong class="ft-14">进出口商品分析</strong>
+                    <strong class="ft-16">进出口商品分析</strong>
                 </div>
                 <!-- <div class="section-line"></div> -->
-                <div v-if="productTotal > 0" class="chart-box" style="margin-bottom:20px;">
+                <div v-if="productTotal > 0" class="chart-box" style="margin-bottom:30px;">
                     <div class="chart-body" @click="handleDown" style="max-height:300px;overflow-y: auto;" id="product-area">
                         <div class="center">
-                            <span :key="index" v-if="index < 10" :style="[{color:colorList[index%8],marginLeft:index%4 * 5 +'px',fontSize:setFontSize(product.hs6star,index) }]"
+                            <span :key="index" v-if="index < 10" :style="[{color:colorList[index%8],fontSize:setFontSize(product.hs6star,index) }]"
                                 v-for="(product,index) in productyList"> {{setText(product.code_desc)}}</span>
                             <button v-if="productyList.length > 10" class="more" style="padding:8px 10px;" @click="handleDown">查看更多</button>
                         </div>
@@ -94,19 +94,22 @@
                 </div>
                 <p v-else style="margin-bottom:12px;" class="empty-text">暂无商品数据</p>
                 <div style="margin-bottom:15px;">
-                    <strong class="ft-14">进出口国家分析</strong>
+                    <strong class="ft-16">进出口国家分析</strong>
                 </div>
                 <!-- <div class="section-line"></div> -->
                 <div class="chart-box">
-                    <ul class="type-notice" >
+                    <!-- <ul class="type-notice" >
                         <li>进口</li>
                         <li>出口</li>
-                    </ul>
+                    </ul> -->
                     <div class="chart-body" id="main"></div>
                     <div v-if="countryTotal > 0" class="chart-footer gray-text" style="padding:14px 6px;">
                         <p style="padding-left:3%;margin-bottom:8px;font-size:13px;">
-                            公司进口国家和地区共<span class="blue-text"> {{page.countrydata.importcountrycnt}}</span> 个；出口国家和地区共
-                            <span class="blue-text">{{page.countrydata.exportcountrycnt}}</span> 种。
+                            <span class="tag-item imp" >进口</span>
+                            <span class="blue-text"> {{page.countrydata.importcountrycnt}}</span><span> 个国家，</span>
+                            <span class="tag-item exp">出口</span>
+                            
+                            <span class="blue-text">{{page.countrydata.exportcountrycnt}}</span> <span>个国家</span>
                         </p>
                         <div class="clearfix">
                             <div v-if="index < 7" class="country-item" v-for="(country,index) in countryList">
@@ -121,11 +124,11 @@
                     <p v-else style="margin:12px;" class="empty-text">暂无伙伴国数据</p>
                 </div>
             </div>
-            <div class="block" style="text-align:left;border-top:1px solid #e7e7e7;margin-bottom:10px;">
+            <div class="block" style="text-align:left;margin-bottom:10px;">
                 <div style="padding-bottom:10px;">
-                    <strong class="ft-14">联系方式</strong>
+                    <strong class="ft-16">联系方式</strong>
                 </div>
-                <ul class="gray-text">
+                <ul class="">
                     <li class="concat-item">
                         <!-- <img src="/images/share-1/phone.png" class="item-icon" alt=""> -->
                         <span>电话：</span>
@@ -153,36 +156,36 @@
                     </li>
                 </ul>
             </div>
-            <div class="block" style="border-bottom:1px solid #e0e0e0;margin-bottom:10px;">
+            <div class="block" style="margin-bottom:10px;">
                 <div style="padding-bottom:18px;">
-                    <strong class="ft-14">企业员工</strong>
+                    <strong class="ft-16">企业员工</strong>
                 </div>
                 <template v-if="page.employee.length > 0">
                     <div class="img-item business-item" v-if="index < shownum " v-for="(staff,index) in page.employee"
                         :key="index">
                         <img :src="staff.pic ?  img_root + staff.pic: '/images/share-1/head-default.png'" alt="">
-                        <div style="flex:1;padding-top:2%;">
+                        <div style="flex:1;">
                             <p style="color:#292929;">{{staff.name}}</p>
-                            <p class="ft-10" style="margin-top:0.5em;color:#888888;">{{staff.job}}</p>
+                            <p class="ft-10" style="color:#888888;">{{staff.job}}</p>
                         </div>
                         <div class="add-btn-box" style="">
                             <a class="add-btn" @click="handleDown" href="javascript:;"><span class="ft-16">+ </span> 好友</a>
                         </div>
                     </div>
                     <div class="center" v-if="page.employee.length > shownum">
-                        <button class="more" style="padding:8px 10px;" @click="handleDown">查看更多</button>
+                        <button class="more" style="padding:8px 10px;" @click="handleDown">查看更多>></button>
                     </div>
                 </template>
                 <p v-else class="empty-text">暂无注册员工</p>
             </div>
             <div class="block" style="border-bottom:1px solid #e0e0e0;padding-bottom:40px;background:#fff;">
                 <div class="dated-line">
-                    <strong class="ft-14">关于圈企来APP</strong>
+                    <strong class="ft-16">关于圈企来APP</strong>
                 </div>
-                <p style="margin:15px 0 8px 0;">打造国际贸易一站式服务平台：</p>
+                <!-- <p style="margin:15px 0 8px 0;">打造国际贸易一站式服务平台：</p> -->
                 <ul class="info-list">
-                    <li>提供全球150+家企业进出口数据</li>
-                    <li>8000多个商品宏观分析</li>
+                    <li>全球150万+家企业进出口数据</li>
+                    <li>8000多个商品进出口宏观分析</li>
                     <li>提供市场开拓服务，客户对接，数据分析服务</li>
                     <li>提供国际贸易信息发布，贸易服务撮合</li>
                 </ul>
@@ -190,7 +193,7 @@
                         width="16" src="/images/share-1/search.png" alt=""> <span>查商品、查企业、查人脉</span></a>
                 <div style="display:flex;margin-top:10px;">
                     <div class="flex-center">
-                        <img src="/images/share-1/ewm_1.png" width="80%" alt="">
+                        <img src="/images/share-1/ewm_1.png" width="70%" alt="">
                     </div>
                     <div class="right-info flex-center">
                         <p>关注圈企来 <a class="more" href="javascript:;">公众号</a> </p>
@@ -199,7 +202,7 @@
                     </div>
                 </div>
             </div>
-            <div class="fixed-down" :style="{bottom:isIphoneX ? '32px' :'0' }">
+            <div class="fixed-down" :style="{height:isIphoneX ? '82px' :'50px', paddingBottom:isIphoneX ? '32px' :'0' }">
                 <img src="/images/share-1/logo.png" style="height:35px;margin:7px 0 0 12px;" alt="">
                 <a id="down-btn" @click="handleDown" href="javascript:;" class="pull-right down-btn">下载</a>
             </div>
@@ -292,10 +295,10 @@
                     return ua.indexOf('micromessenger') != -1;
                 },
                 headWidth: function () {
-                    return Math.round((window.screen.width) * 0.20)
+                    return Math.round((window.screen.width) * 0.16)
                 },
                 banneHeight: function () {
-                    return Math.round((window.screen.width) * 0.55)
+                    return Math.round((window.screen.width) * 0.6)
                 },
                 countryTotal: function () {
                     var countrydata = this.page.countrydata;
@@ -364,11 +367,14 @@
                     if(index == 3){
                         size = 28
                     }
+                    if(this.productyList.length <= 2){
+                        size = 28
+                    }
                     return size + 'px'
                 },
                 setText: function (item) {
                     item = item.toString().trim();
-                    return item.length > 12 ? item.slice(0, 12) + '...' : item;
+                    return item.length > 20 ? item.slice(0, 20) + '...' : item;
                 },
                 loadJsAsync: function (url, callback) {
 
@@ -409,8 +415,8 @@
 
                     var _this = this;
                     var oMain = document.getElementById('main');
-                    oMain.style.width = document.body.clientWidth - 32 + 'px';
-                    oMain.style.height = document.body.clientWidth * 0.6 + 'px';
+                    oMain.style.width = document.body.clientWidth - 30 + 'px';
+                    oMain.style.height = document.body.clientWidth * 0.5 + 'px';
 
                     var myChart = echarts.init(document.getElementById('main'));
                     option = {
@@ -430,10 +436,10 @@
                             type: 'map',
                             mapType: 'world',
                             roam: true,
-                            left: '6%',
-                            top: '10%',
-                            right: '6%',
-                            bottom: '10%',
+                            left: '3%',
+                            top: '8%',
+                            right: '3%',
+                            bottom: '8%',
                             roam: false,
                             itemStyle: {
                                 normal: {

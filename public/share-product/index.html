@@ -7,8 +7,8 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <title id="title">商品全球宏观数据分析</title>
 </head>
-<link rel="stylesheet" href="/stylesheets/common.css">
-<link rel="stylesheet" href="./index.css?version=v1">
+<link rel="stylesheet" href="/stylesheets/common.css?version=v3">
+<link rel="stylesheet" href="./index.css?version=v3">
 
 <body>
     <div id="app" :style="{backgroundColor:loading ? '#fff' : '#f1f1f1'}">
@@ -28,34 +28,34 @@
                 <img :src=" page.baseinfo.backurl ? img_root + page.baseinfo.backurl :  '/images/share-1/banner-default.png'"
                     width="100%" alt="">
             </div>
-            <div class="block ft-16 q-mb-10" style="font-weight: bold;">
-                {{page.baseinfo.code_desc}}
+            <div class="hscode-title ft-16">
+               HS 7403 {{page.baseinfo.code_desc}}
             </div>
             <div class="block" style="margin-bottom:10px;">
                 <div style="margin-bottom:16px;">
-                    <strong class=" ft-14">全球进出口企业分析</strong>
+                    <strong class="ft-16">全球进出口企业统计</strong>
                 </div>
                 <ul class="report-list">
                     <li>
-                        <span>进口买家企业</span>
+                        <span>进口企业数量</span>
                         <span>{{page.companyinfo.imp_company}}</span>
                     </li>
                     <li>
-                        <span>出口买家企业</span>
+                        <span>出口企业数量</span>
                         <span>{{page.companyinfo.exp_company}}</span>
                     </li>
                     <li>
-                        <span>全球地区或国家</span>
+                        <span>全球地区或国家数量</span>
                         <span>{{page.companyinfo.country_cnt}}</span>
                     </li>
                 </ul>
-                <div class="chart-box" style="margin-bottom:20px;">
+                <div class="chart-box" style="margin-bottom:30px;">
                     <div class="chart-body" id="main"></div>
 
                     <p v-else style="margin:12px;" class="empty-text">暂无伙伴国数据</p>
                 </div>
                 <div style="margin-bottom:16px;">
-                    <strong class=" ft-14">进口地区数据统计</strong>
+                    <strong class=" ft-16">进口地区数据统计</strong>
                 </div>
                 <ul class="report-list">
                     <li>
@@ -63,15 +63,15 @@
                         <span>2017年</span>
                     </li>
                     <li>
-                        <span>全球进口总额（美元）</span>
+                        <span>全球进口总额<span class="ft-10" > (美元)</span></span>
                         <span>${{formatData(page.report.imp_value)}}</span>
                     </li>
                     <li>
-                        <span>进口地区数量</span>
+                        <span>进口国家数量</span>
                         <span>{{page.report.imp_count}}</span>
                     </li>
                     <li>
-                        <span>最大进口地区</span>
+                        <span>最大进口国家或地区</span>
                         <span>{{page.report.imp_maxcountry}}</span>
                     </li>
                 </ul>
@@ -80,7 +80,7 @@
                         <thead>
                             <th>排序</th>
                             <th>地区</th>
-                            <th>2017年进口额（美元）</th>
+                            <th>2017年进口额</th>
                             <!-- <th>与去年对比（万元）</th> -->
                         </thead>
                         <tbody>
@@ -93,11 +93,11 @@
                         </tbody>
                     </table>
                     <div class="center">
-                        <a class="more-btn"  @click="handleDown" href="javascript:;">更多&gt;&gt;</a>
+                        <a class="more-btn" @click="handleDown" href="javascript:;">查看更多&gt;&gt;</a>
                     </div>
                 </div>
                 <div style="margin-bottom:16px;">
-                    <strong class=" ft-14">出口地区数据统计</strong>
+                    <strong class=" ft-16">出口地区数据统计</strong>
                 </div>
                 <ul class="report-list">
                     <li>
@@ -105,15 +105,15 @@
                         <span>2017年</span>
                     </li>
                     <li>
-                        <span>全球出口总额（美元）</span>
+                        <span>全球出口总额<span class="ft-10" > (美元)</span></span>
                         <span>${{formatData(page.report.exp_value)}}</span>
                     </li>
                     <li>
-                        <span>出口地区数量</span>
+                        <span>出口国家数量</span>
                         <span>{{page.report.exp_count}}</span>
                     </li>
                     <li>
-                        <span>最大出口地区</span>
+                        <span>最大出口国家或地区</span>
                         <span>{{page.report.exp_maxcountry}}</span>
                     </li>
                 </ul>
@@ -122,7 +122,7 @@
                         <thead>
                             <th>排序</th>
                             <th>地区</th>
-                            <th>2017年出口额（美元）</th>
+                            <th>2017年出口额</th>
                             <!-- <th>与去年对比（万元）</th> -->
                         </thead>
                         <tbody>
@@ -135,11 +135,11 @@
                         </tbody>
                     </table>
                     <div v-if="page.exp_country_zf.length > 5" class="center">
-                        <a class="more-btn" @click="handleDown" href="javascript:;">更多&gt;&gt;</a>
+                        <a class="more-btn" @click="handleDown" href="javascript:;">查看更多&gt;&gt;</a>
                     </div>
                 </div>
                 <div style="margin-bottom:16px;">
-                    <strong class=" ft-14">顺差和逆差统计</strong>
+                    <strong class=" ft-16">顺差和逆差统计</strong>
                     <span class="pull-right ft-10 gray-text" style="margin-top:3px;">计算公式：出口额减进口额</span>
                 </div>
                 <ul class="report-list">
@@ -153,7 +153,7 @@
                         <thead>
                             <th>排序</th>
                             <th>地区</th>
-                            <th>2017年贸易顺差（美元）</th>
+                            <th>2017年贸易顺差</th>
                         </thead>
                         <tbody>
                             <tr v-if="index < 5" :key="index" v-for="(country,index) in exp_count">
@@ -164,7 +164,7 @@
                         </tbody>
                     </table>
                     <div v-if="exp_count.length > 5" class="center">
-                        <a class="more-btn" @click="handleDown" href="javascript:;">更多&gt;&gt;</a>
+                        <a class="more-btn" @click="handleDown" href="javascript:;">查看更多&gt;&gt;</a>
                     </div>
                 </div>
                 <ul class="report-list">
@@ -178,7 +178,7 @@
                         <thead>
                             <th>排序</th>
                             <th>地区</th>
-                            <th>2017年贸易逆差（美元）</th>
+                            <th>2017年贸易逆差</th>
                         </thead>
                         <tbody>
                             <tr v-if="index < 5" :key="index" v-for="(country,index) in imp_count">
@@ -189,24 +189,24 @@
                         </tbody>
                     </table>
                     <div v-if="imp_count.length > 5" class="center">
-                        <a class="more-btn" @click="handleDown" href="javascript:;">更多&gt;&gt;</a>
+                        <a class="more-btn" @click="handleDown" href="javascript:;">查看更多&gt;&gt;</a>
                     </div>
                 </div>
             </div>
-            <div class="block q-mb-10 ft-14">
+            <div class="block q-mb-10">
                 <p class="q-mb-10">
-                    <strong class=" ft-14">推荐企业</strong>
+                    <strong class=" ft-16">推荐企业</strong>
                 </p>
                 <ul>
-                    <li :key="index" @click="handleDown" v-for="(company ,index) in page.companys" class="company-item">
+                    <li :key="index" v-if="index < 5" @click="handleDown" v-for="(company ,index) in page.companys" class="company-item">
                         <span class="compony-icon">{{company.companyname.split('')[0].toUpperCase() }}</span>
-                        <div class="country-item-box" >
-                            <div>{{company.companyname}}</div>
-                            <p class="gray-text ft-12">xxxxxxxxxxx</p>
-                            <div class="ft-12" style="margin:4px 0 8px;" >
-                                <img src="http://120.79.19.33:8004/group1/M00/00/75/rBJTVls9xXaAJ3NAAAAcUfsDlOg243.png"
+                        <div class="country-item-box">
+                            <div class="ft-16" >{{company.companyname}}</div>
+                            <p class="gray-text ft-12">{{company.companyname_en}}</p>
+                            <div class="ft-12" style="margin:4px 0 8px;">
+                                <img :src="img_root +company.countryico"
                                     class="country-flag" alt="">
-                                <span class="gray-4" style="vertical-align: middle;margin-left:6px;">中国</span>
+                                <span class="gray-4" style="vertical-align: middle;margin-left:6px;">{{company.country}}</span>
                             </div>
                         </div>
                     </li>
@@ -218,10 +218,10 @@
                 <div class="dated-line">
                     <strong>关于圈企来APP</strong>
                 </div>
-                <p style="margin:15px 0 8px 0;">打造国际贸易一站式服务平台：</p>
+                <!-- <p style="margin:15px 0 8px 0;">打造国际贸易一站式服务平台：</p> -->
                 <ul class="info-list">
-                    <li>提供全球150+家企业进出口数据</li>
-                    <li>8000多个商品宏观分析</li>
+                    <li>全球150万+家企业进出口数据</li>
+                    <li>8000多个商品进出口宏观分析</li>
                     <li>提供市场开拓服务，客户对接，数据分析服务</li>
                     <li>提供国际贸易信息发布，贸易服务撮合</li>
                 </ul>
@@ -229,7 +229,7 @@
                         width="16" src="/images/share-1/search.png" alt=""> <span>查商品、查企业、查人脉</span></a>
                 <div style="display:flex;margin-top:10px;">
                     <div class="flex-center">
-                        <img src="/images/share-1/ewm_1.png" width="80%" alt="">
+                        <img src="/images/share-1/ewm_1.png" width="70%" alt="">
                     </div>
                     <div class="right-info flex-center">
                         <p>关注圈企来 <a class="more" href="javascript:;">公众号</a> </p>
@@ -238,7 +238,7 @@
                     </div>
                 </div>
             </div>
-            <div class="fixed-down" :style="{bottom:isIphoneX ? '32px' :'0' }">
+            <div class="fixed-down" :style="{height:isIphoneX ? '82px' :'50px', paddingBottom:isIphoneX ? '32px' :'0' }">
                 <img src="/images/share-1/logo.png" style="height:35px;margin:7px 0 0 12px;" alt="">
                 <a id="down-btn" href="javascript:;" @click="handleDown" class="pull-right down-btn">下载</a>
             </div>
@@ -268,7 +268,7 @@
                     showMore: true,
                     shownum: 3,
                     showMask: false,
-                    isIphoneX:config.isIphoneX(),
+                    isIphoneX: config.isIphoneX(),
                     img_root: config.img_root,
                     ios_app: config.ios_app,
                     android_app: config.android_app,
@@ -440,8 +440,8 @@
 
                     var _this = this;
                     var oMain = document.getElementById('main');
-                    oMain.style.width = document.body.clientWidth - 32 + 'px';
-                    oMain.style.height = document.body.clientWidth * 0.6 + 'px';
+                    oMain.style.width = document.body.clientWidth - 30 + 'px';
+                    oMain.style.height = document.body.clientWidth * 0.5 + 'px';
                     var myChart = echarts.init(document.getElementById('main'));
 
                     option = {
@@ -461,10 +461,10 @@
                             type: 'map',
                             mapType: 'world',
                             roam: true,
-                            left: '6%',
-                            top: '10%',
-                            right: '6%',
-                            bottom: '10%',
+                            left: '3%',
+                            top: '8%',
+                            right: '3%',
+                            bottom: '8%',
                             roam: false,
                             itemStyle: {
                                 normal: {

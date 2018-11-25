@@ -7,8 +7,8 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <title id="title">宏观数据分析</title>
 </head>
-<link rel="stylesheet" href="/stylesheets/common.css?version=v2">
-<link rel="stylesheet" href="./index.css?version=v2">
+<link rel="stylesheet" href="/stylesheets/common.css?version=v3">
+<link rel="stylesheet" href="./index.css?version=v3">
 
 <body>
     <div id="app" style="color:#333;" :style="{backgroundColor:loading ? '#fff' : '#f1f1f1'}">
@@ -30,7 +30,7 @@
             </div>
             <div class="block q-mb-10">
                 <div style="margin-bottom:20px;">
-                    <strong class=" ft-14">进口地区的商品统计</strong>
+                    <strong class=" ft-16">{{page.country}}进口商品统计</strong>
                 </div>
                 <ul class="report-list">
                     <li>
@@ -38,12 +38,12 @@
                         <span>{{page.year}}年</span>
                     </li>
                     <li>
-                        <span>进口总额（美元）</span>
+                        <span>进口总额<span class="ft-10" > (美元)</span></span>
                         <span>${{formatData(page.import.value)}}</span>
                     </li>
                     <li>
-                        <span>全球进口总额排名</span>
-                        <span>{{page.import.score}}</span>
+                        <span>全球进口地区总额排名</span>
+                        <span>第{{page.import.score}}</span>
                     </li>
                     <li>
                         <span>进口额最大的商品</span>
@@ -57,15 +57,15 @@
             </div>
             <div class="block q-mb-10">
                 <div style="margin-bottom:20px;">
-                    <strong class=" ft-14">进口伙伴地区的统计</strong>
+                    <strong class=" ft-16">进口来源国统计</strong>
                 </div>
                 <ul class="report-list">
                     <li>
-                        <span>最大进口地区</span>
+                        <span>最大进口国或地区</span>
                         <span>{{page.import.partner}}</span>
                     </li>
                     <li>
-                        <span>伙伴地区的统计数量</span>
+                        <span>进口国数量</span>
                         <span>{{page.import.partnercount}}个</span>
                     </li>
                 </ul>
@@ -75,7 +75,7 @@
             </div>
             <div class="block q-mb-10">
                 <div style="margin-bottom:20px;">
-                    <strong class=" ft-14">出口地区的商品统计</strong>
+                    <strong class=" ft-16">{{page.country}}出口商品统计</strong>
                 </div>
                 <ul class="report-list">
                     <li>
@@ -83,12 +83,12 @@
                         <span>{{page.year}}年</span>
                     </li>
                     <li>
-                        <span>出口总额（美元）</span>
+                        <span>出口总额<span class="ft-10" > (美元)</span></span>
                         <span>${{formatData(page.export.value)}}</span>
                     </li>
                     <li>
-                        <span>全球出口总额排名</span>
-                        <span>{{page.export.score}}</span>
+                        <span>全球出口地区总额排名</span>
+                        <span>第{{page.export.score}}</span>
                     </li>
                     <li>
                         <span>出口额最大的商品</span>
@@ -102,15 +102,15 @@
             </div>
             <div class="block q-mb-10">
                 <div style="margin-bottom:20px;">
-                    <strong class=" ft-14">出口伙伴地区的统计</strong>
+                    <strong class=" ft-16">出口伙伴国统计</strong>
                 </div>
                 <ul class="report-list">
                     <li>
-                        <span>最大出口地区</span>
+                        <span>最大出口国或地区</span>
                         <span>{{page.export.partner}}</span>
                     </li>
                     <li>
-                        <span>伙伴地区的统计数量</span>
+                        <span>出口伙伴国数量</span>
                         <span>{{page.export.partnercount}}个</span>
                     </li>
                 </ul>
@@ -121,7 +121,7 @@
             </div>
             <div class="block q-mb-10">
                 <div style="margin-bottom:20px;">
-                    <strong class=" ft-14">商品顺逆差统计</strong>
+                    <strong class=" ft-16">{{page.country}}商品顺逆差统计</strong>
                 </div>
                 <ul class="report-list">
                     <li>
@@ -133,11 +133,11 @@
                         <span>出口减去进口</span>
                     </li>
                     <li>
-                        <span>最大的顺差商品</span>
+                        <span>最大的顺差商品<span class="ft-10" >(出口)</span></span>
                         <span>HS {{page.countrysn.productsn[0]}}</span>
                     </li>
                     <li>
-                        <span>最大的逆差商品</span>
+                        <span>最大的逆差商品<span class="ft-10" >(进口)</span></span>
                         <span>HS {{page.countrysn.productsn[1]}}</span>
                     </li>
                     <li class="chart-info">
@@ -152,18 +152,18 @@
             </div>
             <div class="block q-mb-10">
                 <div class="q-mb-20">
-                    <strong class=" ft-14">伙伴地区的顺逆差统计</strong>
+                    <strong class=" ft-16">{{page.country}}贸易伙伴国的顺逆差统计</strong>
                 </div>
                 <ul class="report-list">
                     <li>
-                        <span>最大顺差地区</span>
+                        <span>最大顺差国或地区</span>
                         <span>{{page.countrysn.maxpartner}}</span>
                     </li>
                     <div class="chart-box q-mb-20">
                         <div class="chart-body" id="product-map-sc"></div>
                     </div>
                     <li>
-                        <span>最大逆差地区</span>
+                        <span>最大逆差国或地区</span>
                         <span>{{page.countrysn.minpartner}}</span>
                     </li>
                     <div class="chart-box q-mb-20">
@@ -177,10 +177,10 @@
                 <div class="dated-line">
                     <strong>关于圈企来APP</strong>
                 </div>
-                <p style="margin:15px 0 8px 0;">打造国际贸易一站式服务平台：</p>
+                <!-- <p style="margin:15px 0 8px 0;">打造国际贸易一站式服务平台：</p> -->
                 <ul class="info-list">
-                    <li>提供全球150+家企业进出口数据</li>
-                    <li>8000多个商品宏观分析</li>
+                    <li>全球150万+家企业进出口数据</li>
+                    <li>8000多个商品进出口宏观分析</li>
                     <li>提供市场开拓服务，客户对接，数据分析服务</li>
                     <li>提供国际贸易信息发布，贸易服务撮合</li>
                 </ul>
@@ -188,7 +188,7 @@
                         width="16" src="/images/share-1/search.png" alt=""> <span>查商品、查企业、查人脉</span></a>
                 <div style="display:flex;margin-top:10px;">
                     <div class="flex-center">
-                        <img src="/images/share-1/ewm_1.png" width="80%" alt="">
+                        <img src="/images/share-1/ewm_1.png" width="70%" alt="">
                     </div>
                     <div class="right-info flex-center">
                         <p>关注圈企来 <a class="more" href="javascript:;">公众号</a> </p>
@@ -197,7 +197,7 @@
                     </div>
                 </div>
             </div>
-            <div class="fixed-down" :style="{bottom:isIphoneX ? '32px' :'0' }">
+            <div class="fixed-down" :style="{height:isIphoneX ? '82px' :'50px', paddingBottom:isIphoneX ? '32px' :'0' }">
                 <img src="/images/share-1/logo.png" style="height:35px;margin:7px 0 0 12px;" alt="">
                 <a id="down-btn" href="javascript:;" @click="handleDown" class="pull-right down-btn">下载</a>
             </div>
@@ -386,7 +386,7 @@
 
                     var _this = this;
                     var oMain = document.getElementById('treemap-' + type);
-                    oMain.style.width = document.body.clientWidth - 32 + 'px';
+                    oMain.style.width = document.body.clientWidth - 30 + 'px';
                     oMain.style.height = document.body.clientWidth * 0.6 + 'px';
                     var myChart = echarts.init(oMain);
 
@@ -423,7 +423,8 @@
 
                             itemStyle: {
                                 normal: {
-                                    borderColor: '#fff'
+                                    borderColor: '#fff',
+                                    borderWidth:0.5,
                                 }
                             },
                             data: _this.page[(type == 'imp') ? 'import' : 'export'].productlst.map(
@@ -451,22 +452,28 @@
 
                     var _this = this;
                     var oMain = document.getElementById('map-' + type);
-                    oMain.style.width = document.body.clientWidth - 32 + 'px';
-                    oMain.style.height = document.body.clientWidth * 0.6 + 'px';
+                    oMain.style.width = document.body.clientWidth - 30 + 'px';
+                    oMain.style.height = document.body.clientWidth * 0.5 + 'px';
                     var myChart = echarts.init(oMain);
+                    
+                    var chartColor = type == 'imp' ? ['#b7d7fc', '#3982f7'] :  ['#d72823', '#ffc4c2'];
+
+                    var chartType = type == 'imp' ? ['最小', '最大'] : ['最大','最小'];
+
                     option = {
                         backgroundColor: '#fbfbfb',
                         visualMap: {
                             min: 0,
                             show: true,
                             max: 200000000000,
-                            itemWidth: 8,
-                            itemHeight: 60,
+                            itemWidth: 4,
+                            itemHeight: 40,
                             left: 0,
-                            text: ['最小', '最大'],
+                            bottom:30,
+                            text:chartType,
                             realtime: false,
                             calculable: true,
-                            color: ['#b7d7fc', '#3982f7'],
+                            color: chartColor,
                             orient: "horizontal",
                             formatter: function (value) { //标签的格式化工具。
                                 return '' // 范围标签显示内容。
@@ -481,10 +488,10 @@
                             type: 'map',
                             mapType: 'world',
                             roam: true,
-                            left: '6%',
-                            top: '10%',
-                            right: '6%',
-                            bottom: '10%',
+                            left: '3%',
+                            top: '8%',
+                            right: '3%',
+                            bottom: '8%',
                             roam: false,
                             itemStyle: {
                                 normal: {
@@ -518,8 +525,8 @@
                     // 逆差颜色  61c5c3
                     var _this = this;
                     var oMain = document.getElementById('product-map-sc');
-                    oMain.style.width = document.body.clientWidth - 32 + 'px';
-                    oMain.style.height = document.body.clientWidth * 0.6 + 'px';
+                    oMain.style.width = document.body.clientWidth - 30 + 'px';
+                    oMain.style.height = document.body.clientWidth * 0.5 + 'px';
                     var myChart = echarts.init(oMain);
                     option = {
                         backgroundColor: '#fbfbfb',
@@ -527,9 +534,10 @@
                             min: 0,
                             show: true,
                             max: 20000000000,
-                            itemWidth: 8,
-                            itemHeight: 60,
+                            itemWidth: 4,
+                            itemHeight: 40,
                             left: 0,
+                            bottom:30,
                             text: ['最小', '最大'],
                             realtime: false,
                             calculable: true,
@@ -548,10 +556,10 @@
                             map: 'world',
                             stack: '地图',
                             roam: true,
-                            left: '6%',
-                            top: '10%',
-                            right: '6%',
-                            bottom: '10%',
+                            left: '3%',
+                            top: '8%',
+                            right: '3%',
+                            bottom: '8%',
                             roam: false,
                             itemStyle: {
                                 normal: {
@@ -592,8 +600,8 @@
                     // 逆差颜色  61c5c3
                     var _this = this;
                     var oMain = document.getElementById('product-map-nc');
-                    oMain.style.width = document.body.clientWidth - 32 + 'px';
-                    oMain.style.height = document.body.clientWidth * 0.6 + 'px';
+                    oMain.style.width = document.body.clientWidth - 30 + 'px';
+                    oMain.style.height = document.body.clientWidth * 0.5 + 'px';
                     var myChart = echarts.init(oMain);
                     option = {
                         backgroundColor: '#fbfbfb',
@@ -601,13 +609,15 @@
                             min: 0,
                             show: true,
                             max: 20000000000,
-                            itemWidth: 8,
-                            itemHeight: 60,
+                            itemWidth: 4,
+                            itemHeight: 40,
                             left: 0,
+                            bottom:30,
                             text: ['最小', '最大'],
                             realtime: false,
                             calculable: true,
-                            color: ['#c1edf2', '#5c9da5'],
+                            // color: ['#c1edf2', '#5c9da5'],
+                            color:['#b7d7fc', '#3982f7'] ,
                             orient: "horizontal",
                             formatter: function (value) { //标签的格式化工具。
                                 return '' // 范围标签显示内容。
@@ -622,10 +632,10 @@
                             map: 'world',
                             stack: '地图',
                             roam: true,
-                            left: '6%',
-                            top: '10%',
-                            right: '6%',
-                            bottom: '10%',
+                            left: '3%',
+                            top: '8%',
+                            right: '3%',
+                            bottom: '8%',
                             roam: false,
                             itemStyle: {
                                 normal: {
@@ -665,7 +675,7 @@
                 productChart: function () {
                     var _this = this;
                     var oMain = document.getElementById('product-chart');
-                    oMain.style.width = document.body.clientWidth - 32 + 'px';
+                    oMain.style.width = document.body.clientWidth - 30 + 'px';
                     oMain.style.height = 260 + 'px'
                     var myChart = echarts.init(oMain);
                     option = {
@@ -679,7 +689,7 @@
                                 }
                             },
                             axisLabel: {
-                                formatter: '{value} 亿（美元）',
+                                formatter: '{value} 亿',
                                 fontSize: 8,
                             }
                         },
@@ -709,7 +719,7 @@
 
                             data: _this.productList.map(
                                 function (item, index) {
-                                    var _color = item.value > 0 ? '#e0232a' : '#52aab8';
+                                    var _color = item.value > 0 ? '#d72823' : '#3982f7';
                                     var direct = item.value > 0 ? 'right' : 'left';
                                     return {
                                         name: item.name,

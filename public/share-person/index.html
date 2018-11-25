@@ -7,8 +7,8 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <title id="title">...</title>
 </head>
-<link rel="stylesheet" href="/stylesheets/common.css?version=v2">
-<link rel="stylesheet" href="./index.css?version=v2">
+<link rel="stylesheet" href="/stylesheets/common.css?version=v3">
+<link rel="stylesheet" href="./index.css?version=v3">
 
 <body>
     <div id="app" :style="{backgroundColor:loading ? '#fff' : '#f1f1f1'}">
@@ -41,24 +41,28 @@
                     <img :src=" page.pic ? img_root + page.pic : '/images/share-1/head-default.png'" width="100%"
                         height="100%" alt="">
                 </div>
-                <p class="ft-16" style="margin-bottom:5px;">
-                    <strong class="vertical-middle">{{page.first_name}}{{page.last_name}}</strong> <span class="vertical-middle gray-3"  >|</span>
-                    <span class="gray-text vertical-middle gray-2"  >{{page.job}}</span>
-                </p>
-                <p class="" style="color:#333;">{{page.company}}</p>
-                <p class="" style="color:#333;">{{page.company_en}}</p>
-            </div>
-            <div class="block q-mb-10">
-                <div style="padding-bottom:10px;">
-                    <strong class="ft-14">个人介绍</strong>
-                </div> 
-                <p class="gray-4">{{page.signature}}</p>
-            </div>
-            <div class="block q-mb-10">
-                <div style="padding-bottom:10px;">
-                    <strong class="ft-14">联系方式</strong>
+                <div style="width:90%;margin:0 auto;" >
+                    <p class="ft-1" style="margin-bottom:5px;">
+                        <strong class="vertical-bottom ft-20">{{page.first_name}}{{page.last_name}}</strong> 
+                        <span class="vertical-middle gray-3" style="position:relative;top:-1px;" >|</span>
+                        <span class="gray-text vertical-bottom gray-2">{{page.job}}</span>
+                    </p>
+                    <p class="ft-16" style="margin:10px 0 2px;" >{{page.company}}</p>
+                    <p class="ft-13" >{{page.company_en}}</p>
                 </div>
-                <ul class="gray-2">
+
+            </div>
+            <div class="block q-mb-10">
+                <div style="padding-bottom:10px;">
+                    <strong class="ft-16">个人介绍</strong>
+                </div>
+                <p class="">{{page.signature}}</p>
+            </div>
+            <div class="block q-mb-10">
+                <div style="padding-bottom:10px;">
+                    <strong class="ft-16">联系方式</strong>
+                </div>
+                <ul class="">
                     <li class="concat-item">
                         <!-- <img src="/images/share-1/phone.png" class="item-icon" alt=""> -->
                         <span>电话：</span>
@@ -81,37 +85,36 @@
                 </ul>
                 <div v-if="page.cardurl" style="overflow-x: auto;overflow-y:hidden;margin-top:10px;">
                     <div style="white-space:nowrap;">
-                        <img :src="img_root+page.cardurl" style="width:40%;margin-right:10px;" alt="">
+                        <img :src="img_root+page.cardurl" style="width:48%;margin-right:10px;" alt="">
                     </div>
                 </div>
             </div>
-            <div class="block" style="border-bottom:1px solid #e0e0e0;margin-bottom:10px;">
+            <div class="block" style="margin-bottom:10px;padding-bottom:25px;">
                 <div style="padding-bottom:18px;">
-                    <strong class="ft-14">Ta关注的业务</strong>
+                    <strong class="ft-16">Ta关注的业务</strong>
                 </div>
-                <div class="card-box business-item" v-show="index < shownum" v-for="(item,index) in page.quotes"
-                    :key="index">
+                <div class="card-box business-item" v-show="index < shownum" v-for="(item,index) in page.quotes" :key="index">
                     <div style="margin:0 20px;">
                         <span class="business-type">{{item.remark.business}}</span>
                     </div>
 
-                    <p style="margin:0 20px;" class="gray-1 " >{{item.remark.remark}}</p>
-                    <div class="block-card ft-12 gray-3 ellipsis-2" >
+                    <p style="margin:0 20px;" class="ft-16">{{item.remark.remark}}</p>
+                    <div class="block-card ft-12 gray-3 ">
                         HS {{item.hscode}} {{item.code_desc}}
                     </div>
                 </div>
                 <div class="center" v-if="page.quotes.length > shownum">
-                    <button class="more" style="padding:8px 10px;" @click="handleDown">查看更多</button>
+                    <button class="more" style="padding:8px 10px;" @click="handleDown">查看更多>></button>
                 </div>
             </div>
             <div class="block" style="border-bottom:1px solid #e0e0e0;padding-bottom:40px;background:#fff;">
                 <div class="dated-line">
-                    <strong class="ft-14">关于圈企来APP</strong>
+                    <strong class="ft-16">关于圈企来APP</strong>
                 </div>
-                <p style="margin:15px 0 8px 0;">打造国际贸易一站式服务平台：</p>
+                <!-- <p style="margin:15px 0 8px 0;">打造国际贸易一站式服务平台：</p> -->
                 <ul class="info-list">
-                    <li>提供全球150+家企业进出口数据</li>
-                    <li>8000多个商品宏观分析</li>
+                    <li>全球150万+家企业进出口数据</li>
+                    <li>8000多个商品进出口宏观分析</li>
                     <li>提供市场开拓服务，客户对接，数据分析服务</li>
                     <li>提供国际贸易信息发布，贸易服务撮合</li>
                 </ul>
@@ -119,7 +122,7 @@
                         width="16" src="/images/share-1/search.png" alt=""> <span>查商品、查企业、查人脉</span></a>
                 <div style="display:flex;margin-top:10px;">
                     <div class="flex-center">
-                        <img src="/images/share-1/ewm_1.png" width="80%" alt="">
+                        <img src="/images/share-1/ewm_1.png" width="70%" alt="">
                     </div>
                     <div class="right-info flex-center">
                         <p>关注圈企来 <a class="more" href="javascript:;">公众号</a> </p>
@@ -128,7 +131,7 @@
                     </div>
                 </div>
             </div>
-            <div class="fixed-down" :style="{bottom:isIphoneX ? '32px' :'0' }" >
+            <div class="fixed-down" :style="{height:isIphoneX ? '82px' :'50px', paddingBottom:isIphoneX ? '32px' :'0' }">
                 <img src="/images/share-1/logo.png" style="height:35px;margin:7px 0 0 12px;" alt="">
                 <a id="down-btn" href="javascript:;" @click="handleDown" class="pull-right down-btn">下载</a>
             </div>
@@ -157,7 +160,7 @@
                     shownum: 3,
                     random: ['38%', '45%', '40%', '32%', '55%'],
                     showMask: false,
-                    isIphoneX:config.isIphoneX(),
+                    isIphoneX: config.isIphoneX(),
                     img_root: config.img_root,
                     ios_app: config.ios_app,
                     android_app: config.android_app,
@@ -186,11 +189,11 @@
                         cardurl: '',
                         quotes: []
                     },
-                    talkosftLabel:{
-                        qq:'QQ',
-                        weibo:'微博',
-                        weixin:'微信',
-                        linkedin:'领英',
+                    talkosftLabel: {
+                        qq: 'QQ',
+                        weibo: '微博',
+                        weixin: '微信',
+                        linkedin: '领英',
                     },
                 }
             },
@@ -262,7 +265,7 @@
                     type: 'post',
                     data: {
                         // 8618701766820
-                        id: params ? params : 'ODYxODUxNjEyMzU2NQ==',
+                        id: params ? params : 'ODYxODcwMTc2NjgyMA==',
                     },
                     success: function (data) {
                         _this.loading = false
