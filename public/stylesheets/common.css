@@ -49,8 +49,11 @@ a {
 }
 
 .block {
-  padding: 34px 15px;
+  padding: 34px 15px 24px;
   background: #fff;
+}
+.border-bottom{
+  border-bottom:1px solid #efefef;
 }
 .center{
   text-align: center;
@@ -208,6 +211,23 @@ a {
   color:#ff7315;
 }
 
+.title-number{
+  color:#ccc;
+  margin-right:4px;
+}
+
+.chart-bottom-info{
+  padding:10px 15px;
+  font-size:12px;
+  line-height: 1.3em;
+}
+
+.chart-bottom-info a{
+  padding:0;
+  float:right;
+  font-size:12px;
+}
+
 strong{
   color:#333;
 }
@@ -228,7 +248,7 @@ strong{
 
 .ft-16 {
   font-size: 16px;
-  font-weight: normal;
+  /* font-weight: normal; */
 }
 
 .ft-14 {
@@ -315,6 +335,39 @@ strong{
   100% {
       background-position: 468px 0
   }
+}
+
+.bottom-title{
+  color:#0084ff;
+  font-size:18px;
+  /* font-weight: bold; */
+}
+.bottom-title span{
+  margin-left:2px;
+  font-size:12px;
+  font-weight: normal
+}
+
+.right-info {
+  line-height: 1.5em;
+  direction: column;
+  /* font-weight: bold; */
+  flex-direction: column;
+  font-size: 16px;
+}
+
+.dated-line{
+  padding-bottom: 8px;
+  border-bottom: 1px dotted #555;
+}
+
+.bottom-title-sub{
+  direction: rtl;
+
+}
+
+.bottom-title-sub strong{
+  font-size:12px;
 }
 
 .ladingbox {

@@ -29,7 +29,7 @@
                     width="100%" alt="">
             </div>
             <div class="hscode-title ft-16">
-               HS 7403 {{page.baseinfo.code_desc}}
+                HS {{page.baseinfo.hscode}} {{page.baseinfo.code_desc}}
             </div>
             <div class="block" style="margin-bottom:10px;">
                 <div style="margin-bottom:16px;">
@@ -63,7 +63,7 @@
                         <span>2017年</span>
                     </li>
                     <li>
-                        <span>全球进口总额<span class="ft-10" > (美元)</span></span>
+                        <span>全球进口总额<span class="ft-10"> (美元)</span></span>
                         <span>${{formatData(page.report.imp_value)}}</span>
                     </li>
                     <li>
@@ -105,7 +105,7 @@
                         <span>2017年</span>
                     </li>
                     <li>
-                        <span>全球出口总额<span class="ft-10" > (美元)</span></span>
+                        <span>全球出口总额<span class="ft-10"> (美元)</span></span>
                         <span>${{formatData(page.report.exp_value)}}</span>
                     </li>
                     <li>
@@ -198,14 +198,14 @@
                     <strong class=" ft-16">推荐企业</strong>
                 </p>
                 <ul>
-                    <li :key="index" v-if="index < 5" @click="handleDown" v-for="(company ,index) in page.companys" class="company-item">
+                    <li :key="index" v-if="index < 5" @click="handleDown" v-for="(company ,index) in page.companys"
+                        class="company-item">
                         <span class="compony-icon">{{company.companyname.split('')[0].toUpperCase() }}</span>
                         <div class="country-item-box">
-                            <div class="ft-16" >{{company.companyname}}</div>
+                            <div class="ft-16">{{company.companyname}}</div>
                             <p class="gray-text ft-12">{{company.companyname_en}}</p>
                             <div class="ft-12" style="margin:4px 0 8px;">
-                                <img :src="img_root +company.countryico"
-                                    class="country-flag" alt="">
+                                <img :src="img_root +company.countryico" class="country-flag" alt="">
                                 <span class="gray-4" style="vertical-align: middle;margin-left:6px;">{{company.country}}</span>
                             </div>
                         </div>
@@ -214,24 +214,28 @@
 
             </div>
 
-            <div class="block q-mb-10" style="border-bottom:1px solid #e0e0e0;padding-bottom:40px;background:#fff;">
+            <div class="block" style="border-bottom:1px solid #e0e0e0;padding-bottom:40px;background:#fff;">
                 <div class="dated-line">
-                    <strong>关于圈企来APP</strong>
+                    <div class="bottom-title">
+                        圈企来 <span>CircledIN</span>
+                    </div>
+                    <div class="bottom-title-sub">
+                        <strong class="ft-16">一款服务于全球贸易企业的app</strong>
+                    </div>
                 </div>
-                <!-- <p style="margin:15px 0 8px 0;">打造国际贸易一站式服务平台：</p> -->
+
                 <ul class="info-list">
+                    <li>帮助企业开拓海外市场，对接客户资源</li>
                     <li>全球150万+家企业进出口数据</li>
-                    <li>8000多个商品进出口宏观分析</li>
-                    <li>提供市场开拓服务，客户对接，数据分析服务</li>
-                    <li>提供国际贸易信息发布，贸易服务撮合</li>
+                    <li>8000多个商品全球贸易统计数据</li>
                 </ul>
                 <a class="btn-check" @click="handleDown" href="javascript:;"> <img style="vertical-align: middle;margin-right:5px;"
-                        width="16" src="/images/share-1/search.png" alt=""> <span>查商品、查企业、查人脉</span></a>
-                <div style="display:flex;margin-top:10px;">
+                        width="16" src="/images/share-1/search.png" alt=""> <span>找企业 找商品 找国家 找人脉</span></a>
+                <div style="display:flex;margin:30px 8% 0;">
                     <div class="flex-center">
-                        <img src="/images/share-1/ewm_1.png" width="70%" alt="">
+                        <img src="/images/share-1/ewm_1.png" width="80%" alt="">
                     </div>
-                    <div class="right-info flex-center">
+                    <div class="right-info flex-center" style="flex:1.2">
                         <p>关注圈企来 <a class="more" href="javascript:;">公众号</a> </p>
                         <p>请长按或扫一扫</p>
                         <p>获取更多信息</p>

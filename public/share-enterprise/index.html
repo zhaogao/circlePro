@@ -64,7 +64,7 @@
                 </div>
                 <div style="padding: 0px 10%">
                     <strong class="vertical-middle ft-18" style="margin-bottom:0.5em;">{{page.company}}</strong>
-                    <p v-if="page.company_en" class="ft-13" >{{page.company_en}}</p>
+                    <p v-if="page.company_en" class="ft-13">{{page.company_en}}</p>
                 </div>
             </div>
             <div class="block" style="margin-bottom:10px;">
@@ -105,10 +105,10 @@
                     <div class="chart-body" id="main"></div>
                     <div v-if="countryTotal > 0" class="chart-footer gray-text" style="padding:14px 6px;">
                         <p style="padding-left:3%;margin-bottom:8px;font-size:13px;">
-                            <span class="tag-item imp" >进口</span>
+                            <span class="tag-item imp">进口</span>
                             <span class="blue-text"> {{page.countrydata.importcountrycnt}}</span><span> 个国家，</span>
                             <span class="tag-item exp">出口</span>
-                            
+
                             <span class="blue-text">{{page.countrydata.exportcountrycnt}}</span> <span>个国家</span>
                         </p>
                         <div class="clearfix">
@@ -180,22 +180,26 @@
             </div>
             <div class="block" style="border-bottom:1px solid #e0e0e0;padding-bottom:40px;background:#fff;">
                 <div class="dated-line">
-                    <strong class="ft-16">关于圈企来APP</strong>
+                    <div class="bottom-title">
+                        圈企来 <span>CircledIN</span>
+                    </div>
+                    <div class="bottom-title-sub">
+                        <strong class="ft-16">一款服务于全球贸易企业的app</strong>
+                    </div>
                 </div>
-                <!-- <p style="margin:15px 0 8px 0;">打造国际贸易一站式服务平台：</p> -->
+
                 <ul class="info-list">
+                    <li>帮助企业开拓海外市场，对接客户资源</li>
                     <li>全球150万+家企业进出口数据</li>
-                    <li>8000多个商品进出口宏观分析</li>
-                    <li>提供市场开拓服务，客户对接，数据分析服务</li>
-                    <li>提供国际贸易信息发布，贸易服务撮合</li>
+                    <li>8000多个商品全球贸易统计数据</li>
                 </ul>
                 <a class="btn-check" @click="handleDown" href="javascript:;"> <img style="vertical-align: middle;margin-right:5px;"
-                        width="16" src="/images/share-1/search.png" alt=""> <span>查商品、查企业、查人脉</span></a>
-                <div style="display:flex;margin-top:10px;">
+                        width="16" src="/images/share-1/search.png" alt=""> <span>找企业 找商品 找国家 找人脉</span></a>
+                <div style="display:flex;margin:30px 8% 0;">
                     <div class="flex-center">
-                        <img src="/images/share-1/ewm_1.png" width="70%" alt="">
+                        <img src="/images/share-1/ewm_1.png" width="80%" alt="">
                     </div>
-                    <div class="right-info flex-center">
+                    <div class="right-info flex-center" style="flex:1.2">
                         <p>关注圈企来 <a class="more" href="javascript:;">公众号</a> </p>
                         <p>请长按或扫一扫</p>
                         <p>获取更多信息</p>
@@ -231,7 +235,7 @@
                     showMore: true,
                     shownum: 3,
                     random: ['38%', '45%', '40%', '32%', '55%'],
-                    isIphoneX:config.isIphoneX(),
+                    isIphoneX: config.isIphoneX(),
                     img_root: config.img_root,
                     showMask: false,
                     ios_app: config.ios_app,
@@ -310,16 +314,16 @@
                 },
                 countryList: function () {
                     var countrydata = this.page.countrydata;
-                    var exportList = countrydata.exportcountrys.map(function(item){
+                    var exportList = countrydata.exportcountrys.map(function (item) {
                         item.direct = 1
                         return item
                     })
-                    var importList = countrydata.importcountrys.map(function(item){
+                    var importList = countrydata.importcountrys.map(function (item) {
                         item.direct = -1
                         return item
                     })
                     var tmpList = [];
-                    $.extend(true, tmpList,exportList,importList)
+                    $.extend(true, tmpList, exportList, importList)
                     return tmpList;
                 },
                 productyList: function () {
@@ -328,18 +332,18 @@
 
                     $.extend(true, tmpList, quoteinfo.exp_quotes, quoteinfo.imp_quotes)
 
-                    tmpList.sort(function(a,b){
-                        return  b.hs6star - a.hs6star;
+                    tmpList.sort(function (a, b) {
+                        return b.hs6star - a.hs6star;
                     })
 
-                    tmpList = tmpList.slice(0,10)
+                    tmpList = tmpList.slice(0, 10)
 
-                    var middleIndex = Math.floor(tmpList.length/2);
+                    var middleIndex = Math.floor(tmpList.length / 2);
                     var maxItem = tmpList[0];
                     var willFirst = tmpList[middleIndex]
 
-                    tmpList[middleIndex] = $.extend(true,{},maxItem)
-                    tmpList[0] = $.extend(true,{},willFirst)
+                    tmpList[middleIndex] = $.extend(true, {}, maxItem)
+                    tmpList[0] = $.extend(true, {}, willFirst)
 
                     return tmpList;
                 }
@@ -361,13 +365,13 @@
                         }
 
                     }
-                    if(index == 4){
+                    if (index == 4) {
                         size = 30
                     }
-                    if(index == 3){
+                    if (index == 3) {
                         size = 28
                     }
-                    if(this.productyList.length <= 2){
+                    if (this.productyList.length <= 2) {
                         size = 28
                     }
                     return size + 'px'
@@ -458,8 +462,8 @@
                                 return {
                                     name: item.name_en,
                                     value: 100,
-                                    itemStyle:{
-                                        color:color
+                                    itemStyle: {
+                                        color: color
                                     }
                                 }
                             }),
@@ -477,7 +481,7 @@
                 // return;
 
                 _this.loading = true
-               
+
                 // 'qql93128407',
                 $.ajax({
                     url: '/getcompanyinfo',
