@@ -41,14 +41,14 @@
                     <img :src=" page.pic ? img_root + page.pic : '/images/share-1/head-default.png'" width="100%"
                         height="100%" alt="">
                 </div>
-                <div style="width:90%;margin:0 auto;" >
+                <div style="width:90%;margin:0 auto;">
                     <p class="ft-1" style="margin-bottom:5px;">
-                        <strong class="vertical-bottom ft-20">{{page.first_name}}{{page.last_name}}</strong> 
-                        <span class="vertical-middle gray-3" style="position:relative;top:-1px;" >|</span>
+                        <strong class="vertical-bottom ft-20">{{page.first_name}}{{page.last_name}}</strong>
+                        <span class="vertical-middle gray-3" style="position:relative;top:-1px;">|</span>
                         <span class="gray-text vertical-bottom gray-2">{{page.job}}</span>
                     </p>
-                    <p class="ft-16" style="margin:10px 0 2px;" >{{page.company}}</p>
-                    <p class="ft-13" >{{page.company_en}}</p>
+                    <p class="ft-16" style="margin:10px 0 2px;">{{page.company}}</p>
+                    <p class="ft-13">{{page.company_en}}</p>
                 </div>
 
             </div>
@@ -74,19 +74,17 @@
                         <span>{{page.contact.email ? page.contact.email : '-'}}</span>
                     </li>
                     <li class="concat-item" :key="index" v-for="(item,index) in page.contact.talksoft">
-                        <!-- <img :src="'/images/share-1/' + item.key +'.png' " class="item-icon" alt=""> -->
                         <span>{{talkosftLabel[item.key]}}：</span>
                         <span>{{item.value}}</span>
                     </li>
-                    <li v-if="page.cardurl" class="concat-item">
-                        <!-- <img src="/images/share-1/card.png" style="height:14px;" class="item-icon" alt=""> -->
+                    <li v-if="page.cardurl != '' ||  page.backcardurl != ''" class="concat-item">
                         <span>名片：</span>
                     </li>
                 </ul>
-                <div v-if="page.cardurl" style="overflow-x: auto;overflow-y:hidden;margin-top:10px;">
+                <div v-if="page.cardurl != '' ||  page.backcardurl != ''" style="overflow-x: auto;overflow-y:hidden;margin-top:10px;">
                     <div style="white-space:nowrap;">
-                        <img :src="img_root+page.cardurl" style="width:48%;margin-right:10px;" alt="">
-                        <img :src="img_root+page.backcardurl" style="width:48%;margin-right:10px;" alt="">
+                        <img v-if="page.cardurl" :src="img_root+page.cardurl" style="width:48%;margin-right:10px;" alt="">
+                        <img v-if="page.backcardurl" :src="img_root+page.backcardurl" style="width:48%;margin-right:10px;" alt="">
                     </div>
                 </div>
             </div>
@@ -108,12 +106,12 @@
                     <button class="more" style="padding:8px 10px;" @click="handleDown">查看更多>></button>
                 </div>
             </div>
-            <div class="block" style="border-bottom:1px solid #e0e0e0;padding-bottom:40px;background:#fff;">
+            <div class="block" style="border-bottom:1px solid #e0e0e0;padding-top:22px;background:#fff;">
                 <div class="dated-line">
                     <div class="bottom-title">
                         圈企来 <span>CircledIN</span>
                     </div>
-                    <div class="bottom-title-sub" >
+                    <div class="bottom-title-sub">
                         <strong class="ft-16">一款服务于全球贸易企业的app</strong>
                     </div>
                 </div>
@@ -122,17 +120,17 @@
                     <li>帮助企业开拓海外市场，对接客户资源</li>
                     <li>全球150万+家企业进出口数据</li>
                     <li>8000多个商品全球贸易统计数据</li>
+                    <li>250个国家和地区的贸易统计数据</li>
                 </ul>
                 <a class="btn-check" @click="handleDown" href="javascript:;"> <img style="vertical-align: middle;margin-right:5px;"
                         width="16" src="/images/share-1/search.png" alt=""> <span>找企业 找商品 找国家 找人脉</span></a>
-                <div style="display:flex;margin:30px 8% 0;">
+                <div style="display:flex;margin:30px 20% 0;">
                     <div class="flex-center">
                         <img src="/images/share-1/ewm_1.png" width="80%" alt="">
                     </div>
-                    <div class="right-info flex-center" style="flex:1.2" >
-                        <p>关注圈企来 <a class="more" href="javascript:;">公众号</a> </p>
-                        <p>请长按或扫一扫</p>
-                        <p>获取更多信息</p>
+                    <div class="right-info flex-center" style="flex:1.2">
+                        <p>关注公众号</p>
+                        <p>了解更多信息</p>
                     </div>
                 </div>
             </div>

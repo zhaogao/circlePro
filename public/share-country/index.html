@@ -54,7 +54,7 @@
                 <div class="chart-box q-mb-20">
                     <div class="chart-body" id="treemap-imp"></div>
                     <div class="chart-bottom-info">
-                        提供{{page.country}}进口商品的统计数据，包括每一种商品的进口额、排名、商品来源地区等，帮助您了解中国所有的商品进口需求的数据 <a class="more-btn"
+                        提供{{page.country}}进口商品的统计数据，包括每一种商品的进口额、排名、商品来源地区等，帮助您了解{{page.country}}所有的商品进口需求的数据 <a class="more-btn"
                             @click="handleDown" href="javascript:;">更多&gt;&gt;</a>
                     </div>
                 </div>
@@ -85,8 +85,8 @@
                 <div class="chart-box q-mb-20">
                     <div class="chart-body" id="map-imp"></div>
                     <div class="chart-bottom-info">
-                        提供{{page.country}}与全球进口来源地区的贸易额排名，统计各来源地区的进口商品明细，帮助您了解中国与全球的进口贸易伙伴关系<a class="more-btn" @click="handleDown"
-                            href="javascript:;">更多&gt;&gt;</a>
+                        提供{{page.country}}与全球进口来源地区的贸易额排名，统计各来源地区的进口商品明细，帮助您了解{{page.country}}与全球的进口贸易伙伴关系<a class="more-btn"
+                            @click="handleDown" href="javascript:;">更多&gt;&gt;</a>
                     </div>
                 </div>
             </div>
@@ -115,8 +115,8 @@
                 <div class="chart-box" style="margin-bottom:20px;">
                     <div class="chart-body" id="treemap-exp"></div>
                     <div class="chart-bottom-info">
-                        提供{{page.country}}出口商品的统计数据，包括每一种商品的出口额、排名、商品出口地区，帮助您了解中国所有的商品出口需求分析<a class="more-btn" @click="handleDown"
-                            href="javascript:;">更多&gt;&gt;</a>
+                        提供{{page.country}}出口商品的统计数据，包括每一种商品的出口额、排名、商品出口地区，帮助您了解{{page.country}}所有的商品出口需求分析<a class="more-btn"
+                            @click="handleDown" href="javascript:;">更多&gt;&gt;</a>
                     </div>
                 </div>
             </div>
@@ -146,8 +146,8 @@
                 <div class="chart-box" style="margin-bottom:20px;">
                     <div class="chart-body" id="map-exp"></div>
                     <div class="chart-bottom-info">
-                        提供{{page.country}}与全球出口地区的贸易额排名，统计各出口地区的商品明细，帮助您了解中国与全球出口贸易地区的伙伴关系<a class="more-btn" @click="handleDown"
-                            href="javascript:;">更多&gt;&gt;</a>
+                        提供{{page.country}}与全球出口地区的贸易额排名，统计各出口地区的商品明细，帮助您了解{{page.country}}与全球出口贸易地区的伙伴关系<a class="more-btn"
+                            @click="handleDown" href="javascript:;">更多&gt;&gt;</a>
                     </div>
                 </div>
             </div>
@@ -180,32 +180,48 @@
                 </ul>
                 <div class="chart-box" style="margin-bottom:20px;">
                     <div class="chart-body" id="product-chart"></div>
+                    <div class="chart-bottom-info">
+                        商品顺逆差是真正反映一个地区真实的出口需求和进口需求，帮助用户真正了解中国商品贸易的全球宏观供需关系 <a class="more-btn" @click="handleDown" href="javascript:;">更多&gt;&gt;</a>
+                    </div>
                 </div>
             </div>
             <div class="block q-mb-10">
                 <div class="q-mb-20 ft-16">
-                    <span class="title-number">6.</span><strong class="">{{page.country}}贸易伙伴地区顺逆差统计</strong>
+                    <span class="title-number">6.</span><strong class="">贸易伙伴地区顺逆差统计</strong>
                 </div>
                 <ul class="report-list">
                     <li>
-                        <span>最大顺差国或地区</span>
+                        <span>统计年份</span>
+                        <span>{{page.year}}年</span>
+                    </li>
+                    <li>
+                        <span>计算公式</span>
+                        <span>出口减去进口</span>
+                    </li>
+                    <li>
+                        <span>最大的顺差伙伴地区</span>
                         <span>{{page.countrysn.maxpartner}}</span>
                     </li>
-                    <div class="chart-box q-mb-20">
-                        <div class="chart-body" id="product-map-sc"></div>
-                    </div>
                     <li>
-                        <span>最大逆差国或地区</span>
+                        <span>最大的逆差伙伴地区</span>
                         <span>{{page.countrysn.minpartner}}</span>
                     </li>
                     <div class="chart-box q-mb-20">
+                        <div class="chart-body" id="product-map-sc"></div>
+                        <div class="chart-bottom-info">
+                           {{page.country}}与世界各地区的贸易顺差显示图<a class="more-btn pull-right" @click="handleDown" href="javascript:;">更多&gt;&gt;</a>
+                        </div>
+                    </div>
+
+                    <div class="chart-box q-mb-20">
                         <div class="chart-body q-mb-20" id="product-map-nc"></div>
+                        <div class="chart-bottom-info">
+                                {{page.country}}与世界各地区的贸易逆差显示图<a class="more-btn pull-right" @click="handleDown" href="javascript:;">更多&gt;&gt;</a>
+                        </div>
                     </div>
                 </ul>
-
-
             </div>
-            <div class="block" style="border-bottom:1px solid #e0e0e0;padding-bottom:40px;background:#fff;">
+            <div class="block" style="border-bottom:1px solid #e0e0e0;padding-top:22px;background:#fff;">
                 <div class="dated-line">
                     <div class="bottom-title">
                         圈企来 <span>CircledIN</span>
@@ -219,17 +235,17 @@
                     <li>帮助企业开拓海外市场，对接客户资源</li>
                     <li>全球150万+家企业进出口数据</li>
                     <li>8000多个商品全球贸易统计数据</li>
+                    <li>250个国家和地区的贸易统计数据</li>
                 </ul>
                 <a class="btn-check" @click="handleDown" href="javascript:;"> <img style="vertical-align: middle;margin-right:5px;"
-                        width="16" src="/images/share-1/search.png" alt=""> <span>找企业 找商品 找国家 找人脉</span></a>
-                <div style="display:flex;margin:30px 8% 0;">
+                        width="16" src="/images/share-1/search.png" alt=""> <span>找企业  找商品  找国家  找人脉</span></a>
+                <div style="display:flex;margin:30px 20% 0;">
                     <div class="flex-center">
                         <img src="/images/share-1/ewm_1.png" width="80%" alt="">
                     </div>
                     <div class="right-info flex-center" style="flex:1.2">
-                        <p>关注圈企来 <a class="more" href="javascript:;">公众号</a> </p>
-                        <p>请长按或扫一扫</p>
-                        <p>获取更多信息</p>
+                        <p>关注公众号</p>
+                        <p>了解更多信息</p>
                     </div>
                 </div>
             </div>
@@ -257,7 +273,7 @@
             el: '#app',
             data: function () {
                 return {
-                    syncjs: 'http://echarts.baidu.com/asset/map/js/world.js',
+                    syncjs: '/js/world.js',
                     loading: false,
                     showMore: true,
                     shownum: 3,
@@ -284,7 +300,7 @@
                             partner: "美国",
                             partnercount: 120,
                             productcode: "8517",
-                            partnerlst: [],
+                            partnerlst: [{value:0}],
                             productlst: [],
                             score: 1,
                             value: 2271796142000,
@@ -293,7 +309,7 @@
                             partner: "美国",
                             partnercount: 120,
                             productcode: "8517",
-                            partnerlst: [],
+                            partnerlst: [{value:0}],
                             productlst: [],
                             score: 1,
                             value: 2271796142000,
@@ -492,9 +508,7 @@
                     oMain.style.height = document.body.clientWidth * 0.5 + 'px';
                     var myChart = echarts.init(oMain);
 
-                    var chartColor = type == 'imp' ? ['#b7d7fc', '#3982f7'] : ['#d72823', '#ffc4c2'];
-
-                    var chartType = type == 'imp' ? ['最小', '最大'] : ['最大', '最小'];
+                    var chartColor = type == 'imp' ? [ '#3982f7','#b7d7fc'] : ['#d72823', '#ffc4c2'];
 
                     option = {
                         backgroundColor: '#fbfbfb',
@@ -506,7 +520,7 @@
                             itemHeight: 40,
                             left: 0,
                             bottom: 30,
-                            text: chartType,
+                            text:  ['最大', '最小'],
                             realtime: false,
                             calculable: true,
                             color: chartColor,

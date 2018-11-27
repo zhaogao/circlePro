@@ -220,11 +220,46 @@ a {
   padding:10px 15px;
   font-size:12px;
   line-height: 1.3em;
+  border-top:1px solid #efefef;
+}
+
+.report-list{
+  position: relative;
+}
+
+.chart-info{
+  position: absolute;
+  z-index: 2000;
+  bottom: -180px;
+  font-size: 10px;
+  width: 100%;
+  padding: 0 2%;
+  color:#3982f7;
+}
+
+
+.chart-info span:last-child{
+  color:#d72823;
+}
+
+.info-list li{
+  padding:5px 0;
+}
+
+.info-list li:before{
+  content:'';
+  display:inline-block;
+  width:4px;
+  height:4px;
+  background:#0084ff;
+  margin-right: 6px;
+  border-radius:4px;
+  margin-bottom:2px;
 }
 
 .chart-bottom-info a{
   padding:0;
-  float:right;
+  /* float:right; */
   font-size:12px;
 }
 
@@ -348,12 +383,16 @@ strong{
   font-weight: normal
 }
 
+.pull-right{
+  float:right;
+}
+
 .right-info {
   line-height: 1.5em;
   direction: column;
   /* font-weight: bold; */
   flex-direction: column;
-  font-size: 16px;
+  /* font-size: 16px; */
 }
 
 .dated-line{
@@ -368,6 +407,7 @@ strong{
 
 .bottom-title-sub strong{
   font-size:12px;
+  font-weight: normal;
 }
 
 .ladingbox {

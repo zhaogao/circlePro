@@ -31,31 +31,40 @@
             <div class="hscode-title ft-16">
                 HS {{page.baseinfo.hscode}} {{page.baseinfo.code_desc}}
             </div>
-            <div class="block" style="margin-bottom:10px;">
-                <div style="margin-bottom:16px;">
-                    <strong class="ft-16">全球进出口企业统计</strong>
+            <div class="block q-mb-10">
+                <div class="q-mb-20 ft-16">
+                    <span class="title-number">1.</span><strong class="">全球进出口企业分布</strong>
                 </div>
                 <ul class="report-list">
                     <li>
+                        <span>报单数据库有效期</span>
+                        <span>自2016年起</span>
+                    </li>
+                    <li>
                         <span>进口企业数量</span>
-                        <span>{{page.companyinfo.imp_company}}</span>
+                        <span>{{page.companyinfo.imp_company}}家</span>
                     </li>
                     <li>
                         <span>出口企业数量</span>
-                        <span>{{page.companyinfo.exp_company}}</span>
+                        <span>{{page.companyinfo.exp_company}}家</span>
                     </li>
                     <li>
-                        <span>全球地区或国家数量</span>
-                        <span>{{page.companyinfo.country_cnt}}</span>
+                        <span>全球国家或地区数量</span>
+                        <span>{{page.companyinfo.country_cnt}}个</span>
                     </li>
                 </ul>
-                <div class="chart-box" style="margin-bottom:30px;">
+                <div class="chart-box" style="margin-bottom:10px;">
                     <div class="chart-body" id="main"></div>
+                    <div class="chart-bottom-info">
+                        根据提单数据库统计出全球进出口企业的地理分布图，以上企业都是活跃进出口商，交易意向强烈，帮助企业提高精准搜索的功能<a class="more-btn pull-right" @click="handleDown"
+                            href="javascript:;">更多&gt;&gt;</a>
 
-                    <p v-else style="margin:12px;" class="empty-text">暂无伙伴国数据</p>
+                    </div>
                 </div>
-                <div style="margin-bottom:16px;">
-                    <strong class=" ft-16">进口地区数据统计</strong>
+            </div>
+            <div class="block q-mb-10">
+                <div class="q-mb-20 ft-16">
+                    <span class="title-number">2.</span><strong class="">进口地区贸易统计数据</strong>
                 </div>
                 <ul class="report-list">
                     <li>
@@ -75,29 +84,16 @@
                         <span>{{page.report.imp_maxcountry}}</span>
                     </li>
                 </ul>
-                <div class="chart-box" style="margin-bottom:35px;">
-                    <table border="0" cellspacing="0" cellpadding="0" class="table-list">
-                        <thead>
-                            <th>排序</th>
-                            <th>地区</th>
-                            <th>2017年进口额</th>
-                            <!-- <th>与去年对比（万元）</th> -->
-                        </thead>
-                        <tbody>
-                            <tr v-if="index < 5" :key="index" v-for="(country,index) in page.imp_country_zf">
-                                <td>{{index + 1}}</td>
-                                <td>{{country.name_chn}}</td>
-                                <!-- <td>-</td> -->
-                                <td>${{formatData(country.value)}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="center">
-                        <a class="more-btn" @click="handleDown" href="javascript:;">查看更多&gt;&gt;</a>
+                <div class="chart-box q-mb-20" style="margin-bottom:30px;">
+                    <div class="chart-body" id="map-imp"></div>
+                    <div class="chart-bottom-info">
+                        统计全球地区 HS {{page.baseinfo.hscode}}商品的进口贸易数据，包括每个国家或地区的进口量，以及各国家之间与来源国的进口贸易量，帮助您寻找新的市场需求<a class="more-btn"
+                            @click="handleDown" href="javascript:;">更多&gt;&gt;</a>
                     </div>
                 </div>
-                <div style="margin-bottom:16px;">
-                    <strong class=" ft-16">出口地区数据统计</strong>
+
+                <div class="q-mb-20 ft-16">
+                    <span class="title-number">3.</span><strong class="">出口地区贸易统计数据</strong>
                 </div>
                 <ul class="report-list">
                     <li>
@@ -117,38 +113,47 @@
                         <span>{{page.report.exp_maxcountry}}</span>
                     </li>
                 </ul>
-                <div class="chart-box" style="margin-bottom:35px;">
-                    <table border="0" cellspacing="0" cellpadding="0" class="table-list">
-                        <thead>
-                            <th>排序</th>
-                            <th>地区</th>
-                            <th>2017年出口额</th>
-                            <!-- <th>与去年对比（万元）</th> -->
-                        </thead>
-                        <tbody>
-                            <tr v-if="index < 5" :key="index" v-for="(country,index) in page.exp_country_zf">
-                                <td>{{index + 1}}</td>
-                                <td>{{country.name_chn}}</td>
-                                <!-- <td>-</td> -->
-                                <td>${{formatData(country.value)}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div v-if="page.exp_country_zf.length > 5" class="center">
-                        <a class="more-btn" @click="handleDown" href="javascript:;">查看更多&gt;&gt;</a>
+                <div class="chart-box" style="margin-bottom:30px;">
+                    <div class="chart-body" id="map-exp"></div>
+                    <div class="chart-bottom-info">
+                        统计全球地区 HS {{page.baseinfo.hscode}}商品的出口贸易数据，包括每个国家或地区的出口量，以及各国家之间与出口国的进口贸易量，帮助您寻找新的市场需求<a class="more-btn"
+                            @click="handleDown" href="javascript:;">更多&gt;&gt;</a>
                     </div>
                 </div>
-                <div style="margin-bottom:16px;">
-                    <strong class=" ft-16">顺差和逆差统计</strong>
-                    <span class="pull-right ft-10 gray-text" style="margin-top:3px;">计算公式：出口额减进口额</span>
+
+                <div class="q-mb-20 ft-16">
+                    <span class="title-number">4.</span><strong class="">各地区顺逆差贸易统计数据</strong>
                 </div>
                 <ul class="report-list">
                     <li>
-                        <span>最大顺差地区</span>
+                        <span>统计年份</span>
+                        <span>2017年</span>
+                    </li>
+                    <li>
+                        <span>计算公式</span>
+                        <span>出口减去进口</span>
+                    </li>
+                    <li>
+                        <span>最大的顺差地区<span class="ft-10"> (出口)</span></span>
                         <span>{{ exp_count.length > 0 ? exp_count[0].name_chn : '--' }}</span>
                     </li>
+                    <li>
+                        <span>最大的逆差地区<span class="ft-10"> (进口)</span></span>
+                        <span>{{imp_count.length > 0 ? imp_count[0].name_chn : '--'}}</span>
+                    </li>
+                    <li class="chart-info">
+                        <span>逆差</span>
+                        <span>顺差</span>
+                    </li>
                 </ul>
-                <div class="chart-box" style="margin-bottom:20px;">
+                <div class="chart-box" style="margin-bottom:15px;">
+                    <div class="chart-body" id="product-chart"></div>
+                    <div class="chart-bottom-info">
+                        顺逆差统计数据反映一个地区的净进口量和净出口量，通过该表找出各地区之间对HS {{page.baseinfo.hscode}}商品的真正本土供需数据<a class="more-btn"
+                            @click="handleDown" href="javascript:;">更多&gt;&gt;</a>
+                    </div>
+                </div>
+                <!-- <div class="chart-box" style="margin-bottom:20px;">
                     <table border="0" cellspacing="0" cellpadding="0" class="table-list table-three">
                         <thead>
                             <th>排序</th>
@@ -167,12 +172,6 @@
                         <a class="more-btn" @click="handleDown" href="javascript:;">查看更多&gt;&gt;</a>
                     </div>
                 </div>
-                <ul class="report-list">
-                    <li>
-                        <span>最大逆差地区</span>
-                        <span>{{imp_count.length > 0 ? imp_count[0].name_chn : '--'}}</span>
-                    </li>
-                </ul>
                 <div class="chart-box" style="margin-bottom:10px;">
                     <table border="0" cellspacing="0" cellpadding="0" class="table-list table-three">
                         <thead>
@@ -191,7 +190,7 @@
                     <div v-if="imp_count.length > 5" class="center">
                         <a class="more-btn" @click="handleDown" href="javascript:;">查看更多&gt;&gt;</a>
                     </div>
-                </div>
+                </div> -->
             </div>
             <div class="block q-mb-10">
                 <p class="q-mb-10">
@@ -211,10 +210,9 @@
                         </div>
                     </li>
                 </ul>
-
             </div>
 
-            <div class="block" style="border-bottom:1px solid #e0e0e0;padding-bottom:40px;background:#fff;">
+            <div class="block" style="border-bottom:1px solid #e0e0e0;padding-top:22px;background:#fff;">
                 <div class="dated-line">
                     <div class="bottom-title">
                         圈企来 <span>CircledIN</span>
@@ -228,17 +226,17 @@
                     <li>帮助企业开拓海外市场，对接客户资源</li>
                     <li>全球150万+家企业进出口数据</li>
                     <li>8000多个商品全球贸易统计数据</li>
+                    <li>250个国家和地区的贸易统计数据</li>
                 </ul>
                 <a class="btn-check" @click="handleDown" href="javascript:;"> <img style="vertical-align: middle;margin-right:5px;"
                         width="16" src="/images/share-1/search.png" alt=""> <span>找企业 找商品 找国家 找人脉</span></a>
-                <div style="display:flex;margin:30px 8% 0;">
+                <div style="display:flex;margin:30px 20% 0;">
                     <div class="flex-center">
                         <img src="/images/share-1/ewm_1.png" width="80%" alt="">
                     </div>
                     <div class="right-info flex-center" style="flex:1.2">
-                        <p>关注圈企来 <a class="more" href="javascript:;">公众号</a> </p>
-                        <p>请长按或扫一扫</p>
-                        <p>获取更多信息</p>
+                        <p>关注公众号</p>
+                        <p>了解更多信息</p>
                     </div>
                 </div>
             </div>
@@ -267,7 +265,7 @@
             el: '#app',
             data: function () {
                 return {
-                    syncjs: 'http://echarts.baidu.com/asset/map/js/world.js',
+                    syncjs: '/js/world.js',
                     loading: false,
                     showMore: true,
                     shownum: 3,
@@ -392,7 +390,27 @@
 
                     return result
 
-                }
+                },
+                productList: function () {
+                    var _export = $.extend(true, [], this.page.exp_country_zf);
+                    var _imp = $.extend(true, [], this.page.imp_country_zf);
+
+                    _export = _export.slice(0, 5)
+                    _export.reverse()
+                    _imp = _imp.slice(0, 5)
+
+                    _imp.map(function (item) {
+                        item.value = -item.value;
+                        return item;
+                    })
+
+                    var list = _imp.concat(_export);
+
+                    return list.map(function (item) {
+                        item.value = parseInt(item.value / 10000)
+                        return item;
+                    })
+                },
             },
             methods: {
                 loadJsAsync: function (url, callback) {
@@ -491,7 +509,144 @@
                     };
                     myChart.setOption(option);
 
-                }
+                },
+                worldMap: function (type) {
+
+                    var _this = this;
+                    var oMain = document.getElementById('map-' + type);
+                    oMain.style.width = document.body.clientWidth - 30 + 'px';
+                    oMain.style.height = document.body.clientWidth * 0.5 + 'px';
+                    var myChart = echarts.init(oMain);
+
+                    var chartColor = type == 'imp' ? ['#3982f7', '#b7d7fc'] : ['#d72823', '#ffc4c2'];
+                    var dataList = _this.page[(type == 'imp') ? 'imp_country_zf' : 'exp_country_zf'];
+
+                    option = {
+                        backgroundColor: '#fbfbfb',
+                        visualMap: {
+                            min: 0,
+                            show: true,
+                            max: dataList[0] ? dataList[0].value : 200000,
+                            itemWidth: 4,
+                            itemHeight: 40,
+                            left: 0,
+                            bottom: 30,
+                            text: ['最大', '最小'],
+                            realtime: false,
+                            calculable: true,
+                            color: chartColor,
+                            orient: "horizontal",
+                            formatter: function (value) { //标签的格式化工具。
+                                return '' // 范围标签显示内容。
+                            },
+                            textStyle: {
+                                fontSize: 6
+                            }
+                        },
+                        series: [{
+                            backgroundColor: '#f0f',
+                            name: 'World Population (2010)',
+                            type: 'map',
+                            mapType: 'world',
+                            roam: true,
+                            left: '3%',
+                            top: '8%',
+                            right: '3%',
+                            bottom: '8%',
+                            roam: false,
+                            itemStyle: {
+                                normal: {
+                                    areaColor: '#eaeff4',
+                                    borderColor: 'none',
+                                },
+                                emphasis: {
+                                    label: {
+                                        show: true
+                                    }
+                                }
+                            },
+                            data: dataList.map(
+                                function (item, index) {
+                                    return {
+                                        name: item.name_en,
+                                        value: item.value,
+                                    }
+                                }),
+                        }]
+                    };
+                    myChart.setOption(option);
+                    myChart.on('click', function () {
+                        setTimeout(function () {
+                            _this.handleDown()
+                        }, 100)
+                    })
+
+                },
+                productChart: function () {
+                    var _this = this;
+                    var oMain = document.getElementById('product-chart');
+                    oMain.style.width = document.body.clientWidth - 30 + 'px';
+                    oMain.style.height = 280 + 'px'
+                    var myChart = echarts.init(oMain);
+                    option = {
+                        backgroundColor: '#f8f8f8',
+                        xAxis: {
+                            type: 'value',
+                            position: 'top',
+                            // offset:10,
+                            splitLine: {
+                                lineStyle: {
+                                    type: 'dashed'
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value} 万',
+                                fontSize: 8,
+                                // margin:20,
+                            }
+                        },
+                        grid: {
+                            top: 5,
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                        yAxis: {
+                            type: 'category',
+                        },
+                        series: [{
+                            backgroundColor: '#f0f',
+                            type: 'bar',
+                            label: {
+                                show: true,
+                                formatter: function (params) {
+                                    var str = params.data.name;
+                                    return str
+                                },
+                            },
+
+                            data: _this.productList.map(
+                                function (item, index) {
+                                    var _color = item.value > 0 ? '#d72823' : '#3982f7';
+                                    var direct = item.value > 0 ? 'right' : 'left';
+                                    return {
+                                        name: item.name_chn,
+                                        value: item.value,
+                                        // hscode: item.hscode,
+                                        itemStyle: {
+                                            color: _color
+                                        },
+                                        label: {
+                                            fontSize: 6,
+                                            rich: {}
+                                        }
+                                    }
+                                }),
+                        }]
+                    };
+                    myChart.setOption(option);
+                },
             },
             mounted: function () {
 
@@ -516,7 +671,12 @@
                             var oTitle = document.getElementById('title')
                             oTitle.innerHTML = oTitle.innerHTML + '-' + _this.page.baseinfo
                                 .code_desc;
-                            _this.loadJsAsync(_this.syncjs, _this.init)
+                            _this.loadJsAsync(_this.syncjs, function () {
+                                _this.init();
+                                _this.worldMap('imp')
+                                _this.worldMap('exp')
+                                _this.productChart()
+                            })
                         }, 100)
 
                     },

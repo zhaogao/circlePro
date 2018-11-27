@@ -39,18 +39,7 @@
         margin:10px 0 15px 0;
     }
 
-    .chart-info{
-        position: absolute;
-        z-index: 2000;
-        bottom: -180px;
-        font-size: 10px;
-        width: 100%;
-        padding: 0 2%;
-        color:#3982f7;
-    }
-    .chart-info span:last-child{
-        color:#d72823;
-    }
+
     .badge .badge-icon {
         display: inline-block;
         width: 16px;
@@ -185,34 +174,11 @@
     .block-card{
         padding:10px; margin:10px; border:1px solid #e0e0e0;border-radius: 4px;
     }
-    .dated-line{
-        padding-bottom: 15px;
-        /* border: none; */
-        /* border-bottom-width: 3px;
-        border-bottom-style: dashed;
-        border-bottom-color: #666; */
-        border-bottom: 1px dotted #333;
-    }
     .more{
         color:#0084ff;
         text-decoration: none;
         background:none;
         border:none;
-    }
-    .info-list li{
-        padding:2px 0;
-
-    }
-    .info-list li:before{
-        content:'';
-        display:inline-block;
-        width:4px;
-        height:4px;
-        background:#0084ff;
-        margin-right: 6px;
-        border-radius:4px;
-        margin-bottom:2px;
-        /* vertical-align: middle; */
     }
     .flex-center{
         justify-content: center;
