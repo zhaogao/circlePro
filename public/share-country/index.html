@@ -7,8 +7,8 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <title id="title">宏观数据分析</title>
 </head>
-<link rel="stylesheet" href="/stylesheets/common.css?version=v3">
-<link rel="stylesheet" href="./index.css?version=v3">
+<link rel="stylesheet" href="/stylesheets/common.css?version=v4">
+<link rel="stylesheet" href="./index.css?version=v4">
 
 <body>
     <div id="app" style="color:#333;" :style="{backgroundColor:loading ? '#fff' : '#f1f1f1'}">
@@ -24,10 +24,12 @@
             </div>
         </template>
         <template v-else>
-            <div style="font-size:0;min-height:150px;" class="q-mb-10">
+            <!-- <div style="font-size:0;min-height:150px;" class="q-mb-10">
                 <img :src=" page.backimg ? img_root + page.backimg :  '/images/share-1/banner-default.png'" width="100%"
                     alt="">
-            </div>
+            </div> -->
+            <div class="banner_img q-mb-10" :style="{backgroundImage:'url(' + (page.backimg ? img_root + page.backimg :  '/images/share-1/banner-default.png') +')',height:banneHeight +'px'}"></div>
+            <div class="hscode-title ft-16">
             <div class="block border-bottom">
                 <div class="q-mb-20 ft-16">
                     <span class="title-number">1.</span><strong class="">{{page.country}}进口商品贸易统计</strong>
@@ -333,6 +335,9 @@
                 headWidth: function () {
                     return Math.round((window.screen.width) * 0.25)
                 },
+                banneHeight: function () {
+                    return Math.round((window.screen.width) * 0.55)
+                },
                 productList: function () {
                     var target = this.page.countrysn;
 
@@ -347,51 +352,6 @@
                         return item;
                     })
                 },
-                imp_count: function () {
-
-                    var exp_country_zf = this.page.export.partnerlst;
-                    var imp_country_zf = this.page.import.partnerlst;
-                    var result = [];
-
-                    for (var e = 0; e < imp_country_zf.length; e++) {
-
-                        var target = exp_country_zf.filter(function (item) {
-                            return item.country_en == imp_country_zf[e].country_en
-                        });
-
-                        if (target.length > 0) {
-                            result.push({
-                                country: imp_country_zf[e].country,
-                                country_en: imp_country_zf[e].country_en,
-                                value: target[0].value - imp_country_zf[e].value,
-                                nc: true,
-                            })
-                        } else {
-                            result.push({
-                                country: imp_country_zf[e].country,
-                                country_en: imp_country_zf[e].country_en,
-                                value: -imp_country_zf[e].value,
-                                nc: true,
-                            })
-                        }
-
-                    }
-
-                    result.sort(function (a, b) {
-                        return a.value - b.value
-                    })
-
-                    result = result.filter(function (item) {
-                        return item.value < 0
-                    })
-
-                    return result
-
-                },
-                worldMapList() {
-
-                    return this.page.countrysn.partnerlst.concat(this.imp_count)
-                }
             },
             methods: {
                 loadJsAsync: function (url, callback) {
@@ -693,7 +653,7 @@
                                     borderColor: 'none',
                                 },
                             },
-                            data: _this.imp_count.map(
+                            data: _this.page.countrysn.partnerlst1.map(
                                 function (item, index) {
                                     var _color = item.nc ? '#61c5c3' : '#568cca';
                                     return {

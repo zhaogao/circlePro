@@ -7,8 +7,8 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <title id="title">商品全球宏观数据分析</title>
 </head>
-<link rel="stylesheet" href="/stylesheets/common.css?version=v3">
-<link rel="stylesheet" href="./index.css?version=v3">
+<link rel="stylesheet" href="/stylesheets/common.css?version=v4">
+<link rel="stylesheet" href="./index.css?version=v4">
 
 <body>
     <div id="app" :style="{backgroundColor:loading ? '#fff' : '#f1f1f1'}">
@@ -24,10 +24,7 @@
             </div>
         </template>
         <template v-else>
-            <div style="font-size:0;min-height:150px;">
-                <img :src=" page.baseinfo.backurl ? img_root + page.baseinfo.backurl :  '/images/share-1/banner-default.png'"
-                    width="100%" alt="">
-            </div>
+            <div class="banner_img" :style="{backgroundImage:'url(' + (page.baseinfo.backurl ? img_root + page.baseinfo.backurl :  '/images/share-1/banner-default.png') +')',height:banneHeight +'px'}"></div>
             <div class="hscode-title ft-16">
                 HS {{page.baseinfo.hscode}} {{page.baseinfo.code_desc}}
             </div>
@@ -81,7 +78,7 @@
                     </li>
                     <li>
                         <span>最大进口国家或地区</span>
-                        <span>{{page.report.imp_maxcountry}}</span>
+                        <span>{{page.report.imp_country}}</span>
                     </li>
                 </ul>
                 <div class="chart-box q-mb-20" style="margin-bottom:30px;">
@@ -110,7 +107,7 @@
                     </li>
                     <li>
                         <span>最大出口国家或地区</span>
-                        <span>{{page.report.exp_maxcountry}}</span>
+                        <span>{{page.report.exp_country}}</span>
                     </li>
                 </ul>
                 <div class="chart-box" style="margin-bottom:30px;">
@@ -135,11 +132,11 @@
                     </li>
                     <li>
                         <span>最大的顺差地区<span class="ft-10"> (出口)</span></span>
-                        <span>{{ exp_count.length > 0 ? exp_count[0].name_chn : '--' }}</span>
+                        <span>{{page.country_sn[0].name_chn}}</span>
                     </li>
                     <li>
                         <span>最大的逆差地区<span class="ft-10"> (进口)</span></span>
-                        <span>{{imp_count.length > 0 ? imp_count[0].name_chn : '--'}}</span>
+                        <span>{{page.country_sn_1[0].name_chn}}</span>
                     </li>
                     <li class="chart-info">
                         <span>逆差</span>
@@ -279,17 +276,16 @@
                         baseinfo: {
                             backurl: '',
                             code_desc: '',
+                            hscode: '',
                         },
-                        company: '--',
-                        company_en: '--',
-                        imp_country_zf: [],
-                        exp_country_zf: [],
                         companyinfo: {
                             country_cnt: 0,
                             exp_company: 0,
                             imp_company: 0
                         },
                         comapny_country: [],
+                        country_sn: [{}],
+                        country_sn_1: [{}],
                         report: {
                             imp_value: 0,
                             exp_value: 0,
@@ -297,13 +293,6 @@
                             imp_count: 0,
                             imp_country: "-",
                             exp_count: 0,
-                            exp_country: "-",
-                            exp_maxcountry: "-",
-                            exp_value: 0,
-                            imp_count: 0,
-                            imp_country: "-",
-                            imp_maxcountry: "-",
-                            imp_value: 0
                         },
                         companys: []
                     }
@@ -325,84 +314,16 @@
                 headWidth: function () {
                     return Math.round((window.screen.width) * 0.25)
                 },
-                exp_count: function () {
-
-                    var exp_country_zf = this.page.exp_country_zf;
-                    var imp_country_zf = this.page.imp_country_zf;
-                    var result = [];
-
-                    for (var e = 0; e < exp_country_zf.length; e++) {
-
-                        var target = imp_country_zf.filter(function (item) {
-                            return item.name_en == exp_country_zf[e].name_en
-                        });
-
-                        if (target.length > 0) {
-                            result.push({
-                                name_chn: exp_country_zf[e].name_chn,
-                                name_en: exp_country_zf[e].name_en,
-                                value: exp_country_zf[e].value - target[0].value,
-                            })
-                        } else {
-                            result.push(exp_country_zf[e])
-                        }
-
-                    }
-
-                    result.sort(function (a, b) {
-                        return b.value - a.value
-                    })
-
-                    return result
-
-                },
-                imp_count: function () {
-
-                    var exp_country_zf = this.page.exp_country_zf;
-                    var imp_country_zf = this.page.imp_country_zf;
-                    var result = [];
-
-                    for (var e = 0; e < imp_country_zf.length; e++) {
-
-                        var target = exp_country_zf.filter(function (item) {
-                            return item.name_en == imp_country_zf[e].name_en
-                        });
-
-                        if (target.length > 0) {
-                            result.push({
-                                name_chn: imp_country_zf[e].name_chn,
-                                name_en: imp_country_zf[e].name_en,
-                                value: target[0].value - imp_country_zf[e].value,
-                            })
-                        } else {
-                            result.push({
-                                name_chn: imp_country_zf[e].name_chn,
-                                name_en: imp_country_zf[e].name_en,
-                                value: -imp_country_zf[e].value
-                            })
-                        }
-
-                    }
-
-                    result.sort(function (a, b) {
-                        return a.value - b.value
-                    })
-
-                    return result
-
+                banneHeight: function () {
+                    return Math.round((window.screen.width) * 0.55)
                 },
                 productList: function () {
-                    var _export = $.extend(true, [], this.page.exp_country_zf);
-                    var _imp = $.extend(true, [], this.page.imp_country_zf);
+                    var _export = $.extend(true, [], this.page.country_sn);
+                    var _imp = $.extend(true, [], this.page.country_sn_1);
 
                     _export = _export.slice(0, 5)
                     _export.reverse()
                     _imp = _imp.slice(0, 5)
-
-                    _imp.map(function (item) {
-                        item.value = -item.value;
-                        return item;
-                    })
 
                     var list = _imp.concat(_export);
 
@@ -477,7 +398,58 @@
                             calculable: true,
                             color: ['#568cca', '#568cca']
                         },
+                        _geo: {
+                            map: 'world',
+                            mapType: 'world',
+                            label: {
+                                emphasis: {
+                                    show: false
+                                }
+                            },
+                            zoom: 1.1,
+                            // left: '33%',
+                            roam: false,
+                            itemStyle: { //地图颜色
+                                normal: {
+                                    areaColor: '#eaeff4',
+                                    borderColor: 'none'
+                                },
+                                emphasis: {
+                                    areaColor: '#43b9f6'
+                                }
+                            }
+                        },
                         series: [{
+                            name: '企业数量',
+                            type: 'scatter',
+                            coordinateSystem: 'geo',
+                            data: [{
+                                name: '上海',
+                                value: [121.48, 31.22, 25],
+                                label: {
+                                    position: 'inside',
+                                    fontSize: 8
+                                }
+                            }],
+                            symbolSize: function (val) {
+                                return val[2] / 1;
+                            },
+                            label: {
+                                normal: {
+                                    formatter: '{b}',
+                                    position: 'right',
+                                    show: true
+                                },
+                                emphasis: {
+                                    show: true
+                                }
+                            },
+                            itemStyle: {
+                                normal: {
+                                    color: '#568cca'
+                                }
+                            }
+                        }, {
                             backgroundColor: '#f0f',
                             name: 'World Population (2010)',
                             type: 'map',
@@ -509,6 +481,8 @@
                     };
                     myChart.setOption(option);
 
+
+
                 },
                 worldMap: function (type) {
 
@@ -519,7 +493,7 @@
                     var myChart = echarts.init(oMain);
 
                     var chartColor = type == 'imp' ? ['#3982f7', '#b7d7fc'] : ['#d72823', '#ffc4c2'];
-                    var dataList = _this.page[(type == 'imp') ? 'imp_country_zf' : 'exp_country_zf'];
+                    var dataList = _this.page[(type == 'imp') ? 'imp_country' : 'exp_country'];
 
                     option = {
                         backgroundColor: '#fbfbfb',
